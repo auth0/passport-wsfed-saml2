@@ -1,0 +1,46 @@
+{
+  "name": "passport-azure-acs",
+  "version": "0.1.0",
+  "description": "Windows Azure Access Control Service auth for Passport.",
+  "author": {
+    "name": "Matias Woloski",
+    "email": "matias@auth10.com",
+    "url": "http://auth10.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/auth10/passport-wsfed-saml2.git"
+  },
+  "bugs": {
+    "url": "http://github.com/auth10/passport-wsfed-saml2/issues"
+  },
+  "main": "./lib/passport-wsfed-saml2",
+  "dependencies": {
+    "passport": "0.1.x",
+    "xml2js": "0.1.x",
+    "xml-crypto": "https://github.com/auth10/xml-crypto/tarball/master",
+    "xmldom": "0.1.x"
+  },
+  "devDependencies": {
+    "express": "2.5.x",
+    "ejs": "0.7.x"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "keywords": [
+    "passport",
+    "azure",
+    "auth",
+    "authn",
+    "authentication",
+    "identity",
+    "acs"
+  ]
+}
