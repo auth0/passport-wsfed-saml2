@@ -1,7 +1,7 @@
 {
-  "name": "passport-azure-acs",
+  "name": "passport-wsfed-saml2",
   "version": "0.1.0",
-  "description": "Windows Azure Access Control Service auth for Passport.",
+  "description": "WS-federation with SAML 2 tokens for Passport (used on Microsoft products like Windows Azure Active Directory / Access Control Service and ADFS).",
   "author": {
     "name": "Matias Woloski",
     "email": "matias@auth10.com",
