@@ -44,7 +44,7 @@ You need to provide a route corresponding to the `path` configuration parameter 
 
 ```javascript
 app.post('/login/callback',
-  passport.authenticate('wsfedsaml2', { failureRedirect: '/', failureFlash: true }),
+  passport.authenticate('wsfed-saml2', { failureRedirect: '/', failureFlash: true }),
   function(req, res) {
     res.redirect('/');
   }
