@@ -1,6 +1,8 @@
 Passport-wsfed-saml2
 =============
 
+[![Build Status](https://travis-ci.org/auth0/passport-wsfed-saml2.png)](https://travis-ci.org/auth0/passport-wsfed-saml2)
+
 This is a ws-federation protocol + SAML2 tokens authentication provider for [Passport](http://passportjs.org/).
 
 The code was originally based on Henri Bergius's [passport-saml](https://github.com/bergie/passport-saml) library.
