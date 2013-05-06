@@ -1,6 +1,6 @@
 {
   "name": "passport-wsfed-saml2",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "WS-federation with SAML 2 and 1.1 tokens for Passport (used on Microsoft products like Windows Azure Active Directory / Access Control Service and ADFS).",
   "scripts": {
     "test": "mocha"
@@ -12,10 +12,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/auth10/passport-wsfed-saml2.git"
+    "url": "git://github.com/auth0/passport-wsfed-saml2.git"
   },
   "bugs": {
-    "url": "http://github.com/auth10/passport-wsfed-saml2/issues"
+    "url": "http://github.com/auth0/passport-wsfed-saml2/issues"
   },
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
