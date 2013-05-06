@@ -71,9 +71,9 @@ describe('wsfed', function () {
       });
     });
 
-    it('should return a 400', function(){
+    it('should redirect to idp', function(){
       expect(r.statusCode)
-            .to.equal(400);
+            .to.equal(302);
     });
   });
 
