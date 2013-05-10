@@ -6,7 +6,7 @@ var assert = require('assert'),
     saml11 = require('saml').Saml11,
     SamlPassport = require('../lib/passport-wsfed-saml2/saml').SAML;
 
-describe('saml 1.1', function () {
+describe('saml 1.1 assertion', function () {
 
   it('should parse attributes', function (done) {
     // cert created with:
