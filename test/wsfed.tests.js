@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var server = require('./fixture/server');
+var server = require('./fixture/wsfed-server');
 var request = require('request');
 var cheerio = require('cheerio');
 
@@ -28,12 +28,14 @@ describe('wsfed', function () {
         $ = cheerio.load(b);
         var wresult = $('input[name="wresult"]').attr('value');
         var wa = $('input[name="wa"]').attr('value');
+
         request.post({
           jar: request.jar(), 
           uri: 'http://localhost:5050/callback',
           form: { wresult: wresult, wa: wa }
         }, function(err, response, body) {
           if(err) return done(err);
+
           r = response;
           bod = body;
           done();

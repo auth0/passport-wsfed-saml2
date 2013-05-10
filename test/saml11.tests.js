@@ -30,7 +30,7 @@ describe('saml 1.1', function () {
 
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
     var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
-    var profile = saml_passport.validateResponse(signedAssertion, function(error, profile) {
+    var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
 
       assert.ok(profile);
       assert.equal('foo', profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
@@ -49,7 +49,7 @@ describe('saml 1.1', function () {
     var saml_passport = new SamlPassport({thumbprint: '3464c5bdd2be7f2b6112e2f08e9c0024e33d9fe0',
                                           realm: 'spn:408153f4-5960-43dc-9d4f-6b717d772c8d',
                                           checkExpiration: false}); // dont check expiration since we are harcoding the token
-    var profile = saml_passport.validateResponse(signedAssertion, function(error, profile) {
+    var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
 
       assert.ok(profile);
       done();

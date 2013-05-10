@@ -1,11 +1,12 @@
 var express = require('express');
 var http = require('http');
-var Strategy = require('../../lib/passport-wsfed-saml2').Strategy;
-var passport = require('passport');
 var wsfed = require('wsfed');
 var xtend = require('xtend');
 var fs = require('fs');
 var path = require('path');
+
+var passport = require('passport');
+var Strategy = require('../../lib/passport-wsfed-saml2').Strategy;
 
 passport.use(new Strategy(
   {
@@ -80,12 +81,11 @@ module.exports.start = function(options, callback){
       key:                credentials.key
   }, options)));
 
-  app.post('/callback',
+  app.post('/callback', 
     passport.authenticate('wsfed-saml2'),
     function(req, res) {
       res.json(req.user);
     });
-
 
   var server = http.createServer(app).listen(5050, callback);
   module.exports.close = server.close.bind(server);
