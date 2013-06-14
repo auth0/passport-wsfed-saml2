@@ -21,7 +21,7 @@
   "dependencies": {
     "passport": "0.1.x",
     "xml2js": "0.1.x",
-    "xml-crypto": "~0.0.10",
+    "xml-crypto": "git://github.com/auth0/xml-crypto.git",
     "xmldom": "~0.1.15",
     "xtend": "~2.0.3",
     "ejs": "~0.8.3"
@@ -33,14 +33,13 @@
     "request": "~2.14.0",
     "xmldom": "~0.1.13",
     "cheerio": "~0.10.7",
-    "xml-crypto": "0.0.10",
     "xpath": "0.0.5",
     "xtend": "~2.0.3",
     "moment": "~1.7.2",
-    "saml": "~0.3.1",
-    "wsfed": "~0.3.4",
+    "saml": "~0.4.2",
+    "wsfed": "~0.3.5",
     "should": "~1.1.0",
-    "samlp": "~0.2.0"
+    "samlp": "~0.4.3"
   },
   "engines": {
     "node": ">= 0.6.0"
