@@ -13,7 +13,6 @@ var relayState = 'somestate';
 
 passport.use('samlp', new Strategy(
   {
-    validateSignature: true,
     path: '/callback',
     realm: 'urn:fixture-test',
     identityProviderUrl: identityProviderUrl,
@@ -26,8 +25,6 @@ passport.use('samlp', new Strategy(
 
 passport.use('samlp-signedresponse', new Strategy(
   {
-    validateSignature: false,
-    validateResponse: true,
     path: '/callback',
     realm: 'urn:fixture-test',
     identityProviderUrl: identityProviderUrl,
@@ -40,8 +37,6 @@ passport.use('samlp-signedresponse', new Strategy(
 
 passport.use('samlp-signedresponse-invalidcert', new Strategy(
   {
-    validateSignature: false,
-    validateResponse: true,
     path: '/callback',
     realm: 'urn:fixture-test',
     identityProviderUrl: identityProviderUrl,
@@ -54,8 +49,6 @@ passport.use('samlp-signedresponse-invalidcert', new Strategy(
 
 passport.use('samlp-invalidcert', new Strategy(
   {
-    validateSignature: true,
-    validateResponse: false,
     path: '/callback',
     realm: 'urn:fixture-test',
     identityProviderUrl: identityProviderUrl,
@@ -65,6 +58,18 @@ passport.use('samlp-invalidcert', new Strategy(
     return done(null, profile);
   })
 );
+
+passport.use('samlp-signedresponse-signedassertion', new Strategy(
+  {
+    path: '/callback',
+    thumbprint: 'C9ED4DFB07CAF13FC21E0FEC1572047EB8A7A4CB',
+    checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
 
 var fakeUser = {
   id: '12345678',
@@ -150,6 +155,13 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-invalidcert', 
     passport.authenticate('samlp-invalidcert', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-signedresponse-signedassertion', 
+    passport.authenticate('samlp-signedresponse-signedassertion', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
