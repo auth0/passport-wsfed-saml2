@@ -1,6 +1,6 @@
 {
   "name": "passport-wsfed-saml2",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "WS-federation with SAML 2 and 1.1 tokens for Passport (used on Microsoft products like Windows Azure Active Directory / Access Control Service and ADFS).",
   "scripts": {
     "test": "mocha --reporter spec"
