@@ -70,6 +70,16 @@ passport.use('samlp-signedresponse-signedassertion', new Strategy(
   })
 );
 
+passport.use('samlp-ping', new Strategy(
+  {
+    path: '/callback',
+    thumbprint: '44340220770a348444be34970939cff8a2d74f08',
+    checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
 
 var fakeUser = {
   id: '12345678',
@@ -162,6 +172,13 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-signedresponse-signedassertion', 
     passport.authenticate('samlp-signedresponse-signedassertion', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-ping', 
+    passport.authenticate('samlp-ping', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
