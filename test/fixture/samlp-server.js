@@ -14,7 +14,7 @@ var relayState = 'somestate';
 passport.use('samlp', new Strategy(
   {
     path: '/callback',
-    realm: 'urn:fixture-test',
+    realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
     thumbprint: '5ca6e1202eafc0a63a5b93a43572eb2376fed309'
   },
@@ -26,7 +26,7 @@ passport.use('samlp', new Strategy(
 passport.use('samlp-signedresponse', new Strategy(
   {
     path: '/callback',
-    realm: 'urn:fixture-test',
+    realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
     thumbprint: '5ca6e1202eafc0a63a5b93a43572eb2376fed309'
   },
@@ -62,6 +62,7 @@ passport.use('samlp-invalidcert', new Strategy(
 passport.use('samlp-signedresponse-signedassertion', new Strategy(
   {
     path: '/callback',
+    realm: 'urn:auth0:login-dev3',
     thumbprint: 'C9ED4DFB07CAF13FC21E0FEC1572047EB8A7A4CB',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
@@ -73,7 +74,20 @@ passport.use('samlp-signedresponse-signedassertion', new Strategy(
 passport.use('samlp-ping', new Strategy(
   {
     path: '/callback',
+    realm: 'urn:auth0:login-dev3',
     thumbprint: '44340220770a348444be34970939cff8a2d74f08',
+    checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+passport.use('samlp-okta', new Strategy(
+  {
+    path: '/callback',
+    realm: 'https://auth0145.auth0.com',
+    thumbprint: 'a0c7dbb790e3476d3c5dd236f9f2060b1fd6e253',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
   function(profile, done) {
@@ -179,6 +193,13 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-ping', 
     passport.authenticate('samlp-ping', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-okta', 
+    passport.authenticate('samlp-okta', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
