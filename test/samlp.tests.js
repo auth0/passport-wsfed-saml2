@@ -199,6 +199,37 @@ describe('samlp', function () {
 
   });
 
+  describe('samlp request with idp url containing querystring', function () {
+    var r, bod;
+    
+    before(function (done) {
+      request.get({
+        jar: request.jar(), 
+        followRedirect: false,
+        uri: 'http://localhost:5051/login-idp-with-querystring'
+      }, function (err, resp, b){
+        if(err) return callback(err);
+        r = resp;
+        bod = b;
+        done();
+      });
+    });
+
+    it('should redirect to idp', function(){
+      expect(r.statusCode)
+            .to.equal(302);
+    });
+
+    it('should have SAMLRequest and foo in querystring', function(){
+      expect(r.headers.location.split('?')[0])
+            .to.equal(server.identityProviderUrl);
+      var querystring = qs.parse(r.headers.location.split('?')[1]);
+      expect(querystring).to.have.property('SAMLRequest');
+      expect(querystring).to.have.property('foo');
+    });
+
+  });
+
 });
 
 function doSamlpFlow(samlRequestUrl, callbackEndpoint, callback) {
