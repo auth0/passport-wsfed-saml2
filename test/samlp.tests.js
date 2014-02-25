@@ -283,9 +283,7 @@ describe('samlp (unit tests)', function () {
         var attributes = doc.documentElement.getElementsByTagName('Attribute');
         expect(attributes.length).to.equal(8);
         expect(attributes[0].getAttribute('Name')).to.equal('http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress');
-        expect(attributes[0].firstChild.textContent).to.equal('peter.pan@fmi.ch');
         expect(attributes[1].getAttribute('Name')).to.equal('urn:oid:0.9.2342.19200300.100.1.3');
-        expect(attributes[1].firstChild.textContent).to.equal('peter.pan@fmi.ch');
         expect(attributes[2].getAttribute('Name')).to.equal('urn:oid:2.16.756.1.2.5.1.1.4');
         expect(attributes[2].firstChild.textContent).to.equal('fmi.ch');
         expect(attributes[3].getAttribute('Name')).to.equal('urn:oid:2.16.756.1.2.5.1.1.5');
