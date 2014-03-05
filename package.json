@@ -28,7 +28,7 @@
     "xpath": "0.0.5",
     "cryptiles": "~0.2.2",
     "jsonwebtoken": "~0.1.0",
-    "xml-encryption": "~0.3.4"
+    "xml-encryption": "~0.3.5"
   },
   "devDependencies": {
     "chai": "~1.5.0",
