@@ -1,6 +1,6 @@
 {
   "name": "passport-wsfed-saml2",
-  "version": "0.8.9",
+  "version": "0.9.0",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
     "test": "mocha --reporter spec"
