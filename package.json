@@ -1,6 +1,6 @@
 {
   "name": "passport-wsfed-saml2",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
     "test": "mocha --reporter spec"
@@ -22,7 +22,7 @@
     "passport": "0.1.x",
     "xml2js": "0.1.x",
     "xml-crypto": "~0.0.17",
-    "xmldom": "~0.1.15",
+    "xmldom": "~0.1.19",
     "xtend": "~2.0.3",
     "ejs": "~0.8.3",
     "xpath": "0.0.5",
@@ -35,7 +35,7 @@
     "express": "~3.1.0",
     "mocha": "~1.8.1",
     "request": "~2.14.0",
-    "xmldom": "~0.1.13",
+    "xmldom": "https://github.com/auth0/xmldom/tarball/master",
     "cheerio": "~0.10.7",
     "xpath": "0.0.5",
     "xtend": "~2.0.3",
