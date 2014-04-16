@@ -107,6 +107,20 @@ passport.use('samlp-okta', new Strategy(
   })
 );
 
+passport.use('samlp-with-utf8', new Strategy(
+  {
+    path: '/callback',
+    thumbprint: '42FA24A83E107F6842E05D2A2CA0A0A0CA8A2031',
+    decryptionKey: fs.readFileSync(path.join(__dirname, '../test-decryption.key')),
+    checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
+    checkAudience: false 
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+
 var fakeUser = {
   id: '12345678',
   displayName: 'John Foo',
@@ -213,6 +227,13 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-okta', 
     passport.authenticate('samlp-okta', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-with-utf8', 
+    passport.authenticate('samlp-with-utf8', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
