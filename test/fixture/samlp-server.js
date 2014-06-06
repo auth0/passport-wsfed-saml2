@@ -11,14 +11,23 @@ var Strategy = require('../../lib/passport-wsfed-saml2').Strategy;
 var identityProviderUrl = 'http://localhost:5051/samlp';
 var relayState = 'somestate';
 
-passport.use('samlp', new Strategy(
-  {
+passport.use('samlp', new Strategy({
     path: '/callback',
     realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
     thumbprint: '5ca6e1202eafc0a63a5b93a43572eb2376fed309'
-  },
-  function(profile, done) {
+  }, function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+passport.use('samlp-custom-request-template', new Strategy({
+    path: '/callback',
+    realm: 'https://auth0-dev-ed.my.salesforce.com',
+    identityProviderUrl: identityProviderUrl,
+    thumbprint: '5ca6e1202eafc0a63a5b93a43572eb2376fed309',
+    requestTemplate: '<AuthnRequest Issuertico="@@Issuer@@" Version="3.0" Protocol="@@ProtocolBinding@@"></AuthnRequest>'
+  }, function(profile, done) {
     return done(null, profile);
   })
 );
@@ -113,7 +122,7 @@ passport.use('samlp-with-utf8', new Strategy(
     thumbprint: '42FA24A83E107F6842E05D2A2CA0A0A0CA8A2031',
     decryptionKey: fs.readFileSync(path.join(__dirname, '../test-decryption.key')),
     checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
-    checkAudience: false 
+    checkAudience: false
   },
   function(profile, done) {
     return done(null, profile);
@@ -167,7 +176,7 @@ module.exports.start = function(options, callback){
   }
 
   //configure samlp middleware
-  app.get('/samlp', function(req, res, next) { 
+  app.get('/samlp', function(req, res, next) {
     samlp.auth(xtend({}, {
         issuer:             'urn:fixture-test',
         getPostURL:         getPostURL,
@@ -179,7 +188,10 @@ module.exports.start = function(options, callback){
   app.get('/login', passport.authenticate('samlp', { protocol: 'samlp', RelayState: relayState }));
   app.get('/login-idp-with-querystring', passport.authenticate('samlp-idpurl-with-querystring', { protocol: 'samlp', RelayState: relayState }));
 
-  app.post('/callback', 
+  app.get('/login-custom-request-template',
+      passport.authenticate('samlp-custom-request-template', { protocol: 'samlp', RelayState: relayState }));
+
+  app.post('/callback',
     function(req, res, next) {
       //console.log('req.body');
       next();
@@ -190,49 +202,49 @@ module.exports.start = function(options, callback){
     }
   );
 
-  app.post('/callback/samlp-signedresponse', 
+  app.post('/callback/samlp-signedresponse',
     passport.authenticate('samlp-signedresponse', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
   );
 
-  app.post('/callback/samlp-signedresponse-invalidcert', 
+  app.post('/callback/samlp-signedresponse-invalidcert',
     passport.authenticate('samlp-signedresponse-invalidcert', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
   );
 
-  app.post('/callback/samlp-invalidcert', 
+  app.post('/callback/samlp-invalidcert',
     passport.authenticate('samlp-invalidcert', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
   );
 
-  app.post('/callback/samlp-signedresponse-signedassertion', 
+  app.post('/callback/samlp-signedresponse-signedassertion',
     passport.authenticate('samlp-signedresponse-signedassertion', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
   );
 
-  app.post('/callback/samlp-ping', 
+  app.post('/callback/samlp-ping',
     passport.authenticate('samlp-ping', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
   );
 
-  app.post('/callback/samlp-okta', 
+  app.post('/callback/samlp-okta',
     passport.authenticate('samlp-okta', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }
   );
 
-  app.post('/callback/samlp-with-utf8', 
+  app.post('/callback/samlp-with-utf8',
     passport.authenticate('samlp-with-utf8', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
