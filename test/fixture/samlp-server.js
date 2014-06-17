@@ -26,7 +26,12 @@ passport.use('samlp-custom-request-template', new Strategy({
     realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
     thumbprint: '5ca6e1202eafc0a63a5b93a43572eb2376fed309',
-    requestTemplate: '<AuthnRequest Issuertico="@@Issuer@@" Version="3.0" Protocol="@@ProtocolBinding@@"></AuthnRequest>'
+    requestTemplate: '<AuthnRequest Issuertico="@@Issuer@@" Version="3.0" Protocol="@@ProtocolBinding@@" Foo="@@Foo.Test@@"></AuthnRequest>',
+    requestContext: {
+      Foo: {
+        Test: 123
+      }
+    }
   }, function(profile, done) {
     return done(null, profile);
   })

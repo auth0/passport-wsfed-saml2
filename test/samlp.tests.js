@@ -292,6 +292,9 @@ describe('samlp (functional tests)', function () {
         expect(doc.documentElement.getAttribute('Version'))
           .to.equal('3.0');
 
+        expect(doc.documentElement.getAttribute('Foo'))
+          .to.equal('123');
+
         expect(doc.documentElement.getAttribute('Issuertico'))
           .to.equal('https://auth0-dev-ed.my.salesforce.com');
 
