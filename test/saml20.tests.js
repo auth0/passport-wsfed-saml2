@@ -82,4 +82,37 @@ describe('saml 2.0 assertion', function () {
 
   });
 
+  it('should extract authentication context from assertion as a user prop', function (done) {
+
+    var options = {
+      cert: fs.readFileSync(__dirname + '/test-auth0.pem'),
+      key: fs.readFileSync(__dirname + '/test-auth0.key'),
+      issuer: 'urn:issuer',
+      lifetimeInSeconds: 600,
+      audiences: 'urn:myapp',
+      attributes: {
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress': 'сообщить@bar.com',
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name': 'сообщить вКонтакте'
+      },
+      nameIdentifier:       'вКонтакте',
+      nameIdentifierFormat: 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'
+    };
+
+    var signedAssertion = saml20.create(options);
+
+    var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
+    var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
+      if (error) return done(error);
+      
+      assert.ok(profile);
+      assert.equal('urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified', profile['http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod']);
+      
+      done();
+    });
+
+  });
+
+  
+
 });
