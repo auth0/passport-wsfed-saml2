@@ -18,7 +18,7 @@ var s = new Strategy({
 });
 
 describe('jwt support', function () {
-  
+
   it('should work', function (done) {
     s.success = function (user) {
       expect(user.foo).to.equal('bar');
@@ -28,8 +28,8 @@ describe('jwt support', function () {
     s.fail = done;
     s.error = done;
 
-    var token = jwt.sign({ 
-      foo: 'bar' 
+    var token = jwt.sign({
+      foo: 'bar'
     }, cert.key, { algorithm: 'RS256'});
 
     var req = {
