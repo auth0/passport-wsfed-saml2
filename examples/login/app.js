@@ -1,8 +1,19 @@
+// var express = require('express')
+//   , passport = require('passport')
+//   , util = require('util')
+//   , wsfedsaml2 = require('../../lib/passport-wsfed-saml2/index').Strategy
+//   , fs = require('fs');
+
 var express = require('express')
   , passport = require('passport')
   , util = require('util')
   , wsfedsaml2 = require('../../lib/passport-wsfed-saml2/index').Strategy
-  , fs = require('fs');
+  , fs = require('fs')
+  , morgan = require('morgan')
+  , cookieParser = require('cookie-parser')
+  , bodyParser = require('body-parser')
+  , methodOverride = require('method-override')
+  , session = require('express-session');
 
 var users = [
     { id: 1, givenName: 'matias', email: 'matias@auth10.com' }
@@ -68,22 +79,27 @@ passport.use(new wsfedsaml2(
   }
 ));
 
-var app = express.createServer();
+var app = express();
+var router = express.Router();
 
 // configure Express
-app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.logger());
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({ secret: 'keyboard cat' }));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/../../public'));
-});
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(morgan('combined'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(methodOverride());
+app.use(session({ 
+  secret: 'keyboard cat',
+  resave: false,
+ saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('', router);
+app.use(express.static(__dirname + '/../../public'));
 
 
 app.get('/', function(req, res){
