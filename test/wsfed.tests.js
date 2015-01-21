@@ -58,6 +58,28 @@ describe('wsfed', function () {
 
   });
 
+  describe('wresult without RequestedSecurityToken', function () {
+    var user, r, bod, $;
+
+    before(function (done) {
+      request.post({
+        jar: request.jar(),
+        uri: 'http://localhost:5050/callback',
+        form: { wresult: '<t:RequestSecurityTokenResponse xmlns:t="http://schemas.xmlsoap.org/ws/2005/02/trust"></t:RequestSecurityTokenResponse>' }
+      }, function(err, response, body) {
+        if(err) return done(err);
+        r = response;
+        bod = body;
+        done();
+      });
+    });
+
+    it('should return a 400', function(){
+      expect(r.statusCode)
+            .to.equal(400);
+    });
+  });
+
   describe('missing wresult in POST', function () {
     var user, r, bod, $;
 
