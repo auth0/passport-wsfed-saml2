@@ -20,7 +20,7 @@ passport.use(new Strategy(
     // identityProviderUrl: 'https://mdocs.auth0.com/samlp/dVrQZOG4gkBhzcLartSgW2v7kSnvW5XR?connection=github',
     // thumbprint: 'c5b930896e3f4e2cc1d6d1ceb68f4d3de90deee6'
     identityProviderUrl: 'https://login0.myauth0.com/samlp/wklezTET2P3iYA54Sraju8qFN0ohdI0G',
-    thumbprint: 'dba77ba142ff38d5076b4310700709c470d53790'
+    thumbprints: ['dba77ba142ff38d5076b4310700709c470d53790']
   }, function(profile, done) {
     console.log("Auth with", profile);
     if (!profile.email) {

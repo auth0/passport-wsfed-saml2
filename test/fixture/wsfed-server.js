@@ -13,7 +13,7 @@ passport.use(new Strategy(
     path: '/callback',
     realm: 'urn:fixture-test',
     identityProviderUrl: 'http://localhost:5050/login',
-    thumbprint: '5ca6e1202eafc0a63a5b93a43572eb2376fed309'
+    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309']
   },
   function(profile, done) {
     return done(null, profile);
