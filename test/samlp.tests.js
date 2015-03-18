@@ -1,12 +1,13 @@
-var expect = require('chai').expect;
-var server = require('./fixture/samlp-server');
+var expect  = require('chai').expect;
 var request = require('request');
-var qs = require('querystring');
+var qs      = require('querystring');
 var cheerio = require('cheerio');
-var xmldom = require('xmldom');
-var Samlp = require('../lib/passport-wsfed-saml2/samlp');
-var fs = require('fs');
-var zlib = require('zlib');
+var xmldom  = require('xmldom');
+var fs      = require('fs');
+var zlib    = require('zlib');
+var utils   = require('./utils');
+var server  = require('./fixture/samlp-server');
+var Samlp   = require('../lib/passport-wsfed-saml2/samlp');
 
 describe('samlp (functional tests)', function () {
   before(function (done) {
@@ -332,6 +333,48 @@ describe('samlp (functional tests)', function () {
       var querystring = qs.parse(r.headers.location.split('?')[1]);
       expect(querystring).to.have.property('SAMLRequest');
       expect(querystring).to.have.property('foo');
+    });
+
+  });
+
+  describe('samlp with signed request', function () {
+    var r, bod;
+
+    before(function (done) {
+      request.get({
+        jar: request.jar(),
+        followRedirect: false,
+        uri: 'http://localhost:5051/login-signed-request'
+      }, function (err, resp, b){
+        if(err) return callback(err);
+        r = resp;
+        bod = b;
+        done();
+      });
+    });
+
+    it('should redirect to idp', function(){
+      expect(r.statusCode)
+            .to.equal(302);
+    });
+
+    it('should have signed SAMLRequest with valid signature', function(done){
+      expect(r.headers.location.split('?')[0])
+            .to.equal(server.identityProviderUrl);
+      var querystring = qs.parse(r.headers.location.split('?')[1]);
+      expect(querystring).to.have.property('SAMLRequest');
+
+      var signedSAMLRequest = querystring.SAMLRequest;
+
+      zlib.inflateRaw(new Buffer(signedSAMLRequest, 'base64'), function (err, buffer) {
+        if (err) return done(err);
+        var signedRequest = buffer.toString();
+        var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
+        
+        expect(utils.isValidSignature(signedRequest, signingCert))
+          .to.equal(true);
+        done();
+      });
     });
 
   });

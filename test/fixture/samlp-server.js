@@ -49,6 +49,20 @@ passport.use('samlp-idpurl-with-querystring', new Strategy(
   })
 );
 
+passport.use('samlp-signedrequest', new Strategy({
+    path: '/callback',
+    realm: 'https://auth0-dev-ed.my.salesforce.com',
+    identityProviderUrl: identityProviderUrl,
+    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
+    signingKey: {
+      key: fs.readFileSync(path.join(__dirname, '../test-auth0.key')),
+      cert: fs.readFileSync(path.join(__dirname, '../test-auth0.pem')),
+    }
+  }, function(profile, done) {
+    return done(null, profile);
+  })
+);
+
 passport.use('samlp-signedresponse', new Strategy(
   {
     path: '/callback',
@@ -193,6 +207,8 @@ module.exports.start = function(options, callback){
   app.get('/login', passport.authenticate('samlp', { protocol: 'samlp', RelayState: relayState }));
   app.get('/login-idp-with-querystring', passport.authenticate('samlp-idpurl-with-querystring', { protocol: 'samlp', RelayState: relayState }));
 
+  app.get('/login-signed-request', passport.authenticate('samlp-signedrequest', { protocol: 'samlp', RelayState: relayState }));
+  
   app.get('/login-custom-request-template',
       passport.authenticate('samlp-custom-request-template', { protocol: 'samlp', RelayState: relayState }));
 
