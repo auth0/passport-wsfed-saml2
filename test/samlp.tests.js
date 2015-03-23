@@ -5,6 +5,7 @@ var cheerio = require('cheerio');
 var xmldom  = require('xmldom');
 var fs      = require('fs');
 var zlib    = require('zlib');
+var crypto  = require('crypto');
 var utils   = require('./utils');
 var server  = require('./fixture/samlp-server');
 var Samlp   = require('../lib/passport-wsfed-saml2/samlp');
@@ -338,37 +339,36 @@ describe('samlp (functional tests)', function () {
   });
 
   describe('samlp with signed request', function () {
-    var r, bod;
+    describe('without deflate', function () {
+      var r, bod;
 
-    before(function (done) {
-      request.get({
-        jar: request.jar(),
-        followRedirect: false,
-        uri: 'http://localhost:5051/login-signed-request'
-      }, function (err, resp, b){
-        if(err) return callback(err);
-        r = resp;
-        bod = b;
-        done();
+      before(function (done) {
+        request.get({
+          jar: request.jar(),
+          followRedirect: false,
+          uri: 'http://localhost:5051/login-signed-request-without-deflate'
+        }, function (err, resp, b){
+          if(err) return callback(err);
+          r = resp;
+          bod = b;
+          done();
+        });
       });
-    });
 
-    it('should redirect to idp', function(){
-      expect(r.statusCode)
-            .to.equal(302);
-    });
+      it('should redirect to idp', function(){
+        expect(r.statusCode)
+              .to.equal(302);
+      });
 
-    it('should have signed SAMLRequest with valid signature', function(done){
-      expect(r.headers.location.split('?')[0])
-            .to.equal(server.identityProviderUrl);
-      var querystring = qs.parse(r.headers.location.split('?')[1]);
-      expect(querystring).to.have.property('SAMLRequest');
+      it('should have signed SAMLRequest with valid signature', function(done){
+        expect(r.headers.location.split('?')[0])
+              .to.equal(server.identityProviderUrl);
+        var querystring = qs.parse(r.headers.location.split('?')[1]);
+        expect(querystring).to.have.property('SAMLRequest');
+        expect(querystring.RelayState).to.equal('somestate');
 
-      var signedSAMLRequest = querystring.SAMLRequest;
-
-      zlib.inflateRaw(new Buffer(signedSAMLRequest, 'base64'), function (err, buffer) {
-        if (err) return done(err);
-        var signedRequest = buffer.toString();
+        var signedSAMLRequest = querystring.SAMLRequest;
+        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
         var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
         
         expect(utils.isValidSignature(signedRequest, signingCert))
@@ -377,8 +377,53 @@ describe('samlp (functional tests)', function () {
       });
     });
 
-  });
+    describe('with deflate', function () {
+      var r, bod;
 
+      before(function (done) {
+        request.get({
+          jar: request.jar(),
+          followRedirect: false,
+          uri: 'http://localhost:5051/login-signed-request-with-deflate'
+        }, function (err, resp, b){
+          if(err) return callback(err);
+          r = resp;
+          bod = b;
+          done();
+        });
+      });
+
+      it('should redirect to idp', function(){
+        expect(r.statusCode)
+              .to.equal(302);
+      });
+
+      it('should have signed SAMLRequest with valid signature', function(done){
+        expect(r.headers.location.split('?')[0])
+              .to.equal(server.identityProviderUrl);
+        var querystring = qs.parse(r.headers.location.split('?')[1]);
+        expect(querystring).to.have.property('SAMLRequest');
+        expect(querystring).to.have.property('Signature');
+        expect(querystring.RelayState).to.equal('somestate');
+        expect(querystring.SigAlg).to.equal('http://www.w3.org/2001/04/xmldsig-more#rsa-sha256');
+
+        var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
+
+        var signedParams = {
+          SAMLRequest: querystring.SAMLRequest,
+          RelayState: querystring.RelayState,
+          SigAlg: querystring.SigAlg
+        };
+
+        var verifier = crypto.createVerify('RSA-SHA256');
+        verifier.update(require('querystring').stringify(signedParams));
+        var verified = verifier.verify(signingCert, querystring.Signature, 'base64');
+        
+        expect(verified).to.equal(true);
+        done();
+      });
+    });
+  });
 });
 
 describe('samlp (unit tests)', function () {

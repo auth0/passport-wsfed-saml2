@@ -49,7 +49,7 @@ passport.use('samlp-idpurl-with-querystring', new Strategy(
   })
 );
 
-passport.use('samlp-signedrequest', new Strategy({
+passport.use('samlp-signedrequest-without-deflate', new Strategy({
     path: '/callback',
     realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
@@ -57,7 +57,23 @@ passport.use('samlp-signedrequest', new Strategy({
     signingKey: {
       key: fs.readFileSync(path.join(__dirname, '../test-auth0.key')),
       cert: fs.readFileSync(path.join(__dirname, '../test-auth0.pem')),
-    }
+    },
+    deflate: false
+  }, function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+passport.use('samlp-signedrequest-with-deflate', new Strategy({
+    path: '/callback',
+    realm: 'https://auth0-dev-ed.my.salesforce.com',
+    identityProviderUrl: identityProviderUrl,
+    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
+    signingKey: {
+      key: fs.readFileSync(path.join(__dirname, '../test-auth0.key')),
+      cert: fs.readFileSync(path.join(__dirname, '../test-auth0.pem')),
+    },
+    deflate: true
   }, function(profile, done) {
     return done(null, profile);
   })
@@ -207,7 +223,8 @@ module.exports.start = function(options, callback){
   app.get('/login', passport.authenticate('samlp', { protocol: 'samlp', RelayState: relayState }));
   app.get('/login-idp-with-querystring', passport.authenticate('samlp-idpurl-with-querystring', { protocol: 'samlp', RelayState: relayState }));
 
-  app.get('/login-signed-request', passport.authenticate('samlp-signedrequest', { protocol: 'samlp', RelayState: relayState }));
+  app.get('/login-signed-request-without-deflate', passport.authenticate('samlp-signedrequest-without-deflate', { protocol: 'samlp', RelayState: relayState }));
+  app.get('/login-signed-request-with-deflate', passport.authenticate('samlp-signedrequest-with-deflate', { protocol: 'samlp', RelayState: relayState }));
   
   app.get('/login-custom-request-template',
       passport.authenticate('samlp-custom-request-template', { protocol: 'samlp', RelayState: relayState }));
