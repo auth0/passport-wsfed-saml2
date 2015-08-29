@@ -6,6 +6,7 @@ var assert = require('assert'),
     saml11 = require('saml').Saml11,
     SamlPassport = require('../lib/passport-wsfed-saml2/saml').SAML,
     samlp = require('../lib/passport-wsfed-saml2/samlp');
+    wsfed = require('../lib/passport-wsfed-saml2').Strategy;
 
 var request = require('request');
 var server = require('./fixture/samlp-server');
@@ -266,7 +267,37 @@ describe('interop', function () {
     };
   });
 
+  it('should validate an assertion from a WS-Fed STS using WS-Trust 1.3 namespaces', function (done) {
+    
+    var options = {
+      thumbprint: '1756139e2a046d3c494daae6bbfa542a4367bc60',
+      checkExpiration: false,
+      realm: 'http://dev.pms.baxon.net/'
+    };
 
+    var s = new wsfed(options, function(u,done){
+      expect(u['email']).to.equal('fhermida@baxonpe.com');
+      done();
+    });
+
+    s.fail = function(e,code){
+      done(e);
+    };
+
+    s.error = function(e){
+      done(e);   
+    };
+
+    var response = fs.readFileSync(__dirname + '/wsfed-result.xml').toString();
+
+    var req = {
+      body : {
+        wresult: response
+      }
+    };
+
+    s._authenticate_saml(req);
+  });
   // it('should validate a saml response from datapower', function (done) {
   //   var SAMLResponse = '<samlp2:Response xmlns:samlp2="urn:oasis:names:tc:SAML:2.0:protocol" Version="2.0" ID="SAML-309e11f6-3b9e-4452-9db6-d3cf6cf99d9f" IssueInstant="2013-05-08T21:55:08Z" Destination="http://epolicy.azurewebsites.net/"><saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">www.axa-equitable.com</saml2:Issuer><samlp2:Status><samlp2:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp2:Status><saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Version="2.0" ID="SAML-02cd7eb4-0117-4dee-bee9-31bf076e709e" IssueInstant="2013-05-08T21:55:08Z"><saml2:Issuer>www.axa-equitable.com</saml2:Issuer><saml2:Subject><saml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">Christopher.Owen@axa-advisors.com.datastage</saml2:NameID><saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml2:SubjectConfirmationData NotOnOrAfter="2013-05-08T22:55:08Z" Recipient="http://epolicy.azurewebsites.net/"/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore="2013-05-08T21:55:08Z" NotOnOrAfter="2013-05-08T22:55:08Z"/><saml2:AuthnStatement AuthnInstant="2013-05-08T21:55:08Z" SessionNotOnOrAfter="2013-05-08T22:55:08Z"><saml2:SubjectLocality Address="10.74.68.219"/><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement><saml2:AttributeStatement><saml2:Attribute Name="userid" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>3338532</saml2:AttributeValue></saml2:Attribute><saml2:Attribute Name="firstName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>Christopher</saml2:AttributeValue></saml2:Attribute><saml2:Attribute Name="lastName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>Owen</saml2:AttributeValue></saml2:Attribute><saml2:Attribute Name="emailAddress" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>Christopher.Owen@axa-advisors.com.datastage</saml2:AttributeValue></saml2:Attribute></saml2:AttributeStatement></saml2:Assertion><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference URI="#SAML-309e11f6-3b9e-4452-9db6-d3cf6cf99d9f"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>7mSr1qvkKTrrV2bV+HFVJKpKaCI=</DigestValue></Reference></SignedInfo><SignatureValue>BQTRkGg8M/g2LpkgvW3MQG/B0cDxsz0zHa2wejIN2010r+hS4BCj7YcIH319R+Y4oZTmlxmJIT/4wlR9rxHQWxX95jdB1DfeoUMLAlk2JfAT+ByZ14F+N4B7lDILuNUTrDBNa9GLDIo8MyAK8SBUdeyqDtNFqb44/gGg6B0h2qEbDNLHY7WlAxvz4TfndKqk5v/VP96xiCS4d1AjYPvUL8EzR5kS83ABHX0jg2bYxdtctdiKOilcHQOHEIKosWw86b9uDQPjIrSt1JzW8SSSeA6M3nJ7HJ/5EsSYEMvt/FshBnKP2LI4HMGktlzw/9gOnmxR/CQykMmN2vvCwPsnXA==</SignatureValue><KeyInfo><X509Data><X509Certificate>MIIFQTCCBCmgAwIBAgIETB7lIzANBgkqhkiG9w0BAQUFADCBsTELMAkGA1UEBhMCVVMxFjAUBgNVBAoTDUVudHJ1c3QsIEluYy4xOTA3BgNVBAsTMHd3dy5lbnRydXN0Lm5ldC9ycGEgaXMgaW5jb3Jwb3JhdGVkIGJ5IHJlZmVyZW5jZTEfMB0GA1UECxMWKGMpIDIwMDkgRW50cnVzdCwgSW5jLjEuMCwGA1UEAxMlRW50cnVzdCBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eSAtIEwxQzAeFw0xMzAxMzExNTM2MjBaFw0xNTAzMzAxOTA2MTJaMIGGMQswCQYDVQQGEwJVUzERMA8GA1UECBMITmV3IFlvcmsxETAPBgNVBAcTCE5ldyBZb3JrMS0wKwYDVQQKEyRBWEEgRXF1aXRhYmxlIExpZmUgSW5zdXJhbmNlIENvbXBhbnkxIjAgBgNVBAMTGXJ0aWdpbnQuYXhhLWVxdWl0YWJsZS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCn6cGpvyzVSQ2c1oK7LzuxUXW4sxBOTGLVCqo4FWcta7QAU7RU5i3ATWxyo9HFmD8Qcyj6YuIQYtljJFAx/JcZigtXNRVudtl0uuvCUTGfsR67+gGRWe7hNg/9gIWLXZGkikRT4g9yBqutMzHeuX0ecignFHJxw5S7p1rtxJmuXQR/8uOeAse+48PkZcCHFdzBp6u3Z+pzite12LA2F8C0K5nv9FgkHVEQjqgtgAjKin2QmWqI1gj6mIe0oMxWB4l3j7dsEXVO4zPU1ujIylY0y2QnK4PbNdGu+W1GElwvUhSaz+jmIUFWklJtsFyhFVGcgFRE5iXXmrlnK4GZv3/FAgMBAAGjggGIMIIBhDALBgNVHQ8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMDMGA1UdHwQsMCowKKAmoCSGImh0dHA6Ly9jcmwuZW50cnVzdC5uZXQvbGV2ZWwxYy5jcmwwZAYIKwYBBQUHAQEEWDBWMCMGCCsGAQUFBzABhhdodHRwOi8vb2NzcC5lbnRydXN0Lm5ldDAvBggrBgEFBQcwAoYjaHR0cDovL2FpYS5lbnRydXN0Lm5ldC8yMDQ4LWwxYy5jZXIwSgYDVR0gBEMwQTA1BgkqhkiG9n0HSwIwKDAmBggrBgEFBQcCARYaaHR0cDovL3d3dy5lbnRydXN0Lm5ldC9ycGEwCAYGZ4EMAQICMCQGA1UdEQQdMBuCGXJ0aWdpbnQuYXhhLWVxdWl0YWJsZS5jb20wHwYDVR0jBBgwFoAUHvGriQb4SQ8BM3fuFHruGXyTKE0wHQYDVR0OBBYEFJSL34z5hLkS08mEdEodVmeUrUC5MAkGA1UdEwQCMAAwDQYJKoZIhvcNAQEFBQADggEBAFCpXB2HagR+B4C5XKbtBPNZ3F94zJoFlCb+7/5Q9HWMGew1XiRx7GFhV4FCIsr6Gp9EYFLlVO+afdSMvNC7RauZ6nw7ylK8yRyuvbpJWC+XAfP4nVKroYYFPmKJdkELIBLIwt1Nsr3KsY0JIykokuQR/pWDSNVgo3arsNxXOhvxate0yoloMCUhHh+9b8WRY2JECN6fAEpg54pr5cjTCOCLFEN37M3Hl1+LRYNb6XAKUiL4b5CNkd/qUI5PZsJvGg/AOYRiCPY3iZezs9OT1RCkBrgM1W9rRF/zXCniRV3ASH22AU1jUn0OT1wy9B8PO15liIzw4WuYIdFqCxaIyJE=</X509Certificate><X509IssuerSerial><X509IssuerName>CN=Entrust Certification Authority - L1C, OU="(c) 2009 Entrust, Inc.", OU=www.entrust.net/rpa is incorporated by reference, O="Entrust, Inc.", C=US</X509IssuerName><X509SerialNumber>1277093155</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature></samlp2:Response>';
   //   //var SAMLResponse = '<samlp2:Response xmlns:samlp2="urn:oasis:names:tc:SAML:2.0:protocol" Version="2.0" ID="SAML-309e11f6-3b9e-4452-9db6-d3cf6cf99d9f" IssueInstant="2013-05-08T21:55:08Z" Destination="http://epolicy.azurewebsites.net/"><saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">www.axa-equitable.com</saml2:Issuer><samlp2:Status><samlp2:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp2:Status><saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Version="2.0" ID="SAML-02cd7eb4-0117-4dee-bee9-31bf076e709e" IssueInstant="2013-05-08T21:55:08Z"><saml2:Issuer>www.axa-equitable.com</saml2:Issuer><saml2:Subject><saml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">Christopher.Owen@axa-advisors.com.datastage</saml2:NameID><saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml2:SubjectConfirmationData NotOnOrAfter="2013-05-08T22:55:08Z" Recipient="http://epolicy.azurewebsites.net/"/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore="2013-05-08T21:55:08Z" NotOnOrAfter="2013-05-08T22:55:08Z"/><saml2:AuthnStatement AuthnInstant="2013-05-08T21:55:08Z" SessionNotOnOrAfter="2013-05-08T22:55:08Z"><saml2:SubjectLocality Address="10.74.68.219"/><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement><saml2:AttributeStatement><saml2:Attribute Name="userid" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>3338532</saml2:AttributeValue></saml2:Attribute><saml2:Attribute Name="firstName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>Christopher</saml2:AttributeValue></saml2:Attribute><saml2:Attribute Name="lastName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>Owen</saml2:AttributeValue></saml2:Attribute><saml2:Attribute Name="emailAddress" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><saml2:AttributeValue>Christopher.Owen@axa-advisors.com.datastage</saml2:AttributeValue></saml2:Attribute></saml2:AttributeStatement></saml2:Assertion></samlp2:Response>';
