@@ -222,7 +222,7 @@ describe('interop', function () {
     var sm = new SamlPassport(samlOptions);
     var sp = new samlp(samlpOptions, sm);
 
-    sp.validateSamlResponse(new Buffer(response, 'base64').toString(), 
+    sp.validateSamlResponse(new Buffer(response, 'base64').toString(),
       function(err, profile){
         if (err) {
           assert.ok(err);
@@ -250,7 +250,7 @@ describe('interop', function () {
     var sm = new SamlPassport(samlOptions);
     var sp = new samlp(samlpOptions, sm);
 
-    sp.validateSamlResponse(new Buffer(response, 'base64').toString(), 
+    sp.validateSamlResponse(new Buffer(response, 'base64').toString(),
       function(err, profile){
         if (err) return done(err);
         assert.ok(profile);
@@ -264,7 +264,7 @@ describe('interop', function () {
         return cert[1].replace(/[\n|\r\n]/g, '');
       }
       return null;
-    };
+    }
   });
 
   it('should validate an assertion from a WS-Fed STS using WS-Trust 1.3 namespaces', function (done) {
@@ -285,10 +285,10 @@ describe('interop', function () {
     };
 
     s.error = function(e){
-      done(e);   
+      done(e);
     };
 
-    var response = fs.readFileSync(__dirname + '/wsfed-result.xml').toString();
+    var response = fs.readFileSync(__dirname + '/wsfed-result-wstrust13.xml').toString();
 
     var req = {
       body : {
