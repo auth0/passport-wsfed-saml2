@@ -198,38 +198,91 @@ describe('samlp (functional tests)', function () {
   });
 
   describe('samlp request', function () {
-    var r, bod;
+    describe('HTTP-Redirect', function () {
+      var r, bod;
 
-    before(function (done) {
-      request.get({
-        jar: request.jar(),
-        followRedirect: false,
-        uri: 'http://localhost:5051/login'
-      }, function (err, resp, b){
-        if(err) return callback(err);
-        r = resp;
-        bod = b;
-        done();
+      before(function (done) {
+        request.get({
+          jar: request.jar(),
+          followRedirect: false,
+          uri: 'http://localhost:5051/login'
+        }, function (err, resp, b){
+          if(err) return done(err);
+          r = resp;
+          bod = b;
+          done();
+        });
+      });
+
+      it('should redirect to idp', function(){
+        expect(r.statusCode)
+              .to.equal(302);
+      });
+
+      it('should have SAMLRequest querystring', function(done){
+        expect(r.headers.location.split('?')[0])
+              .to.equal(server.identityProviderUrl);
+        var querystring = qs.parse(r.headers.location.split('?')[1]);
+        expect(querystring).to.have.property('SAMLRequest');
+        var SAMLRequest = querystring.SAMLRequest;
+
+        zlib.inflateRaw(new Buffer(SAMLRequest, 'base64'), function (err, buffer) {
+          if (err) return done(err);
+          var request = buffer.toString();
+          var doc = new xmldom.DOMParser().parseFromString(request);
+
+          expect(doc.documentElement.getAttribute('ProtocolBinding'))
+            .to.equal('urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST');
+
+          expect(doc.documentElement.getAttribute('Version'))
+            .to.equal('2.0');
+
+          expect(doc.documentElement.getElementsByTagName('saml:Issuer')[0]
+                                    .getAttribute('xmlns:saml'))
+            .to.equal('urn:oasis:names:tc:SAML:2.0:assertion');
+
+          done();
+        });
+      });
+
+      it('should have RelayState querystring', function(){
+        expect(r.headers.location.split('?')[0])
+              .to.equal(server.identityProviderUrl);
+        var querystring = qs.parse(r.headers.location.split('?')[1]);
+        expect(querystring).to.have.property('RelayState');
+        expect(querystring.RelayState).to.equal(server.relayState);
       });
     });
 
-    it('should redirect to idp', function(){
-      expect(r.statusCode)
-            .to.equal(302);
-    });
+    describe('HTTP-POST', function () {
+      var r, bod, $;
 
-    it('should have SAMLRequest querystring', function(done){
-      expect(r.headers.location.split('?')[0])
-            .to.equal(server.identityProviderUrl);
-      var querystring = qs.parse(r.headers.location.split('?')[1]);
-      expect(querystring).to.have.property('SAMLRequest');
-      var SAMLRequest = querystring.SAMLRequest;
+      before(function (done) {
+        request.get({
+          jar: request.jar(),
+          followRedirect: false,
+          uri: 'http://localhost:5051/login-http-post'
+        }, function (err, resp, b){
+          if (err) return done(err);
+          r = resp;
+          bod = b;
+          $ = cheerio.load(bod);
+          done();
+        });
+      });
 
-      zlib.inflateRaw(new Buffer(SAMLRequest, 'base64'), function (err, buffer) {
-        if (err) return done(err);
-        var request = buffer.toString();
-        var doc = new xmldom.DOMParser().parseFromString(request);
+      it('should post to idp', function(){
+        expect(r.statusCode).to.equal(200);
+        expect(r.headers['content-type']).to.equal('text/html');
+        expect(r.headers['content-type']).to.equal('text/html');
+        expect($('form').attr('action')).to.equal('http://localhost:5051/samlp');
+      });
 
+      it('should have SAMLRequest input', function (done) {
+        var SAMLRequest = $('form input[name="SAMLRequest"]').val();
+        expect(SAMLRequest).to.be.ok;
+
+        var doc = new xmldom.DOMParser().parseFromString(new Buffer(SAMLRequest, 'base64').toString());
         expect(doc.documentElement.getAttribute('ProtocolBinding'))
           .to.equal('urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST');
 
@@ -243,16 +296,12 @@ describe('samlp (functional tests)', function () {
         done();
       });
 
+      it('should have RelayState input', function(){
+        var RelayState = $('form input[name="RelayState"]').val();
+        expect(RelayState).to.be.ok;
+        expect(RelayState).to.equal(server.relayState);
+      });
     });
-
-    it('should have RelayState querystring', function(){
-      expect(r.headers.location.split('?')[0])
-            .to.equal(server.identityProviderUrl);
-      var querystring = qs.parse(r.headers.location.split('?')[1]);
-      expect(querystring).to.have.property('RelayState');
-      expect(querystring.RelayState).to.equal(server.relayState);
-    });
-
   });
 
   describe('samlp request with custom xml', function () {
@@ -264,7 +313,7 @@ describe('samlp (functional tests)', function () {
         followRedirect: false,
         uri: 'http://localhost:5051/login-custom-request-template'
       }, function (err, resp, b){
-        if(err) return callback(err);
+        if(err) return done(err);
         r = resp;
         bod = b;
         done();
@@ -316,7 +365,7 @@ describe('samlp (functional tests)', function () {
         followRedirect: false,
         uri: 'http://localhost:5051/login-idp-with-querystring'
       }, function (err, resp, b){
-        if(err) return callback(err);
+        if(err) return done(err);
         r = resp;
         bod = b;
         done();

@@ -21,6 +21,17 @@ passport.use('samlp', new Strategy({
   })
 );
 
+passport.use('samlp-http-post', new Strategy({
+    protocolBinding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+    path: '/callback',
+    realm: 'https://auth0-dev-ed.my.salesforce.com',
+    identityProviderUrl: identityProviderUrl,
+    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309']
+  }, function(profile, done) {
+    return done(null, profile);
+  })
+);
+
 passport.use('samlp-custom-request-template', new Strategy({
     path: '/callback',
     realm: 'https://auth0-dev-ed.my.salesforce.com',
@@ -221,6 +232,7 @@ module.exports.start = function(options, callback){
   });
 
   app.get('/login', passport.authenticate('samlp', { protocol: 'samlp', RelayState: relayState }));
+  app.get('/login-http-post', passport.authenticate('samlp-http-post', { protocol: 'samlp', RelayState: relayState }));
   app.get('/login-idp-with-querystring', passport.authenticate('samlp-idpurl-with-querystring', { protocol: 'samlp', RelayState: relayState }));
 
   app.get('/login-signed-request-without-deflate', passport.authenticate('samlp-signedrequest-without-deflate', { protocol: 'samlp', RelayState: relayState }));
