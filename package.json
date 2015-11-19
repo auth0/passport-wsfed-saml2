@@ -22,7 +22,7 @@
     "cryptiles": "~0.2.2",
     "ejs": "~0.8.3",
     "jsonwebtoken": "~5.0.4",
-    "passport": "0.1.x",
+    "passport": "^0.3.2",
     "xml-crypto": "https://github.com/auth0/xml-crypto/tarball/master",
     "xml-encryption": "~0.7.2",
     "xml2js": "0.1.x",
