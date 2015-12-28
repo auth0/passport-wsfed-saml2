@@ -24,7 +24,7 @@
     "jsonwebtoken": "~5.0.4",
     "passport-strategy": "^1.0.0",
     "xml-crypto": "https://github.com/auth0/xml-crypto/tarball/master",
-    "xml-encryption": "~0.7.2",
+    "xml-encryption": "~0.7.4",
     "xml2js": "0.1.x",
     "xmldom": "https://github.com/auth0/xmldom/tarball/master",
     "xpath": "0.0.5",
