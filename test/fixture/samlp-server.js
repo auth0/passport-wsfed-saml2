@@ -162,6 +162,20 @@ passport.use('samlp-okta', new Strategy(
   })
 );
 
+function pemToCert(pem) {
+  // if certificate doesn't have ---- begin cert --- just return the pem
+  if (!/-----BEGIN CERTIFICATE-----/.test(pem.toString())) {
+    return pem.toString();
+  }
+
+  var cert = /-----BEGIN CERTIFICATE-----([^-]*)-----END CERTIFICATE-----/g.exec(pem.toString());
+  if (cert.length > 0) {
+    return cert[1].replace(/[\n|\r\n]/g, '');
+  }
+
+  return null;
+}
+
 passport.use('samlp-with-utf8', new Strategy(
   {
     path: '/callback',
@@ -169,6 +183,18 @@ passport.use('samlp-with-utf8', new Strategy(
     decryptionKey: fs.readFileSync(path.join(__dirname, '../test-decryption.key')),
     checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
     checkAudience: false
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+passport.use('samlp-with-dsig-at-root', new Strategy(
+  {
+    path: '/callback',
+    checkExpiration: false, // we are using a precomputed assertion generated from a sample idp
+    checkAudience: false,
+    cert: pemToCert(fs.readFileSync(path.join(__dirname, '../test-auth0.pem')))
   },
   function(profile, done) {
     return done(null, profile);
@@ -296,6 +322,13 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-with-utf8',
     passport.authenticate('samlp-with-utf8', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-with-dsig-at-root',
+    passport.authenticate('samlp-with-dsig-at-root', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }

@@ -23,7 +23,7 @@
     "ejs": "~0.8.3",
     "jsonwebtoken": "~5.0.4",
     "passport-strategy": "^1.0.0",
-    "xml-crypto": "https://github.com/auth0/xml-crypto/tarball/ba70a50d60acc6ff1d45a3f377349af0a3d735d9",
+    "xml-crypto": "https://github.com/auth0/xml-crypto/tarball/5e0b9547076a9cdf82e4189f54fd9212a1656a09",
     "xml-encryption": "~0.7.4",
     "xml2js": "0.1.x",
     "xmldom": "https://github.com/auth0/xmldom/tarball/master",
