@@ -77,6 +77,21 @@ passport.use(new wsfedsaml2(
 ));
 ~~~
 
+### Configure strategy for ADFS 
+
+This example utilizes a strategy with SAMLp and RP token encryption.
+
+```javascript
+passport.use('wsfed-saml2', new wsfedsaml2({
+		realm: 'urn:node:samlapp',
+		identityProviderUrl: 'https://my-adfs/adfs/ls',
+        thumbprint: '5D27...D27E',
+        protocol: "samlp",
+		// This is the private key (use case where ADFS is configured for RP token encryption)
+        decryptionKey: fs.readFileSync("server.key")
+	},
+```
+
 ## Issue Reporting
 
 If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
