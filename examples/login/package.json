@@ -4,7 +4,6 @@
   "dependencies": {
     "express": ">= 0.0.0",
     "ejs": ">= 0.0.0",
-    "passport": ">= 0.0.0",
-    "passport-azure-acs": ">= 0.0.0"
+    "passport": ">= 0.0.0"
   }
 }
