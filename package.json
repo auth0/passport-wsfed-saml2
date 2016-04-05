@@ -3,7 +3,7 @@
   "version": "2.10.0",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec --recursive"
   },
   "author": {
     "name": "Matias Woloski",
@@ -23,6 +23,7 @@
     "ejs": "~0.8.3",
     "jsonwebtoken": "~5.0.4",
     "passport-strategy": "^1.0.0",
+    "uid2": "0.0.x",
     "xml-crypto": "https://github.com/auth0/xml-crypto/tarball/064dc3464669d2ce567a01bff7a4a073420dda6d",
     "xml-encryption": "~0.7.4",
     "xml2js": "0.1.x",
@@ -31,7 +32,8 @@
     "xtend": "~2.0.3"
   },
   "devDependencies": {
-    "chai": "~1.5.0",
+    "chai": "2.x.x",
+    "chai-passport-strategy": "1.x.x",
     "express": "~3.1.0",
     "mocha": "~1.8.1",
     "request": "~2.14.0",
