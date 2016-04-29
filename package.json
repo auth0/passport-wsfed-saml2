@@ -25,7 +25,7 @@
     "passport-strategy": "^1.0.0",
     "uid2": "0.0.x",
     "xml-crypto": "https://github.com/auth0/xml-crypto/tarball/064dc3464669d2ce567a01bff7a4a073420dda6d",
-    "xml-encryption": "~0.7.4",
+    "xml-encryption": "~0.8.0",
     "xml2js": "0.1.x",
     "xmldom": "https://github.com/auth0/xmldom/tarball/master",
     "xpath": "0.0.5",
