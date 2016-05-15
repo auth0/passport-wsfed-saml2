@@ -10,5 +10,8 @@
     "method-override": "^2.3.1",
     "morgan": "^1.5.1",
     "passport": ">= 0.0.0"
+  },
+  "devDependencies": {
+    "express-ejs-layouts": "^2.1.0"
   }
 }
