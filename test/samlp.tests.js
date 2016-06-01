@@ -441,7 +441,7 @@ describe('samlp (functional tests)', function () {
         var signedSAMLRequest = querystring.SAMLRequest;
         var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
         var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
-        
+
         expect(utils.isValidSignature(signedRequest, signingCert))
           .to.equal(true);
         done();
@@ -489,7 +489,7 @@ describe('samlp (functional tests)', function () {
         var verifier = crypto.createVerify('RSA-SHA256');
         verifier.update(require('querystring').stringify(signedParams));
         var verified = verifier.verify(signingCert, querystring.Signature, 'base64');
-        
+
         expect(verified).to.equal(true);
         done();
       });
@@ -565,6 +565,120 @@ describe('samlp (unit tests)', function () {
 
   });
 
+  describe('validateSamlResponse', function(){
+    var samlpResponseWithStatusResponder = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"/></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusResponderWithMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"/><samlp:StatusMessage>specific error message</samlp:StatusMessage></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusResponderAndAuthnFailed = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:AuthnFailed" /></samlp:StatusCode></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusResponderAndAuthnFailedWithMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:AuthnFailed" /></samlp:StatusCode><samlp:StatusMessage>specific error message</samlp:StatusMessage></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusNotMappedStatus = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp:Status></samlp:Response>';
+
+    it('shuold return error for AuthnFailed status with generic message', function(done){
+      var samlp = new Samlp({});
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderAndAuthnFailed, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('The responding provider was unable to successfully authenticate the principal');
+        done();
+      });
+    });
+
+    it('shuold return error for AuthnFailed status with specific message', function(done){
+      var samlp = new Samlp({});
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderAndAuthnFailedWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('specific error message');
+        done();
+      });
+    });
+
+    it('should return error for Responder status with generic message', function(done){
+      var samlp = new Samlp({});
+      samlp.validateSamlResponse(samlpResponseWithStatusResponder, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('The request could not be performed due to an error on the part of the SAML responder or SAML authority');
+        done();
+      });
+    });
+
+    it('should return error for Responder status with specific message', function(done){
+      var samlp = new Samlp({});
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('specific error message');
+        done();
+      });
+    });
+
+    it('should return \'saml response does not contain an Assertion element\' error', function(done){
+      var samlp = new Samlp({});
+      samlp.validateSamlResponse(samlpResponseWithStatusNotMappedStatus, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('Error');
+        expect(err.message).to.equal('saml response does not contain an Assertion element (Status: urn:oasis:names:tc:SAML:2.0:status:Success)');
+        done();
+      });
+    });
+  });
+
+  describe('getSamlStatus', function(){
+    before(function(){
+      this.samlp = new Samlp({});
+    });
+
+    it('should get result without subcode', function(){
+      var samlpResponse = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" ><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder" /><samlp:StatusMessage>some message</samlp:StatusMessage><samlp:StatusDetail>some details</samlp:StatusDetail></samlp:Status></samlp:Response>';
+
+      var result = this.samlp.getSamlStatus(samlpResponse);
+
+      expect(result.code).to.equal('urn:oasis:names:tc:SAML:2.0:status:Responder');
+      expect(result.subCode).to.be.undefined;
+      expect(result.message).to.equal('some message');
+      expect(result.detail).to.equal('some details');
+    });
+
+    it('should get result with sucode', function(){
+      var samlpResponse = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" ><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:AuthNFailed" /></samlp:StatusCode><samlp:StatusMessage>some message</samlp:StatusMessage><samlp:StatusDetail>some details</samlp:StatusDetail></samlp:Status></samlp:Response>';
+
+      var result = this.samlp.getSamlStatus(samlpResponse);
+      expect(result.code).to.equal('urn:oasis:names:tc:SAML:2.0:status:Responder');
+      expect(result.subCode).to.equal('urn:oasis:names:tc:SAML:2.0:status:AuthNFailed');
+      expect(result.message).to.equal('some message');
+      expect(result.detail).to.equal('some details');
+    });
+
+    it('should get result without details', function(){
+      var samlpResponse = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" ><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:AuthNFailed" /></samlp:StatusCode><samlp:StatusMessage>some message</samlp:StatusMessage></samlp:Status></samlp:Response>';
+
+      var result = this.samlp.getSamlStatus(samlpResponse);
+      expect(result.code).to.equal('urn:oasis:names:tc:SAML:2.0:status:Responder');
+      expect(result.subCode).to.equal('urn:oasis:names:tc:SAML:2.0:status:AuthNFailed');
+      expect(result.message).to.equal('some message');
+      expect(result.detail).to.be.undefined;
+    });
+
+    it('should get result without message', function(){
+      var samlpResponse = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" ><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:AuthNFailed" /></samlp:StatusCode></samlp:Status></samlp:Response>';
+
+      var result = this.samlp.getSamlStatus(samlpResponse);
+      expect(result.code).to.equal('urn:oasis:names:tc:SAML:2.0:status:Responder');
+      expect(result.subCode).to.equal('urn:oasis:names:tc:SAML:2.0:status:AuthNFailed');
+      expect(result.message).be.undefined;
+      expect(result.detail).be.undefined;
+    });
+
+    it('should get result with status code only', function(){
+      var samlpResponse = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" ><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"/></samlp:Status></samlp:Response>';
+
+      var result = this.samlp.getSamlStatus(samlpResponse);
+      expect(result.code).to.equal('urn:oasis:names:tc:SAML:2.0:status:Responder');
+      expect(result.subCode).be.undefined;
+      expect(result.message).be.undefined;
+      expect(result.detail).be.undefined;
+    });
+  });
 });
 
 function doSamlpFlow(samlRequestUrl, callbackEndpoint, callback) {
