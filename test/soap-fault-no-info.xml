@@ -1,0 +1,5 @@
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:fed="http://schemas.xmlsoap.org/ws/2006/12/federation">
+    <env:Body>
+        <env:Fault />
+    </env:Body>
+</env:Envelope>
