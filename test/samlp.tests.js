@@ -621,6 +621,16 @@ describe('samlp (unit tests)', function () {
         done();
       });
     });
+
+    it('should return error for Destination does not match', function(done){
+      var samlp = new Samlp({});
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { checkDestination: true, recipientUrl: 'invalid' }, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('Error');
+        expect(err.message).to.equal('Destination endpoint https://auth0-dev-ed.my.salesforce.com did not match invalid');
+        done();
+      });
+    });
   });
 
   describe('getSamlStatus', function(){
@@ -693,7 +703,6 @@ function doSamlpFlow(samlRequestUrl, callbackEndpoint, callback) {
     var $ = cheerio.load(b);
     var SAMLResponse = $('input[name="SAMLResponse"]').attr('value');
     var RelayState = $('input[name="RelayState"]').attr('value');
-
 
     request.post({
       jar: request.jar(),

@@ -29,7 +29,7 @@ describe('saml 2.0 assertion', function () {
     var signedAssertion = saml20.create(options);
 
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
-    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       if (err) return done(err);
 
@@ -52,7 +52,7 @@ describe('saml 2.0 assertion', function () {
 
     var signedAssertion = saml20.create(options);
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
-    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       if (err) return done(err);
 
@@ -71,7 +71,24 @@ describe('saml 2.0 assertion', function () {
 
     var signedAssertion = saml20.create(options);
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
-    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
+    var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
+      should.exists(err);
+      err.message.should.equal('assertion has expired.');
+      should.not.exists(profile);
+      
+      done();
+    });
+
+  });
+
+   it('should validate recipent', function (done) {
+
+    options.lifetimeInSeconds = -10000;
+    options.recipient = 'foo';
+    var signedAssertion = saml20.create(options);
+    var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', recipientUrl: 'foo'});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       should.exists(err);
       err.message.should.equal('assertion has expired.');
@@ -101,7 +118,7 @@ describe('saml 2.0 assertion', function () {
     var signedAssertion = saml20.create(options);
 
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
-    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
       if (error) return done(error);
       
@@ -112,7 +129,5 @@ describe('saml 2.0 assertion', function () {
     });
 
   });
-
-  
 
 });
