@@ -129,7 +129,7 @@ describe('samlp - using custom session state store', function() {
         return done(null, profile, { message: 'Hello' });
       });
 
-      strategy._samlp.validateSamlResponse = function(token, done) {
+      strategy._samlp.validateSamlResponse = function(token, options, done) {
         expect(token).to.be.an.object;
         done(null, { id: '1234' });
       };
@@ -152,6 +152,9 @@ describe('samlp - using custom session state store', function() {
               req.body.SAMLResponse = SAMLResponse;
               req.body.RelayState = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -250,7 +253,7 @@ describe('samlp - using custom session state store', function() {
           return done(null, profile);
         });
 
-        strategy._samlp.validateSamlResponse = function(token, done) {
+        strategy._samlp.validateSamlResponse = function(token, options, done) {
           expect(token).to.be.an.object;
           done(null, { id: '1234' });
         };
@@ -272,6 +275,9 @@ describe('samlp - using custom session state store', function() {
               req.body.SAMLResponse = SAMLResponse;
               req.body.RelayState = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -306,7 +312,7 @@ describe('samlp - using custom session state store', function() {
           return done(null, profile, { message: 'Hello' });
         });
 
-        strategy._samlp.validateSamlResponse = function(token, done) {
+        strategy._samlp.validateSamlResponse = function(token, options, done) {
           expect(token).to.be.an.object;
           done(null, { id: '1234' });
         };
@@ -328,6 +334,9 @@ describe('samlp - using custom session state store', function() {
               req.body.SAMLResponse = SAMLResponse;
               req.body.RelayState = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });

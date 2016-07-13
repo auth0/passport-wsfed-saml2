@@ -29,7 +29,7 @@ describe('saml 1.1 assertion', function () {
     var signedAssertion = saml11.create(options);
 
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
-    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient : false});
     saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
 
       assert.ok(profile);
@@ -62,7 +62,7 @@ describe('saml 1.1 assertion', function () {
     var signedAssertion = saml11.create(options);
 
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
-    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient : false});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
       if (error) return done(error);
       
@@ -80,6 +80,7 @@ describe('saml 1.1 assertion', function () {
 
     var saml_passport = new SamlPassport({thumbprints: ['3464c5bdd2be7f2b6112e2f08e9c0024e33d9fe0'],
                                           realm: 'spn:408153f4-5960-43dc-9d4f-6b717d772c8d',
+                                          checkRecipient: false, 
                                           checkExpiration: false}); // dont check expiration since we are harcoding the token
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
 
@@ -94,6 +95,7 @@ describe('saml 1.1 assertion', function () {
 
     var saml_passport = new SamlPassport({thumbprints: ['3464c5bdd2be7f2b6112e2f08e9c0024e33d9fe1', '3464c5bdd2be7f2b6112e2f08e9c0024e33d9fe2'], // WRONG thumbprints
                                           realm: 'spn:408153f4-5960-43dc-9d4f-6b717d772c8d',
+                                          checkRecipient: false,
                                           checkExpiration: false}); // dont check expiration since we are harcoding the token
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
       assert.equal('Invalid thumbprint (configured: 3464C5BDD2BE7F2B6112E2F08E9C0024E33D9FE1, 3464C5BDD2BE7F2B6112E2F08E9C0024E33D9FE2. calculated: 3464C5BDD2BE7F2B6112E2F08E9C0024E33D9FE0)', error.message);
