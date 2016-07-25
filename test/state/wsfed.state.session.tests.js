@@ -121,7 +121,7 @@ describe('wsfed - using default session state store', function() {
         return '<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>';
       };
 
-      strategy._saml.validateSamlAssertion = function(token, options, done) {
+      strategy._saml.validateSamlAssertion = function(token, done) {
         expect(token).to.equal('<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>');
         done(null, { id: '1234' });
       };
@@ -361,7 +361,7 @@ describe('wsfed - using default session state store', function() {
       return '<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>';
     };
 
-    strategy._saml.validateSamlAssertion = function(token, options, done) {
+    strategy._saml.validateSamlAssertion = function(token, done) {
       expect(token).to.equal('<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>');
       done(null, { id: '1234' });
     };

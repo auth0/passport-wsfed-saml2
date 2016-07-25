@@ -623,8 +623,8 @@ describe('samlp (unit tests)', function () {
     });
 
     it('should return error for Destination does not match', function(done){
-      var samlp = new Samlp({ });
-      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { recipientUrl: 'invalid' }, function (err) {
+      var samlp = new Samlp({ destinationUrl: 'invalid' });
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('Error');
         expect(err.message).to.equal('Destination endpoint https://auth0-dev-ed.my.salesforce.com did not match invalid');

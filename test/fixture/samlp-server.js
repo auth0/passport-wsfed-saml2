@@ -16,7 +16,8 @@ passport.use('samlp', new Strategy({
     realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
     thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
-    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com'
+    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com',
+    destinationUrl: 'https://auth0-dev-ed.my.salesforce.com'    
   }, function(profile, done) {
     return done(null, profile);
   })
@@ -97,7 +98,8 @@ passport.use('samlp-signedresponse', new Strategy(
     realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
     thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
-    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com'
+    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com',
+    destinationUrl: 'https://auth0-dev-ed.my.salesforce.com'
   },
   function(profile, done) {
     return done(null, profile);
@@ -110,7 +112,8 @@ passport.use('samlp-signedresponse-invalidcert', new Strategy(
     realm: 'urn:fixture-test',
     identityProviderUrl: identityProviderUrl,
     thumbprints: ['11111111111111111a5b93a43572eb2376fed309'],
-    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com'
+    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com',
+    destinationUrl: 'https://auth0-dev-ed.my.salesforce.com'
   },
   function(profile, done) {
     return done(null, profile);
@@ -134,7 +137,7 @@ passport.use('samlp-signedresponse-signedassertion', new Strategy(
     path: '/callback',
     realm: 'urn:auth0:login-dev3',
     thumbprints: ['C9ED4DFB07CAF13FC21E0FEC1572047EB8A7A4CB'],
-    recipientUrl: 'https://login-dev3.auth0.com:3000/login/callback',
+    destinationUrl: 'https://login-dev3.auth0.com:3000/login/callback',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
   function(profile, done) {
@@ -147,6 +150,7 @@ passport.use('samlp-ping', new Strategy(
     path: '/callback',
     realm: 'urn:auth0:login-dev3',
     thumbprints: ['44340220770a348444be34970939cff8a2d74f08'],
+    destinationUrl: 'https://login-dev3.auth0.com:3000/login/callback',
     recipientUrl: 'https://login-dev3.auth0.com:3000/login/callback',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
@@ -160,6 +164,7 @@ passport.use('samlp-okta', new Strategy(
     path: '/callback',
     realm: 'https://auth0145.auth0.com',
     thumbprints: ['a0c7dbb790e3476d3c5dd236f9f2060b1fd6e253'],
+    destinationUrl: 'https://auth0145.auth0.com',
     recipientUrl: 'https://auth0145.auth0.com',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
@@ -188,6 +193,7 @@ passport.use('samlp-with-utf8', new Strategy(
     thumbprints: ['42FA24A83E107F6842E05D2A2CA0A0A0CA8A2031'],
     decryptionKey: fs.readFileSync(path.join(__dirname, '../test-decryption.key')),
     recipientUrl: 'https://fmi-test.auth0.com/login/callback',
+    destinationUrl: 'https://fmi-test.auth0.com/login/callback',
     checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
     checkAudience: false
   },
@@ -201,6 +207,7 @@ passport.use('samlp-with-dsig-at-root', new Strategy(
     path: '/callback',
     checkExpiration: false, // we are using a precomputed assertion generated from a sample idp
     checkAudience: false,
+    checkDestination: false,
     cert: pemToCert(fs.readFileSync(path.join(__dirname, '../test-auth0.pem')))
   },
   function(profile, done) {
