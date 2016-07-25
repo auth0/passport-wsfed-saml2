@@ -94,7 +94,6 @@ describe('saml 2.0 assertion', function () {
       should.not.exists(profile);
       done();
     });
-
   });
 
   it('should extract authentication context from assertion as a user prop', function (done) {

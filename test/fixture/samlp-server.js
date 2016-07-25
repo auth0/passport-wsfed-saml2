@@ -138,6 +138,7 @@ passport.use('samlp-signedresponse-signedassertion', new Strategy(
     realm: 'urn:auth0:login-dev3',
     thumbprints: ['C9ED4DFB07CAF13FC21E0FEC1572047EB8A7A4CB'],
     destinationUrl: 'https://login-dev3.auth0.com:3000/login/callback',
+    recipientUrl: 'https://login-dev3.auth0.com:3000/login/callback',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
   function(profile, done) {

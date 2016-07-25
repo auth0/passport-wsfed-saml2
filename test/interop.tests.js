@@ -211,12 +211,13 @@ describe('interop', function () {
     var samlOptions = {
       thumbprints: ['6BF18C1DE16D8A6C7B79A0997EF96DEEF90CBF98'],
       realm: 'urn:auth0:pwctest:SiteminderDev',
-      checkExpiration: false
+      checkExpiration: false,
+      recipientUrl: 'https://pwctest.auth0.com/login/callback?connection=SiteminderDev'
     };
 
     var samlpOptions = {
       protocolBinding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-      destinationUrl: 'https://pwctest.auth0.com/login/callback?connection=SiteminderDev'
+      destinationUrl: 'https://pwctest.auth0.com/login/callback?connection=SiteminderDev'      
     };
 
     var sm = new SamlPassport(samlOptions);
@@ -266,7 +267,8 @@ describe('interop', function () {
       cert: cert,
       thumbprints: ['bc58b95946e0c96b464b561b02d740aeae88875a'],
       realm: 'urn:auth0:netformx:emc-test',
-      checkExpiration: false
+      checkExpiration: false,
+      recipientUrl: 'https://netformx.auth0.com/login/callback?connection=emc-test'
     };
 
     var samlpOptions = {
