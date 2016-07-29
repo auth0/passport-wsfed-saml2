@@ -631,6 +631,18 @@ describe('samlp (unit tests)', function () {
         done();
       });
     });
+
+    it('should return error for if isValidResponseID fails', function(done){
+      var samlp = new Samlp({ destinationUrl: 'invalid', isValidResponseID: function(samlResponseID, done) {
+        return done(new Error('Invalid response id'))
+      } });
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('Error');
+        expect(err.message).to.equal('Invalid response id');
+        done();
+      });
+    });
   });
 
   describe('getSamlStatus', function(){
