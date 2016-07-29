@@ -643,6 +643,19 @@ describe('samlp (unit tests)', function () {
         done();
       });
     });
+
+    it('should return error for if isValidInResponseTo fails', function(done){
+      var samlp = new Samlp({ destinationUrl: 'invalid', isValidInResponseTo: function(inReponseTo, done) {
+        return done(new Error('Invalid inResponseTo'))
+      } });
+
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('Error');
+        expect(err.message).to.equal('Invalid inResponseTo');
+        done();
+      });
+    });
   });
 
   describe('getSamlStatus', function(){
