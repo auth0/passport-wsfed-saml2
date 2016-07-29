@@ -96,6 +96,23 @@ describe('saml 2.0 assertion', function () {
     });
   });
 
+  it('should call InReponseTo validation function', function (done) {
+    options.lifetimeInSeconds = 600;
+    options.recipient = 'bar';
+    var signedAssertion = saml20.create(options);
+    var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', recipientUrl: 'bar', isValidInResponseTo: function(inResponseTo, done){
+      return done(new Error('validation error'))
+    }});
+    var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
+      should.exists(err);
+      err.message.should.equal('validation error');
+      should.not.exists(profile);
+      done();
+    });
+  });
+
+
   it('should extract authentication context from assertion as a user prop', function (done) {
 
     var options = {
