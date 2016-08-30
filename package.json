@@ -10,6 +10,7 @@
     "email": "matias@auth0.com",
     "url": "http://auth0.com/"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/auth0/passport-wsfed-saml2.git"
