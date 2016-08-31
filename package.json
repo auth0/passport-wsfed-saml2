@@ -1,6 +1,7 @@
 {
   "name": "passport-wsfed-saml2",
   "version": "2.11.6",
+  "license": "MIT",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
     "test": "mocha --reporter spec --recursive"
@@ -48,12 +49,6 @@
   "engines": {
     "node": ">= 0.6.0"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/MIT"
-    }
-  ],
   "keywords": [
     "saml",
     "wsfed",
