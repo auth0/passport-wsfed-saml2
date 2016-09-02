@@ -704,6 +704,81 @@ describe('samlp (unit tests)', function () {
         done();
       });
     });
+
+    it('should return profile even if the namespace is in respsonse element', function(done){
+       var cert = fs.readFileSync(__dirname + '/test-auth0.cer');
+       var samlResponse = `<?xml version="1.0"?>
+<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:enc="http://www.w3.org/2001/04/xmlenc#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Destination="https://avillachlab.auth0.com/login/callback?connection=CHOP" ID="pfx2ba35038-7fff-f9c0-c9bc-1462e1455a76" IssueInstant="2016-08-10T19:20:28Z" Version="2.0"><saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://cidmfed.chop.edu/oam/fed</saml:Issuer><ds:Signature>
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+  <ds:Reference URI="#pfx2ba35038-7fff-f9c0-c9bc-1462e1455a76"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>wFK//X7GAw5PBQHntPWb8OThZEE=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>tIb8Z6OWq1T0sws6JFdAbUR6FEBk3I7NkXgk5wCt42tMjPq343j8aj1xwJqsbYvLTvAtxEgmohgxvcJ7oADiqXBgDQ6HJNxe3U6q3NGO6Q7XhmtHMFN+bf+BlT7Hll6Ma11BfYNi6rKnROqJTL6ezm53jLNnqk9En/GYwcAKmGI1C1xlJ9cQDuHzA6w57TexdAOXnBVMi50oAoAG8taUDWtppQwfuuCF+D7Nz5QoUNUKE/ExtTjriBg04RXv6gFTKqYbeb4qDMIqf6hgpVd1xroZipGfQhuHocjoUKQSfSP8BDYDTZoxVIiEBUHP8RRK5Xof45x0+fYj1+O7kg8VpA==</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIEDzCCAvegAwIBAgIJALr9HwgrQ7GeMA0GCSqGSIb3DQEBBQUAMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDAeFw0xMjEyMjkxNTMwNDdaFw0xMzAxMjgxNTMwNDdaMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMZiVmNHiXLldrgbS50ONNOH7pJ2zg6OcSMkYZGDZJbOZ/TqwauC6JOnI7+xtkPJsQHZSFJs4U0srjZKzDCmaz2jLAJDShP2jaXlrki16nDLPE//IGAg3BJguSmBCWpDbSm92V9hSsE+Mhx6bDaJiw8yQ+Q8iSm0aTQZtp6O4ICMu00ESdh9NJqIECELvP31ADV1Xhj7IbyyVPDFxMv3ol5BySE9wwwOFUq/wv7Xz9LRiUjUzPO+Lq3OM3o/uCDbk7jD7XrGUuOydALD8ULsXp4EuDO+nFbeXB/iKndZynuVKokirywl2nD2IP0/yncdLQZ8ByIyqP3G82fq/l8p7AsCAwEAAaOBxzCBxDAdBgNVHQ4EFgQUHI2rUXeBjTv1zAllaPGrHFcEK0YwgZQGA1UdIwSBjDCBiYAUHI2rUXeBjTv1zAllaPGrHFcEK0ahZqRkMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZIIJALr9HwgrQ7GeMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAFrXIhCy4T4eGrikb0R2wHv/uS548r3pZyBV0CDbcRwAtbnpJMvkGFqKVp4pmyoIDSVNK/j+sLEshB20XftezHZyRJbCUbtKvXQ6FsxoeZMlN0ITYKTaoBZKhUxxj90otAhNC58qwGUPqt2LewJhHyLucKkGJ1mQ3b5xKZ532ToufouH9VLhig3H1KnxWo/zMD6Ke8cCk6qO9htuhI06s3GQGS1QWQtAmm17C6TfKgDwQFZwhqHUUZnwKRH8gU6OgZsvhgV1B7H5mjZcu57KMiDBekU9MEY0DCVTN3WkmcTII668zLsJrkNX6PEfck1AMBbVE6pEUKcWwq3uaLvlAUo=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp:Status><saml:Assertion ID="id-Y-RwHi6RP8jMUR8kr1FVzHuNvburOIeK6wGpNjd-" IssueInstant="2016-08-10T19:20:28Z" Version="2.0"><saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://cidmfed.chop.edu/oam/fed</saml:Issuer><saml:Subject><saml:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">HankeeJ@email.chop.edu</saml:NameID><saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml:SubjectConfirmationData NotOnOrAfter="2016-08-10T19:25:28Z" Recipient="https://avillachlab.auth0.com/login/callback?connection=CHOP"/></saml:SubjectConfirmation></saml:Subject><saml:Conditions NotBefore="2016-08-10T19:20:28Z" NotOnOrAfter="2016-08-10T19:25:28Z"><saml:AudienceRestriction><saml:Audience>urn:auth0:avillachlab:CHOP</saml:Audience></saml:AudienceRestriction></saml:Conditions><saml:AuthnStatement AuthnInstant="2016-08-10T19:20:28Z" SessionIndex="id-vMW-3rK-vReoeuOd5AtV8Jb-QQ4CmQ0zG45fTYJ1" SessionNotOnOrAfter="2016-08-10T20:20:28Z"><saml:AuthnContext><saml:AuthnContextClassRef>LDAPScheme_GRIN</saml:AuthnContextClassRef></saml:AuthnContext></saml:AuthnStatement></saml:Assertion></samlp:Response>`;
+       var options = {
+        cert: cert,
+        thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
+        checkExpiration: false,
+        realm: 'urn:auth0:avillachlab:CHOP'
+      };
+      var samlp = new Samlp(options, new Saml(options));
+      samlp.validateSamlResponse(samlResponse, function (err, profile) {
+        if (err) return done(err);
+        expect(profile).to.be.ok;
+        done();
+      });
+    });
+
+    it('should help nico sabena', function(done){
+       var samlResponse = `<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:enc="http://www.w3.org/2001/04/xmlenc#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Destination="https://fireglass.eu.auth0.com/login/callback?connection=putnam" ID="id-TDU5L7ZuUSJteaLg3Wo6ULH-7PHwrjZVoC9ICoah" InResponseTo="_a0f580df04c2eb021735" IssueInstant="2016-08-29T19:33:22Z" Version="2.0">
+  <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://oam-stg.putnam.com/oam/fed</saml:Issuer>
+  <samlp:Status>
+    <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp:Status>
+  <saml:Assertion ID="pfx99f6ce1c-1a46-7c97-5916-34da1efd74b3" IssueInstant="2016-08-29T19:33:22Z" Version="2.0">
+    <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://oam-stg.putnam.com/oam/fed</saml:Issuer><ds:Signature>
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+  <ds:Reference URI="#pfx99f6ce1c-1a46-7c97-5916-34da1efd74b3"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>Xf6a3Y0xwjZf921nP20oOVZcOYQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>LtqqnXEEiEJoz3CTBbKB43TYo+nuSZqobcfum3a9m/hrrU+6TtIublnTXBHl/55cy0sjAkgC/c71jSmM0CJ0Ucp63MvLhxDgQGik0DEsrBq8RlGhCCxoe3J4zY49wfcvmQWW8yr0n8hnVqkM5et+uRN5va3ZJ3YvG0+Cb4Kc4MBBh1X6JPfaXt/pVSC5SSmU3QkjJBmJ07fhltILrleQoaLfg/8H1bwNx3WDO+1wrw4z40F2LWg/XnsmYK0MfBJ5QkpqHIJjSodmb9C/eKPB6dW4O6fwHKrZ2AR7f9BXNG3w2sQmTsX1swJgwew0jCo52r8mWaGo9CotU7WYRL0AtA==</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIEDzCCAvegAwIBAgIJALr9HwgrQ7GeMA0GCSqGSIb3DQEBBQUAMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDAeFw0xMjEyMjkxNTMwNDdaFw0xMzAxMjgxNTMwNDdaMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMZiVmNHiXLldrgbS50ONNOH7pJ2zg6OcSMkYZGDZJbOZ/TqwauC6JOnI7+xtkPJsQHZSFJs4U0srjZKzDCmaz2jLAJDShP2jaXlrki16nDLPE//IGAg3BJguSmBCWpDbSm92V9hSsE+Mhx6bDaJiw8yQ+Q8iSm0aTQZtp6O4ICMu00ESdh9NJqIECELvP31ADV1Xhj7IbyyVPDFxMv3ol5BySE9wwwOFUq/wv7Xz9LRiUjUzPO+Lq3OM3o/uCDbk7jD7XrGUuOydALD8ULsXp4EuDO+nFbeXB/iKndZynuVKokirywl2nD2IP0/yncdLQZ8ByIyqP3G82fq/l8p7AsCAwEAAaOBxzCBxDAdBgNVHQ4EFgQUHI2rUXeBjTv1zAllaPGrHFcEK0YwgZQGA1UdIwSBjDCBiYAUHI2rUXeBjTv1zAllaPGrHFcEK0ahZqRkMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZIIJALr9HwgrQ7GeMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAFrXIhCy4T4eGrikb0R2wHv/uS548r3pZyBV0CDbcRwAtbnpJMvkGFqKVp4pmyoIDSVNK/j+sLEshB20XftezHZyRJbCUbtKvXQ6FsxoeZMlN0ITYKTaoBZKhUxxj90otAhNC58qwGUPqt2LewJhHyLucKkGJ1mQ3b5xKZ532ToufouH9VLhig3H1KnxWo/zMD6Ke8cCk6qO9htuhI06s3GQGS1QWQtAmm17C6TfKgDwQFZwhqHUUZnwKRH8gU6OgZsvhgV1B7H5mjZcu57KMiDBekU9MEY0DCVTN3WkmcTII668zLsJrkNX6PEfck1AMBbVE6pEUKcWwq3uaLvlAUo=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature>
+    <saml:Subject>
+      <saml:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">Demo_User@putnam.com</saml:NameID>
+      <saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+        <saml:SubjectConfirmationData InResponseTo="_a0f580df04c2eb021735" NotOnOrAfter="2016-08-29T19:38:22Z" Recipient="https://fireglass.eu.auth0.com/login/callback?connection=putnam"/></saml:SubjectConfirmation>
+    </saml:Subject>
+    <saml:Conditions NotBefore="2016-08-29T19:33:22Z" NotOnOrAfter="2016-08-29T19:38:22Z">
+      <saml:AudienceRestriction>
+        <saml:Audience>urn:auth0:fireglass:putnam</saml:Audience>
+      </saml:AudienceRestriction>
+    </saml:Conditions>
+    <saml:AuthnStatement AuthnInstant="2016-08-29T19:33:21Z" SessionIndex="id-6hogk8JmWq8hJHewaVCNiSNXmqL0LvfwhyTS96Cu" SessionNotOnOrAfter="2016-08-29T20:33:22Z">
+      <saml:AuthnContext>
+        <saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef>
+      </saml:AuthnContext>
+    </saml:AuthnStatement>
+    <saml:AttributeStatement>
+      <saml:Attribute Name="mail" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
+        <saml:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">Demo_User@putnam.com</saml:AttributeValue>
+      </saml:Attribute>
+      <saml:Attribute Name="sn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
+        <saml:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">User</saml:AttributeValue>
+      </saml:Attribute>
+      <saml:Attribute Name="givenName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
+        <saml:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">Demo</saml:AttributeValue>
+      </saml:Attribute>
+    </saml:AttributeStatement>
+  </saml:Assertion>
+</samlp:Response>`;
+       var options = {
+        
+        thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
+        checkExpiration: false,
+        realm: 'urn:auth0:fireglass:putnam'
+      };
+      var samlp = new Samlp(options, new Saml(options));
+      samlp.validateSamlResponse(samlResponse, function (err, profile) {
+        if (err) return done(err);
+        expect(profile).to.be.ok;
+        done();
+      });
+    });
   });
 
   describe('getSamlStatus', function(){
