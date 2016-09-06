@@ -679,6 +679,7 @@ describe('samlp (unit tests)', function () {
         done();
       });
     });
+    
     it('should return profile even if the namespace is in respsonse element and assertion is signed', function(done){
        var cert = fs.readFileSync(__dirname + '/test-auth0.cer');
        var samlResponse = `<?xml version="1.0"?>
@@ -727,7 +728,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it('should help nico sabena', function(done){
+    it('should return profile when attribute namespaces are defined in saml response', function(done){
        var samlResponse = `<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:enc="http://www.w3.org/2001/04/xmlenc#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Destination="https://fireglass.eu.auth0.com/login/callback?connection=putnam" ID="id-TDU5L7ZuUSJteaLg3Wo6ULH-7PHwrjZVoC9ICoah" InResponseTo="_a0f580df04c2eb021735" IssueInstant="2016-08-29T19:33:22Z" Version="2.0">
   <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://oam-stg.putnam.com/oam/fed</saml:Issuer>
   <samlp:Status>
@@ -771,6 +772,32 @@ describe('samlp (unit tests)', function () {
         thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
         checkExpiration: false,
         realm: 'urn:auth0:fireglass:putnam'
+      };
+      var samlp = new Samlp(options, new Saml(options));
+      samlp.validateSamlResponse(samlResponse, function (err, profile) {
+        if (err) return done(err);
+        expect(profile).to.be.ok;
+        done();
+      });
+    });
+
+    it('should return profile for IBM saml response', function(done){
+       var cert = fs.readFileSync(__dirname + '/test-auth0.cer');    
+       var samlResponse = `<?xml version="1.0"?>
+<samlp:Response xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Destination="https://safarijv.auth0.com/login/callback?connection=IBM-Prod" ID="pfx087348d7-544e-b359-704e-0768effc49ef" InResponseTo="_23d347ad32abbd288fbc" IssueInstant="2016-09-06T19:19:46Z" Version="2.0"><saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://w3id.sso.ibm.com/auth/sps/samlidp/saml20</saml:Issuer><ds:Signature>
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+  <ds:Reference URI="#pfx087348d7-544e-b359-704e-0768effc49ef"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>nKIJagEhY0nwjWf2eTMUpy7B/O8=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>nQoLtflrSaVpV6FQEuORo/dzm+vN8qAU4djJOxEXHjszmrQY0TAvPNS76L/f/lmZMbvkfg5Z/pZBlLfrmsiBRqq7EKrHzJpGU39e2frOjY8MaH95dWh0SztH4rvN2cUozqOxFVHMfbKVJTltXgvV1adaiSjTiGiaADSoVT4P1ydyBIldNt7w8tyFYMX0LOkO31FF93XGEyYwRnYFW0XzLX4AnFk5jklkF4pgHlw/43pzRLJcW1F+kpLMba17cg7XAVzwbyc85GrLKW3ijdCWERW1TDm1jcwhCxFgGcFqP0YaLwIlg9Cg05A43WVEBp8VBRjq+k/s4Yus3KznzWlq7w==</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIEDzCCAvegAwIBAgIJALr9HwgrQ7GeMA0GCSqGSIb3DQEBBQUAMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDAeFw0xMjEyMjkxNTMwNDdaFw0xMzAxMjgxNTMwNDdaMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMZiVmNHiXLldrgbS50ONNOH7pJ2zg6OcSMkYZGDZJbOZ/TqwauC6JOnI7+xtkPJsQHZSFJs4U0srjZKzDCmaz2jLAJDShP2jaXlrki16nDLPE//IGAg3BJguSmBCWpDbSm92V9hSsE+Mhx6bDaJiw8yQ+Q8iSm0aTQZtp6O4ICMu00ESdh9NJqIECELvP31ADV1Xhj7IbyyVPDFxMv3ol5BySE9wwwOFUq/wv7Xz9LRiUjUzPO+Lq3OM3o/uCDbk7jD7XrGUuOydALD8ULsXp4EuDO+nFbeXB/iKndZynuVKokirywl2nD2IP0/yncdLQZ8ByIyqP3G82fq/l8p7AsCAwEAAaOBxzCBxDAdBgNVHQ4EFgQUHI2rUXeBjTv1zAllaPGrHFcEK0YwgZQGA1UdIwSBjDCBiYAUHI2rUXeBjTv1zAllaPGrHFcEK0ahZqRkMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZIIJALr9HwgrQ7GeMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAFrXIhCy4T4eGrikb0R2wHv/uS548r3pZyBV0CDbcRwAtbnpJMvkGFqKVp4pmyoIDSVNK/j+sLEshB20XftezHZyRJbCUbtKvXQ6FsxoeZMlN0ITYKTaoBZKhUxxj90otAhNC58qwGUPqt2LewJhHyLucKkGJ1mQ3b5xKZ532ToufouH9VLhig3H1KnxWo/zMD6Ke8cCk6qO9htuhI06s3GQGS1QWQtAmm17C6TfKgDwQFZwhqHUUZnwKRH8gU6OgZsvhgV1B7H5mjZcu57KMiDBekU9MEY0DCVTN3WkmcTII668zLsJrkNX6PEfck1AMBbVE6pEUKcWwq3uaLvlAUo=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp:Status><saml:Assertion ID="pfxc142a6f7-df8d-2131-5dd1-8b2a285a21eb" IssueInstant="2016-09-06T19:19:46Z" Version="2.0"><saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://w3id.sso.ibm.com/auth/sps/samlidp/saml20</saml:Issuer><ds:Signature>
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+  <ds:Reference URI="#pfxc142a6f7-df8d-2131-5dd1-8b2a285a21eb"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>UzUVS+6XRPhKUK7cw3diiofYSTg=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>uXXEjo8CjqdbDs2MEWooAbufv1hrC5BKXuoYuS/9Z1eqh1vZdgVogqz2yzz2YStzZolB55zL9EbHuHJ8jq8Fw6yDDm7igB2Q6pej08FTrkzBnt7485wKTcTUJdEH7tDJUR5ibm2ESWFTXih7FiAb5Bs9NBX+kK1MJBpKEPOrlqB/IJbwe0bQcQbS6OSfciRiP7Vrw37xB+2tm5Qlgsy7uJXpHaB+jErFT3EdyekaS+KgVmE6f989Ky8n9b+W1p1LbMQJz5+eUsaJVPqt6Sn8SDuKt+uwZWTMNtTJ4tZ5h3kuHAL9spthldfI7sUFAyRr4KI23YE+2lK62pf/vuexaQ==</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIEDzCCAvegAwIBAgIJALr9HwgrQ7GeMA0GCSqGSIb3DQEBBQUAMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDAeFw0xMjEyMjkxNTMwNDdaFw0xMzAxMjgxNTMwNDdaMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMZiVmNHiXLldrgbS50ONNOH7pJ2zg6OcSMkYZGDZJbOZ/TqwauC6JOnI7+xtkPJsQHZSFJs4U0srjZKzDCmaz2jLAJDShP2jaXlrki16nDLPE//IGAg3BJguSmBCWpDbSm92V9hSsE+Mhx6bDaJiw8yQ+Q8iSm0aTQZtp6O4ICMu00ESdh9NJqIECELvP31ADV1Xhj7IbyyVPDFxMv3ol5BySE9wwwOFUq/wv7Xz9LRiUjUzPO+Lq3OM3o/uCDbk7jD7XrGUuOydALD8ULsXp4EuDO+nFbeXB/iKndZynuVKokirywl2nD2IP0/yncdLQZ8ByIyqP3G82fq/l8p7AsCAwEAAaOBxzCBxDAdBgNVHQ4EFgQUHI2rUXeBjTv1zAllaPGrHFcEK0YwgZQGA1UdIwSBjDCBiYAUHI2rUXeBjTv1zAllaPGrHFcEK0ahZqRkMGIxGDAWBgNVBAMTD2F1dGgwLmF1dGgwLmNvbTESMBAGA1UEChMJQXV0aDAgTExDMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZIIJALr9HwgrQ7GeMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAFrXIhCy4T4eGrikb0R2wHv/uS548r3pZyBV0CDbcRwAtbnpJMvkGFqKVp4pmyoIDSVNK/j+sLEshB20XftezHZyRJbCUbtKvXQ6FsxoeZMlN0ITYKTaoBZKhUxxj90otAhNC58qwGUPqt2LewJhHyLucKkGJ1mQ3b5xKZ532ToufouH9VLhig3H1KnxWo/zMD6Ke8cCk6qO9htuhI06s3GQGS1QWQtAmm17C6TfKgDwQFZwhqHUUZnwKRH8gU6OgZsvhgV1B7H5mjZcu57KMiDBekU9MEY0DCVTN3WkmcTII668zLsJrkNX6PEfck1AMBbVE6pEUKcWwq3uaLvlAUo=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml:Subject><saml:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" NameQualifier="https://w3id.sso.ibm.com/auth/sps/samlidp/saml20" SPNameQualifier="urn:auth0:safarijv:IBM-Prod">uuid6dd97435-0154-186a-971f-ee1c8efabdde</saml:NameID><saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml:SubjectConfirmationData InResponseTo="_23d347ad32abbd288fbc" NotOnOrAfter="2016-09-06T19:29:46Z" Recipient="https://safarijv.auth0.com/login/callback?connection=IBM-Prod"/></saml:SubjectConfirmation></saml:Subject><saml:Conditions NotBefore="2016-09-06T19:18:46Z" NotOnOrAfter="2016-09-06T19:29:46Z"><saml:AudienceRestriction><saml:Audience>urn:auth0:safarijv:IBM-Prod</saml:Audience></saml:AudienceRestriction></saml:Conditions><saml:AuthnStatement AuthnInstant="2016-09-06T19:19:46Z" SessionIndex="uuideeffc0-0157-1b72-aff0-894ab08f84d9" SessionNotOnOrAfter="2016-09-07T08:19:46Z"><saml:AuthnContext><saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password</saml:AuthnContextClassRef></saml:AuthnContext></saml:AuthnStatement><saml:AttributeStatement><saml:Attribute Name="EmailAddress" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"><saml:AttributeValue xsi:type="xs:string">cornel.popa@ro.ibm.com</saml:AttributeValue></saml:Attribute><saml:Attribute Name="UserID" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"><saml:AttributeValue xsi:type="xs:string">Y9C4BM826</saml:AttributeValue></saml:Attribute></saml:AttributeStatement></saml:Assertion></samlp:Response>`;
+       var options = {
+        cert: cert,
+        thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
+        checkExpiration: false,
+        realm: 'urn:auth0:safarijv:IBM-Prod'
       };
       var samlp = new Samlp(options, new Saml(options));
       samlp.validateSamlResponse(samlResponse, function (err, profile) {
