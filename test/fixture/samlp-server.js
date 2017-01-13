@@ -92,6 +92,23 @@ passport.use('samlp-signedrequest-with-deflate', new Strategy({
   })
 );
 
+passport.use('samlp-signedrequest-without-deflate-post', new Strategy({
+    protocolBinding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+    path: '/callback',
+    realm: 'https://auth0-dev-ed.my.salesforce.com',
+    identityProviderUrl: identityProviderUrl,
+    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
+    signingKey: {
+      key: fs.readFileSync(path.join(__dirname, '../test-auth0.key')),
+      cert: fs.readFileSync(path.join(__dirname, '../test-auth0.pem')),
+    },
+    deflate: false
+  }, function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+
 passport.use('samlp-signedresponse', new Strategy(
   {
     path: '/callback',
@@ -278,6 +295,7 @@ module.exports.start = function(options, callback){
   app.get('/login-idp-with-querystring', passport.authenticate('samlp-idpurl-with-querystring', { protocol: 'samlp', RelayState: relayState }));
 
   app.get('/login-signed-request-without-deflate', passport.authenticate('samlp-signedrequest-without-deflate', { protocol: 'samlp', RelayState: relayState }));
+  app.get('/login-signed-request-without-deflate-post', passport.authenticate('samlp-signedrequest-without-deflate-post', { protocol: 'samlp', RelayState: relayState }));
   app.get('/login-signed-request-with-deflate', passport.authenticate('samlp-signedrequest-with-deflate', { protocol: 'samlp', RelayState: relayState }));
   
   app.get('/login-custom-request-template',

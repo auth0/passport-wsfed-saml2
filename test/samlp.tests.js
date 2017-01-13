@@ -449,6 +449,51 @@ describe('samlp (functional tests)', function () {
       });
     });
 
+    describe('POST binding', function () {
+      var r, bod, $;
+
+      before(function (done) {
+        request.get({
+          jar: request.jar(),
+          uri: 'http://localhost:5051/login-signed-request-without-deflate-post'
+        }, function (err, resp, b){
+          if(err) return callback(err);
+          r = resp;
+          bod = b;
+          $ = cheerio.load(bod);          
+          done();
+        });
+      });
+
+      it('should return 200 with form element', function(){
+        expect(r.statusCode)
+              .to.equal(200);
+      });
+
+      it('should have signed SAMLRequest with valid signature', function(done){
+        var signedSAMLRequest = $('form input[name="SAMLRequest"]').val();
+        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
+        var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
+
+        expect(utils.isValidSignature(signedRequest, signingCert))
+          .to.equal(true);
+
+        done();
+      });
+
+      it('should show issuer before signature', function(done){
+        var signedSAMLRequest = $('form input[name="SAMLRequest"]').val();
+        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
+        var doc = new xmldom.DOMParser().parseFromString(signedRequest);
+        
+        // First child has to be the issuer
+        expect(doc.documentElement.childNodes[0].nodeName).to.equal('saml:Issuer');
+        // Second child the signature
+        expect(doc.documentElement.childNodes[1].nodeName).to.equal('Signature');
+        done();
+      });
+    });
+
     describe('with deflate', function () {
       var r, bod;
 
@@ -571,6 +616,10 @@ describe('samlp (unit tests)', function () {
     var samlpResponseWithStatusResponderWithMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"/><samlp:StatusMessage>specific error message</samlp:StatusMessage></samlp:Status></samlp:Response>';
     var samlpResponseWithStatusResponderAndAuthnFailed = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:AuthnFailed" /></samlp:StatusCode></samlp:Status></samlp:Response>';
     var samlpResponseWithStatusResponderAndAuthnFailedWithMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:AuthnFailed" /></samlp:StatusCode><samlp:StatusMessage>specific error message</samlp:StatusMessage></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusRequesterWithMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Requester"><samlp:StatusMessage>signature required</samlp:StatusMessage></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusRequesterWithoutMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Requester"></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusVersionMismatchWithMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:VersionMismatch"><samlp:StatusMessage>version mismatch error</samlp:StatusMessage></samlp:Status></samlp:Response>';
+    var samlpResponseWithStatusVersionMismatchWithoutMessage = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:VersionMismatch"></samlp:Status></samlp:Response>';
     var samlpResponseWithStatusNotMappedStatus = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp:Status></samlp:Response>';
 
     it('shuold return error for AuthnFailed status with generic message', function(done){
@@ -609,6 +658,46 @@ describe('samlp (unit tests)', function () {
         expect(err).to.be.ok;
         expect(err.name).to.equals('AuthenticationFailedError');
         expect(err.message).to.equal('specific error message');
+        done();
+      });
+    });
+
+    it('should return error for Requester status with specific message', function(done){
+      var samlp = new Samlp({ checkDestination: false });
+      samlp.validateSamlResponse(samlpResponseWithStatusRequesterWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('signature required');
+        done();
+      });
+    });
+
+    it('should return error for Requester status with specific message', function(done){
+      var samlp = new Samlp({ checkDestination: false });
+      samlp.validateSamlResponse(samlpResponseWithStatusRequesterWithoutMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('The request could not be performed due to an error on the part of the requester');
+        done();
+      });
+    });
+
+    it('should return error for Requester status with specific message', function(done){
+      var samlp = new Samlp({ checkDestination: false });
+      samlp.validateSamlResponse(samlpResponseWithStatusVersionMismatchWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('version mismatch error');
+        done();
+      });
+    });
+
+    it('should return error for Requester status with specific message', function(done){
+      var samlp = new Samlp({ checkDestination: false });
+      samlp.validateSamlResponse(samlpResponseWithStatusVersionMismatchWithoutMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('AuthenticationFailedError');
+        expect(err.message).to.equal('The SAML responder could not process the request because the version of the request message was incorrect.');
         done();
       });
     });
