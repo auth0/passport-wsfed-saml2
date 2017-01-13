@@ -411,51 +411,13 @@ describe('samlp (functional tests)', function () {
   });
 
   describe('samlp with signed request', function () {
-    describe('without deflate', function () {
-      var r, bod;
-
-      before(function (done) {
-        request.get({
-          jar: request.jar(),
-          followRedirect: false,
-          uri: 'http://localhost:5051/login-signed-request-without-deflate'
-        }, function (err, resp, b){
-          if(err) return callback(err);
-          r = resp;
-          bod = b;
-          done();
-        });
-      });
-
-      it('should redirect to idp', function(){
-        expect(r.statusCode)
-              .to.equal(302);
-      });
-
-      it('should have signed SAMLRequest with valid signature', function(done){
-        expect(r.headers.location.split('?')[0])
-              .to.equal(server.identityProviderUrl);
-        var querystring = qs.parse(r.headers.location.split('?')[1]);
-        expect(querystring).to.have.property('SAMLRequest');
-        expect(querystring.RelayState).to.equal('somestate');
-
-        var signedSAMLRequest = querystring.SAMLRequest;
-        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
-        var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
-
-        expect(utils.isValidSignature(signedRequest, signingCert))
-          .to.equal(true);
-        done();
-      });
-    });
-
     describe('POST binding', function () {
       var r, bod, $;
 
       before(function (done) {
         request.get({
           jar: request.jar(),
-          uri: 'http://localhost:5051/login-signed-request-without-deflate-post'
+          uri: 'http://localhost:5051/login-signed-request-post'
         }, function (err, resp, b){
           if(err) return callback(err);
           r = resp;
@@ -490,6 +452,44 @@ describe('samlp (functional tests)', function () {
         expect(doc.documentElement.childNodes[0].nodeName).to.equal('saml:Issuer');
         // Second child the signature
         expect(doc.documentElement.childNodes[1].nodeName).to.equal('Signature');
+        done();
+      });
+    });
+
+    describe('without deflate', function () {
+      var r, bod;
+
+      before(function (done) {
+        request.get({
+          jar: request.jar(),
+          followRedirect: false,
+          uri: 'http://localhost:5051/login-signed-request-without-deflate'
+        }, function (err, resp, b){
+          if(err) return callback(err);
+          r = resp;
+          bod = b;
+          done();
+        });
+      });
+
+      it('should redirect to idp', function(){
+        expect(r.statusCode)
+              .to.equal(302);
+      });
+
+      it('should have signed SAMLRequest with valid signature', function(done){
+        expect(r.headers.location.split('?')[0])
+              .to.equal(server.identityProviderUrl);
+        var querystring = qs.parse(r.headers.location.split('?')[1]);
+        expect(querystring).to.have.property('SAMLRequest');
+        expect(querystring.RelayState).to.equal('somestate');
+
+        var signedSAMLRequest = querystring.SAMLRequest;
+        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
+        var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
+
+        expect(utils.isValidSignature(signedRequest, signingCert))
+          .to.equal(true);
         done();
       });
     });
@@ -672,7 +672,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it('should return error for Requester status with specific message', function(done){
+    it('should return error for Requester status with default message', function(done){
       var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusRequesterWithoutMessage, function (err) {
         expect(err).to.be.ok;
@@ -682,7 +682,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it('should return error for Requester status with specific message', function(done){
+    it('should return error for VersionMismatch status with specific message', function(done){
       var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusVersionMismatchWithMessage, function (err) {
         expect(err).to.be.ok;
@@ -692,7 +692,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it('should return error for Requester status with specific message', function(done){
+    it('should return error for VersionMismatch status with default message', function(done){
       var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusVersionMismatchWithoutMessage, function (err) {
         expect(err).to.be.ok;
