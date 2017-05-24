@@ -329,10 +329,10 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-with-invalid-xml',
     function (req, res, next) {
-			passport.authenticate('samlp-with-utf8', { protocol: 'samlp' }, function(err, user, info) {
-				res.send(400, { message: err.message });
-			})(req, res, next);
-		},
+      passport.authenticate('samlp-with-utf8', { protocol: 'samlp' }, function(err, user, info) {
+        res.send(400, { message: err.message });
+      })(req, res, next);
+    },
     function(req, res) {
       res.json(req.user);
     }
