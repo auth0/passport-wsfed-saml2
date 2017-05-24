@@ -76,7 +76,7 @@ describe('saml 2.0 assertion', function () {
       should.exists(err);
       err.message.should.equal('assertion has expired.');
       should.not.exists(profile);
-      
+
       done();
     });
 
@@ -104,15 +104,15 @@ describe('saml 2.0 assertion', function () {
     var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
       if (error) return done(error);
-      
+
       assert.ok(profile);
       assert.equal('urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified', profile['http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod']);
-      
+
       done();
     });
 
   });
 
-  
+
 
 });

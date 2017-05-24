@@ -144,8 +144,8 @@ describe('samlp (functional tests)', function () {
     });
   });
 
-	describe('SAMLResponse with invalid XML', function() {
-		var user, r, bod, $;
+  describe('SAMLResponse with invalid XML', function() {
+    var user, r, bod, $;
 
     before(function (done) {
       request.post({
@@ -170,7 +170,7 @@ describe('samlp (functional tests)', function () {
       expect(err.message)
           .to.equal('SAMLResponse should be a valid xml');
     });
-	});
+  });
 
   describe('SAMLResponse with utf8 chars', function () {
     var user, r, bod, $;

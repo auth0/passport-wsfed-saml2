@@ -65,7 +65,7 @@ describe('saml 1.1 assertion', function () {
     var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
       if (error) return done(error);
-      
+
       assert.ok(profile);
       assert.equal('вКонтакте', profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
       assert.equal('сообщить вКонтакте', profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
