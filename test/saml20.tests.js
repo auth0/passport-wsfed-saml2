@@ -1,6 +1,6 @@
 var assert = require('assert'),
     fs = require('fs'),
-    utils = require('./utils'),
+    helpers = require('./helpers'),
     moment = require('moment'),
     should = require('should'),
     saml20 = require('saml').Saml20,

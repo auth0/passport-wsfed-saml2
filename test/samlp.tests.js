@@ -6,7 +6,7 @@ var xmldom  = require('xmldom');
 var fs      = require('fs');
 var zlib    = require('zlib');
 var crypto  = require('crypto');
-var utils   = require('./utils');
+var helpers   = require('./helpers');
 var server  = require('./fixture/samlp-server');
 var Samlp   = require('../lib/passport-wsfed-saml2/samlp');
 
@@ -470,7 +470,7 @@ describe('samlp (functional tests)', function () {
         var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
         var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
 
-        expect(utils.isValidSignature(signedRequest, signingCert))
+        expect(helpers.isValidSignature(signedRequest, signingCert))
           .to.equal(true);
         done();
       });
