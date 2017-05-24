@@ -73,7 +73,7 @@ module.exports.start = function(options, callback){
     callback(null, 'http://localhost:5050/callback');
   }
 
-  app.get('/login', 
+  app.get('/login',
     wsfed.auth(xtend({}, {
       issuer:             'fixture-test',
       getPostURL:         getPostURL,
@@ -81,7 +81,18 @@ module.exports.start = function(options, callback){
       key:                credentials.key
   }, options)));
 
-  app.post('/callback', 
+  app.post('/callback/wresult-with-invalid-xml',
+    function (req, res, next) {
+			passport.authenticate('wsfed-saml2', function(err, user, info) {
+				res.send(400, { message: err.message });
+			})(req, res, next);
+		},
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback',
     passport.authenticate('wsfed-saml2'),
     function(req, res) {
       res.json(req.user);
