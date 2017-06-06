@@ -31,7 +31,7 @@ describe('interop', function () {
 
     var saml_passport = new SamlPassport({thumbprints: ['3464c5bdd2be7f2b6112e2f08e9c0024e33d9fe0'],
                                           realm: 'spn:408153f4-5960-43dc-9d4f-6b717d772c8d',
-                                          checkExpiration: false}); // dont check expiration since we are harcoding the token
+                                          checkExpiration: false, checkRecipient: false}); // dont check expiration since we are harcoding the token
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       if (err) return done(err);
       assert.ok(profile);
@@ -180,7 +180,8 @@ describe('interop', function () {
 
     var saml_passport = new SamlPassport({thumbprints: ['C9018666E764613366C20BC011D947B39BED236B'],
                                           realm: 'urn:auth0:auth0',
-                                          checkExpiration: false}); // dont check expiration since we are harcoding the token
+                                          checkExpiration: false,
+                                          checkRecipient: false}); // dont check expiration since we are harcoding the token
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       if (err) return done(err);
       assert.ok(profile);
@@ -194,6 +195,7 @@ describe('interop', function () {
 
     var saml_passport = new SamlPassport({thumbprints: ['42FA24A83E107F6842E05D2A2CA0A0A0CA8A2031'],
                                           realm: 'urn:auth0:fmi-test',
+                                          recipientUrl: 'https://fmi-test.auth0.com/login/callback',
                                           checkExpiration: false}); // dont check expiration since we are harcoding the token
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       if (err) return done(err);
@@ -208,6 +210,7 @@ describe('interop', function () {
     var samlOptions = {
       thumbprints: ['6BF18C1DE16D8A6C7B79A0997EF96DEEF90CBF98'],
       realm: 'urn:auth0:pwctest:SiteminderDev',
+      recipientUrl: 'https://pwctest.auth0.com/login/callback?connection=SiteminderDev',
       checkExpiration: false
     };
 
@@ -218,7 +221,8 @@ describe('interop', function () {
     var sm = new SamlPassport(samlOptions);
     var sp = new samlp(samlpOptions, sm);
 
-    sp.validateSamlResponse(new Buffer(response, 'base64').toString(), 
+    sp.validateSamlResponse(new Buffer(response, 'base64').toString(),
+      samlOptions, 
       function(err, profile){
         if (err) return done(err);
         assert.ok(profile);
@@ -233,6 +237,7 @@ describe('interop', function () {
     var samlOptions = {
       thumbprints: ['bc58b95946e0c96b464b561b02d740aeae88875a'],
       realm: 'urn:auth0:netformx:emc-test',
+      recipientUrl: 'https://fmi-test.auth0.com/login/callback',
       checkExpiration: false
     };
 
@@ -261,6 +266,7 @@ describe('interop', function () {
       cert: cert,
       thumbprints: ['bc58b95946e0c96b464b561b02d740aeae88875a'],
       realm: 'urn:auth0:netformx:emc-test',
+      recipientUrl: 'https://netformx.auth0.com/login/callback?connection=emc-test',      
       checkExpiration: false
     };
 
@@ -272,6 +278,7 @@ describe('interop', function () {
     var sp = new samlp(samlpOptions, sm);
 
     sp.validateSamlResponse(new Buffer(response, 'base64').toString(),
+      samlOptions,
       function(err, profile){
         if (err) return done(err);
         assert.ok(profile);
@@ -295,11 +302,13 @@ describe('interop', function () {
       cert: cert,
       thumbprints: ['ANOTHER_THUMB'],
       realm: 'urn:auth0:wptest:PepeSAML',
-      checkExpiration: false
+      recipientUrl: 'https://fmi-test.auth0.com/login/callback',
+      checkExpiration: false,
     };
 
     var samlpOptions = {
       cert: cert,
+      checkDestination: false      
     };
 
     var sm = new SamlPassport(samlOptions);
@@ -319,6 +328,7 @@ describe('interop', function () {
     var options = {
       thumbprint: '1756139e2a046d3c494daae6bbfa542a4367bc60',
       checkExpiration: false,
+      checkRecipient: false,
       realm: 'http://dev.pms.baxon.net/'
     };
 
@@ -338,6 +348,9 @@ describe('interop', function () {
     var response = fs.readFileSync(__dirname + '/wsfed-result-wstrust13.xml').toString();
 
     var req = {
+      get: function(){
+        return ''
+      },
       body : {
         wresult: response
       }

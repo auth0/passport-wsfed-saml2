@@ -129,7 +129,7 @@ describe('wsfed - using custom session state store', function() {
         return '<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>';
       };
 
-      strategy._saml.validateSamlAssertion = function(token, done) {
+      strategy._saml.validateSamlAssertion = function(token, options, done) {
         expect(token).to.equal('<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>');
         done(null, { id: '1234' });
       };
@@ -152,6 +152,9 @@ describe('wsfed - using custom session state store', function() {
               req.body.wresult = '<trust:RequestSecurityTokenResponseCollection>...</trust:RequestSecurityTokenResponseCollection>';
               req.body.wctx = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -254,7 +257,7 @@ describe('wsfed - using custom session state store', function() {
           return '<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>';
         };
 
-        strategy._saml.validateSamlAssertion = function(token, done) {
+        strategy._saml.validateSamlAssertion = function(token, options, done) {
           expect(token).to.equal('<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>');
           done(null, { id: '1234' });
         };
@@ -276,6 +279,9 @@ describe('wsfed - using custom session state store', function() {
               req.body.wresult = '<trust:RequestSecurityTokenResponseCollection>...</trust:RequestSecurityTokenResponseCollection>';
               req.body.wctx = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -314,7 +320,7 @@ describe('wsfed - using custom session state store', function() {
           return '<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>';
         };
 
-        strategy._saml.validateSamlAssertion = function(token, done) {
+        strategy._saml.validateSamlAssertion = function(token, options, done) {
           expect(token).to.equal('<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>');
           done(null, { id: '1234' });
         };
@@ -336,6 +342,9 @@ describe('wsfed - using custom session state store', function() {
               req.body.wresult = '<trust:RequestSecurityTokenResponseCollection>...</trust:RequestSecurityTokenResponseCollection>';
               req.body.wctx = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
