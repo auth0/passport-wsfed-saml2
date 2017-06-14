@@ -146,6 +146,9 @@ describe('wsfed - using default session state store', function() {
               req.session = {};
               req.session['wsfed:www.example.com'] = {};
               req.session['wsfed:www.example.com']['state'] = 'DkbychwKu8kBaJoLE5yeR5NK';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -186,6 +189,9 @@ describe('wsfed - using default session state store', function() {
               req.session['wsfed:www.example.com'] = {};
               req.session['wsfed:www.example.com']['state'] = 'DkbychwKu8kBaJoLE5yeR5NK';
               req.session['wsfed:www.example.com'].foo = 'bar';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -414,6 +420,9 @@ describe('wsfed - using default session state store', function() {
               req.session = {};
               req.session['wsfed:example'] = {};
               req.session['wsfed:example']['state'] = 'DkbychwKu8kBaJoLE5yeR5NK';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });

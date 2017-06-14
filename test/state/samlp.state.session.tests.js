@@ -145,6 +145,9 @@ describe('samlp - using default session state store', function() {
               req.session = {};
               req.session['samlp:www.example.com'] = {};
               req.session['samlp:www.example.com']['state'] = 'DkbychwKu8kBaJoLE5yeR5NK';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -185,6 +188,9 @@ describe('samlp - using default session state store', function() {
               req.session['samlp:www.example.com'] = {};
               req.session['samlp:www.example.com']['state'] = 'DkbychwKu8kBaJoLE5yeR5NK';
               req.session['samlp:www.example.com'].foo = 'bar';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -409,6 +415,9 @@ describe('samlp - using default session state store', function() {
               req.session = {};
               req.session['samlp:example'] = {};
               req.session['samlp:example']['state'] = 'DkbychwKu8kBaJoLE5yeR5NK';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });

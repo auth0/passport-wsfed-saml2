@@ -152,6 +152,9 @@ describe('samlp - using custom session state store', function() {
               req.body.SAMLResponse = SAMLResponse;
               req.body.RelayState = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -272,6 +275,9 @@ describe('samlp - using custom session state store', function() {
               req.body.SAMLResponse = SAMLResponse;
               req.body.RelayState = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
@@ -328,6 +334,9 @@ describe('samlp - using custom session state store', function() {
               req.body.SAMLResponse = SAMLResponse;
               req.body.RelayState = 'foos7473';
               req.method = 'POST';
+              req.get = function(){
+                return '';
+              };
             })
             .authenticate({});
         });
