@@ -315,13 +315,11 @@ describe('interop', function () {
     var sm = new SamlPassport(samlOptions);
     var sp = new samlp(samlpOptions, sm);
 
-    sp.validateSamlResponse(new Buffer(response, 'base64').toString(),
-      function (err){
-        console.log(err);
-        assert.ok(err);
-        expect(err.toString()).to.equal('Error: Invalid thumbprint (configured: ANOTHER_THUMB. calculated: CD78CA598A6FB28A4D70EF6846C1141666A24240)');
-        done();
-      });
+    sp.validateSamlResponse(new Buffer(response, 'base64').toString(), function (err){
+      assert.ok(err);
+      expect(err.toString()).to.equal('Error: Invalid thumbprint (configured: ANOTHER_THUMB. calculated: CD78CA598A6FB28A4D70EF6846C1141666A24240)');
+      done();
+    });
   });
 
   it('should validate an assertion from a WS-Fed STS using WS-Trust 1.3 namespaces', function (done) {

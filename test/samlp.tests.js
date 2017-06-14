@@ -712,7 +712,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it.skip('should return error for Destination does not match', function(done){
+    it('should return error for Destination does not match', function(done){
       var samlp = new Samlp({ destinationUrl: 'invalid' });
       samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
         expect(err).to.be.ok;
@@ -747,7 +747,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it('should return profile even if the namespace is in respsonse element', function(done){
+    it('should return profile even if the namespace is in response element', function(done){
        var cert = fs.readFileSync(__dirname + '/test-auth0.cer');
        var samlResponse = `<?xml version="1.0"?>
 <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:enc="http://www.w3.org/2001/04/xmlenc#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Destination="https://avillachlab.auth0.com/login/callback?connection=CHOP" ID="pfx2ba35038-7fff-f9c0-c9bc-1462e1455a76" IssueInstant="2016-08-10T19:20:28Z" Version="2.0"><saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://cidmfed.chop.edu/oam/fed</saml:Issuer><ds:Signature>
@@ -759,6 +759,8 @@ describe('samlp (unit tests)', function () {
         cert: cert,
         thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
         checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
         realm: 'urn:auth0:avillachlab:CHOP'
       };
       var samlp = new Samlp(options, new Saml(options));
@@ -769,7 +771,7 @@ describe('samlp (unit tests)', function () {
       });
     });
     
-    it('should return profile even if the namespace is in respsonse element and assertion is signed', function(done){
+    it('should return profile even if the namespace is in response element and assertion is signed', function(done){
        var cert = fs.readFileSync(__dirname + '/test-auth0.cer');
        var samlResponse = `<?xml version="1.0"?>
 <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:enc="http://www.w3.org/2001/04/xmlenc#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Destination="https://avillachlab.auth0.com/login/callback?connection=CHOP" ID="pfx0bd7e842-6bf5-618a-c910-2e9504eed82f" IssueInstant="2016-08-10T19:20:28Z" Version="2.0"><saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://cidmfed.chop.edu/oam/fed</saml:Issuer><ds:Signature>
@@ -785,6 +787,8 @@ describe('samlp (unit tests)', function () {
         cert: cert,
         thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
         checkExpiration: false,
+        checkDestination: false,        
+        checkRecipient: false,
         realm: 'urn:auth0:avillachlab:CHOP'
       };
       var samlp = new Samlp(options, new Saml(options));
@@ -795,7 +799,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it('should return profile even if the namespace is in respsonse element', function(done){
+    it('should return profile even if the namespace is in response element', function(done){
        var cert = fs.readFileSync(__dirname + '/test-auth0.cer');
        var samlResponse = `<?xml version="1.0"?>
 <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:enc="http://www.w3.org/2001/04/xmlenc#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:x500="urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Destination="https://avillachlab.auth0.com/login/callback?connection=CHOP" ID="pfx2ba35038-7fff-f9c0-c9bc-1462e1455a76" IssueInstant="2016-08-10T19:20:28Z" Version="2.0"><saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://cidmfed.chop.edu/oam/fed</saml:Issuer><ds:Signature>
@@ -807,6 +811,8 @@ describe('samlp (unit tests)', function () {
         cert: cert,
         thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
         checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
         realm: 'urn:auth0:avillachlab:CHOP'
       };
       var samlp = new Samlp(options, new Saml(options));
@@ -860,6 +866,8 @@ describe('samlp (unit tests)', function () {
         
         thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
         checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
         realm: 'urn:auth0:fireglass:putnam'
       };
       var samlp = new Samlp(options, new Saml(options));
@@ -886,6 +894,8 @@ describe('samlp (unit tests)', function () {
         cert: cert,
         thumbprint: '5CA6E1202EAFC0A63A5B93A43572EB2376FED309',
         checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
         realm: 'urn:auth0:safarijv:IBM-Prod'
       };
       var samlp = new Samlp(options, new Saml(options));

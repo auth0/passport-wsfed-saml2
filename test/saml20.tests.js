@@ -139,7 +139,7 @@ describe('saml 2.0 assertion', function () {
 
   });
 
-  it.skip('should validate recipent', function (done) {
+  it('should validate recipent', function (done) {
     options.lifetimeInSeconds = 600;
     options.recipient = 'foo';
     var signedAssertion = saml20.create(options);
