@@ -1,6 +1,6 @@
 var assert = require('assert'),
     fs = require('fs'),
-    utils = require('./utils'),
+    helpers = require('./helpers'),
     moment = require('moment'),
     should = require('should'),
     saml11 = require('saml').Saml11,
@@ -65,7 +65,7 @@ describe('saml 1.1 assertion', function () {
     var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp'});
     var profile = saml_passport.validateSamlAssertion(signedAssertion, function(error, profile) {
       if (error) return done(error);
-      
+
       assert.ok(profile);
       assert.equal('вКонтакте', profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
       assert.equal('сообщить вКонтакте', profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
