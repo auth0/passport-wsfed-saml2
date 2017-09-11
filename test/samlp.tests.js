@@ -598,6 +598,32 @@ describe('samlp (unit tests)', function () {
         });
       });
     });
+
+    it('should place the signature after the issuer', function(done){
+      var samlp = new Samlp({
+        identityProviderUrl: server.identityProviderUrl,
+        requestTemplate: '<samlp:AuthnRequest AssertionConsumerServiceURL="https://dev.qld-gov-dev.auth0.com/login/callback?connection=CIDM-AAL2" Destination="https://uat.identity.qld.gov.au:443/authentication/SSOPOST/metaAlias/idp-07-2017" ForceAuthn="false" ID="@@ID@@" IsPassive="false" IssueInstant="@@IssueInstant@@" ProtocolBinding="@@ProtocolBinding@@" ProviderName="@@ProviderName@@" Version="2.0" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">@@Issuer@@</saml:Issuer><samlp:RequestedAuthnContext Comparison="minimum"><saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:au:qld:gov:authn:names:SAML:2.0:ac:AAL2</saml:AuthnContextClassRef><saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:au:qld:gov:authn:names:SAML:2.0:attributes:FamilyName,MiddleName,GivenName,email,DateOfBirth</saml:AuthnContextClassRef></samlp:RequestedAuthnContext></samlp:AuthnRequest>',
+        protocol: 'samlp',
+        deflate: false,
+        providerName: 'Some name',
+        signingKey: { 
+          key: fs.readFileSync(__dirname + '/test-auth0.key'),
+          cert: fs.readFileSync(__dirname + '/test-auth0.pem')
+        }
+      });
+
+      samlp.getSamlRequestParams({}, function(err, params) {
+        if (err){ return done(err); }
+        expect(params).to.have.property('SAMLRequest');
+        var request = new Buffer(params.SAMLRequest, 'base64').toString()
+        var doc = new xmldom.DOMParser().parseFromString(request);
+        
+        var issuer = doc.documentElement.getElementsByTagName('saml:Issuer');
+        expect(issuer[0].nextSibling.nodeName).to.equal('Signature');
+
+        done();
+      });
+    })
   });
 
   describe('extractAssertion', function () {
