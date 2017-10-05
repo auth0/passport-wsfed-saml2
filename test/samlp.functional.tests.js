@@ -206,6 +206,39 @@ describe('samlp (functional tests)', function () {
     });
   });
 
+  describe('SAMLResponse with ISO-8859-1 chars', function() {
+    var user, r, bod, $;
+    
+    before(function (done) {
+      const samlxml = fs.readFileSync(path.join(__dirname, './samples/plain/samlresponse_iso.txt')).toString();
+      const samlEncoded =  new Buffer(samlxml, 'binary').toString('base64');
+
+      request.post({
+        jar: request.jar(),
+        uri: 'http://localhost:5051/callback/samlp-with-ISO',
+        form: { SAMLResponse: samlEncoded }
+      }, function(err, response, body) {
+        if(err) return done(err);
+        r = response;
+        bod = body;
+        done();
+      });
+    });
+
+    it('should be valid signature', function(){
+      expect(r.statusCode)
+            .to.equal(200);
+    });
+
+    it('should return a valid user', function(){
+      var user = JSON.parse(bod);
+      expect(user['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'])
+          .to.equal('nameid');
+      expect(user['Email'].trim())
+          .to.equal('test@exåmple.com');
+    });
+  });
+
   describe.skip('SAMLResponse with signed assertion and "ds" prefix defined only at the root of the SAMLResponse', function () {
     var r, bod;
 
