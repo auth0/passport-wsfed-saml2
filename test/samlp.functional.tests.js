@@ -176,7 +176,7 @@ describe('samlp (functional tests)', function () {
     });
   });
 
-  describe('SAMLResponse with utf8 chars', function () {
+  describe('SAMLResponse with utf8 chars (default encoding not configured)', function () {
     var user, r, bod, $;
     
     before(function (done) {
@@ -206,7 +206,40 @@ describe('samlp (functional tests)', function () {
     });
   });
 
-  describe('SAMLResponse with ISO-8859-1 chars', function() {
+  describe('SAMLResponse with ISO-8859-1 chars (default encoding not configured)', function() {
+    var user, r, bod, $;
+    
+    before(function (done) {
+      const samlxml = fs.readFileSync(path.join(__dirname, './samples/plain/samlresponse_explicit_iso.txt')).toString();
+      const samlEncoded =  new Buffer(samlxml, 'binary').toString('base64');
+
+      request.post({
+        jar: request.jar(),
+        uri: 'http://localhost:5051/callback/samlp-with-ISO',
+        form: { SAMLResponse: samlEncoded }
+      }, function(err, response, body) {
+        if(err) return done(err);
+        r = response;
+        bod = body;
+        done();
+      });
+    });
+
+    it('should be valid signature', function(){
+      expect(r.statusCode)
+            .to.equal(200);
+    });
+
+    it('should return a valid user', function(){
+      var user = JSON.parse(bod);
+      expect(user['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'])
+          .to.equal('nameid');
+      expect(user['Email'].trim())
+          .to.equal('test@exåmple.com');
+    });
+  });
+
+  describe('SAMLResponse with ISO-8859-1 chars (default encoding configured)', function() {
     var user, r, bod, $;
     
     before(function (done) {
@@ -215,7 +248,7 @@ describe('samlp (functional tests)', function () {
 
       request.post({
         jar: request.jar(),
-        uri: 'http://localhost:5051/callback/samlp-with-ISO',
+        uri: 'http://localhost:5051/callback/samlp-with-ISO-explicit',
         form: { SAMLResponse: samlEncoded }
       }, function(err, response, body) {
         if(err) return done(err);
