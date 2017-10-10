@@ -1,0 +1,32 @@
+<samlp:Response xmlns:ds="http://www.w3.org/2000/09/xmlsig#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" Destination="recipient" ID="_id" IssueInstant="2017-09-28T11:53:37Z" Version="2.0">
+  <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">BEC</saml:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/><ds:Reference URI="#_id"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>IZ08ceW8xhfDzWCPqbMK6/Xatmu7hqttsAYzssajZDM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>hqHFM7CuuV0PgFxtL2a8AxPsFKaN59LMxb85YmDMpBDPZKoMSwGiwjJorvi4ICBYfGa33UVQIZQK5zkqzWMdR0mkiX5BCC4qYmWQFhSQmvqunti9K+TQ2EIwTouTU4UVxe9jf0K4t8EWsf/9FSCGnJnmdn0WBZR0WDU6Z1XHWZk/jGXr7fI+iCwdm/c6e4Jf6yf/uF80/gDz0GwkHoN9zD6oy931YA432g/WUaHrr9g0OvBRv8UghODYPmHGyDcE9A4DnvtZqJ3LAGwCnCopeKAfScZuCaycAqY06vinlBUxTxMftCDR0AXoSJLt5CSRHYqGkeA/g4JGOAQSp+SdcA==</ds:SignatureValue><ds:KeyInfo><ds:X509Data/></ds:KeyInfo></ds:Signature>
+  <samlp:Status>
+    <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+  </samlp:Status>
+  <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="Assertion-_id" IssueInstant="2017-09-28T11:53:37Z" Version="2.0">
+    <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">Issuer</saml:Issuer>
+    <saml:Subject>
+      <saml:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient">nameid</saml:NameID>
+      <saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+        <saml:SubjectConfirmationData NotOnOrAfter="2017-09-28T23:59:59Z" Recipient="recipient"/>
+      </saml:SubjectConfirmation>
+    </saml:Subject>
+    <saml:Conditions NotBefore="2017-09-28T00:00:01Z" NotOnOrAfter="2017-09-28T23:59:59Z">
+      <saml:AudienceRestriction>
+        <saml:Audience>audience</saml:Audience>
+      </saml:AudienceRestriction>
+    </saml:Conditions>
+    <saml:AuthnStatement AuthnInstant="2017-09-28T11:53:37Z" SessionIndex="1" SessionNotOnOrAfter="2017-09-28T23:59:59Z">
+      <saml:AuthnContext>
+        <saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password</saml:AuthnContextClassRef>
+      </saml:AuthnContext>
+    </saml:AuthnStatement>
+    <saml:AttributeStatement>
+      <saml:Attribute Name="Email">
+        <saml:AttributeValue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">
+          test@exåmple.com
+        </saml:AttributeValue>
+      </saml:Attribute>
+    </saml:AttributeStatement>
+  </saml:Assertion>
+</samlp:Response>

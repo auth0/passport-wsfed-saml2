@@ -220,6 +220,35 @@ passport.use('samlp-with-utf8', new Strategy(
   })
 );
 
+passport.use('samlp-with-ISO', new Strategy(
+  {
+    path: '/callback',
+    cert: pemToCert(fs.readFileSync(path.join(__dirname, '../test-auth0.pem'))),
+    checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
+    checkAudience: false,
+    checkDestination: false,
+    checkRecipient: false
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+passport.use('samlp-with-ISO-explicit', new Strategy(
+  {
+    path: '/callback',
+    cert: pemToCert(fs.readFileSync(path.join(__dirname, '../test-auth0.pem'))),
+    checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
+    checkAudience: false,
+    default_encoding: 'ISO-8859-1',
+    checkDestination: false,
+    checkRecipient: false
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
 passport.use('samlp-with-dsig-at-root', new Strategy(
   {
     path: '/callback',
@@ -359,6 +388,20 @@ module.exports.start = function(options, callback){
       res.json(req.user);
     }
   );
+
+  app.post('/callback/samlp-with-ISO',
+    passport.authenticate('samlp-with-ISO', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-with-ISO-explicit',
+  passport.authenticate('samlp-with-ISO-explicit', { protocol: 'samlp' }),
+  function(req, res) {
+    res.json(req.user);
+  }
+);
 
   app.post('/callback/samlp-with-invalid-xml',
     function (req, res, next) {
