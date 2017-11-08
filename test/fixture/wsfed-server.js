@@ -83,7 +83,7 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/wresult-with-invalid-xml',
     function (req, res, next) {
-      passport.authenticate('wsfed-saml2', function(err, user, info) {
+      passport.authenticate('wsfed-saml2-with-validations', function(err, user, info) {
         res.send(400, { message: err.message });
       })(req, res, next);
     },
@@ -93,7 +93,7 @@ module.exports.start = function(options, callback){
   );
 
   app.post('/callback',
-    passport.authenticate('wsfed-saml2'),
+    passport.authenticate('wsfed-saml2-with-validations'),
     function(req, res) {
       res.json(req.user);
     });
