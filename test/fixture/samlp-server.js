@@ -17,7 +17,7 @@ passport.use('samlp', new Strategy({
     identityProviderUrl: identityProviderUrl,
     thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
     recipientUrl: 'https://auth0-dev-ed.my.salesforce.com',
-    destinationUrl: 'https://auth0-dev-ed.my.salesforce.com'    
+    destinationUrl: 'https://auth0-dev-ed.my.salesforce.com'
   }, function(profile, done) {
     return done(null, profile);
   })
@@ -208,11 +208,12 @@ function pemToCert(pem) {
 passport.use('samlp-with-utf8', new Strategy(
   {
     path: '/callback',
-    thumbprints: ['42FA24A83E107F6842E05D2A2CA0A0A0CA8A2031'],
-    decryptionKey: fs.readFileSync(path.join(__dirname, '../test-decryption.key')),
-    recipientUrl: 'https://fmi-test.auth0.com/login/callback',
-    destinationUrl: 'https://fmi-test.auth0.com/login/callback',
+    thumbprints: ['119B9E027959CDB7C662CFD075D9E2EF384E445F'],
+    decryptionKey: fs.readFileSync(path.join(__dirname, '../test-auth0.key')),
+    recipientUrl: 'https://login0.myauth0.com/login/callback',
+    destinationUrl: 'https://login0.myauth0.com/login/callback',
     checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
+    checkSPNameQualifier: false,
     checkAudience: false
   },
   function(profile, done) {
