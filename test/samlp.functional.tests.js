@@ -14,7 +14,7 @@ var Saml    = require('../lib/passport-wsfed-saml2/saml').SAML;
 
 describe('samlp (functional tests)', function () {
   const samlRequest = fs.readFileSync(path.join(__dirname, './samples/encoded/samlrequest_signed_differentcert.txt')).toString()
-  
+
   before(function (done) {
     server.start(done);
   });
@@ -178,7 +178,7 @@ describe('samlp (functional tests)', function () {
 
   describe('SAMLResponse with utf8 chars (default encoding not configured)', function () {
     var user, r, bod, $;
-    
+
     before(function (done) {
       request.post({
         jar: request.jar(),
@@ -200,15 +200,15 @@ describe('samlp (functional tests)', function () {
     it('should return a valid user', function(){
       var user = JSON.parse(bod);
       expect(user['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'])
-          .to.equal('_89841b346092548fd44097a1e7c426a4');
+          .to.equal('_98f3625b1c12bdbda1842b868eee10cdb61385b270');
       expect(user['urn:oid:2.5.4.4'])
-          .to.equal('Müller');
+          .to.equal('Doë');
     });
   });
 
   describe('SAMLResponse with ISO-8859-1 chars (default encoding not configured)', function() {
     var user, r, bod, $;
-    
+
     before(function (done) {
       const samlxml = fs.readFileSync(path.join(__dirname, './samples/plain/samlresponse_explicit_iso.txt')).toString();
       const samlEncoded =  new Buffer(samlxml, 'binary').toString('base64');
@@ -241,7 +241,7 @@ describe('samlp (functional tests)', function () {
 
   describe('SAMLResponse with ISO-8859-1 chars (default encoding configured)', function() {
     var user, r, bod, $;
-    
+
     before(function (done) {
       const samlxml = fs.readFileSync(path.join(__dirname, './samples/plain/samlresponse_iso.txt')).toString();
       const samlEncoded =  new Buffer(samlxml, 'binary').toString('base64');
