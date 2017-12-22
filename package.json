@@ -1,29 +1,49 @@
 {
-  "name": "passport-azure-acs",
-  "version": "0.1.0",
-  "description": "Windows Azure Access Control Service auth for Passport.",
+  "name": "passport-wsfed-saml2",
+  "version": "3.0.5",
+  "description": "SAML2 Protocol and WS-Fed library",
+  "scripts": {
+    "test": "mocha --reporter spec --recursive"
+  },
   "author": {
     "name": "Matias Woloski",
-    "email": "matias@auth10.com",
-    "url": "http://auth10.com/"
+    "email": "matias@auth0.com",
+    "url": "http://auth0.com/"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/auth10/passport-wsfed-saml2.git"
+    "url": "git://github.com/auth0/passport-wsfed-saml2.git"
   },
   "bugs": {
-    "url": "http://github.com/auth10/passport-wsfed-saml2/issues"
+    "url": "http://github.com/auth0/passport-wsfed-saml2/issues"
   },
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
-    "passport": "0.1.x",
+    "cryptiles": "~0.2.2",
+    "ejs": "2.5.5",
+    "jsonwebtoken": "~5.0.4",
+    "passport-strategy": "^1.0.0",
+    "uid2": "0.0.x",
+    "xml-crypto": "auth0/xml-crypto#inclusive-namespace-fix",
+    "xml-encryption": "0.11.0",
     "xml2js": "0.1.x",
-    "xml-crypto": "https://github.com/auth10/xml-crypto/tarball/master",
-    "xmldom": "0.1.x"
+    "xmldom": "https://github.com/auth0/xmldom/tarball/master",
+    "xpath": "0.0.5",
+    "xtend": "~2.0.3"
   },
   "devDependencies": {
-    "express": "2.5.x",
-    "ejs": "0.7.x"
+    "chai": "2.x.x",
+    "chai-passport-strategy": "1.x.x",
+    "express": "~3.1.0",
+    "mocha": "~1.8.1",
+    "request": "~2.14.0",
+    "cheerio": "~0.19.0",
+    "moment": "~1.7.2",
+    "saml": "~0.4.4",
+    "wsfed": "~0.3.5",
+    "should": "~1.1.0",
+    "samlp": "~0.4.3",
+    "passport": "^0.3.2"
   },
   "engines": {
     "node": ">= 0.6.0"
@@ -35,12 +55,15 @@
     }
   ],
   "keywords": [
+    "saml",
+    "wsfed",
     "passport",
+    "auth0",
     "azure",
     "auth",
     "authn",
     "authentication",
     "identity",
-    "acs"
+    "adfs"
   ]
 }
