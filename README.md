@@ -88,7 +88,7 @@ passport.use('wsfed-saml2', new wsfedsaml2({
 	identityProviderUrl: 'https://my-adfs/adfs/ls',
 	// ADFS token signing certificate
 	thumbprint: '5D27....D27E'
-	// or options.cert: fs.readFileSync("adfs_signing_key.cer") 
+	// or options.cert: fs.readFileSync("adfs_signing_key.cer")
 }, function (profile, done) {
  // ...
 }));
@@ -106,9 +106,9 @@ passport.use('wsfed-saml2', new wsfedsaml2({
 	identityProviderUrl: 'https://my-adfs/adfs/ls',
     // ADFS token signing certificate
     thumbprint: '5D27...D27E',
-	// or options.cert: fs.readFileSync("adfs_signing_key.cer") 
+	// or options.cert: fs.readFileSync("adfs_signing_key.cer")
     protocol: "samlp",
-	// This is the private key (use case where ADFS 
+	// This is the private key (use case where ADFS
 	// is configured for RP token encryption)
     decryptionKey: fs.readFileSync("server.key")
 }, function (profile, done) {
@@ -119,6 +119,10 @@ passport.use('wsfed-saml2', new wsfedsaml2({
 ## Issue Reporting
 
 If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
+
+## Security Notice
+
+The [Security Notice](SECURITY-NOTICE.md) lists the version that is vulnerable and the actions that are required to upgrade to the lastest version.
 
 ## Author
 
