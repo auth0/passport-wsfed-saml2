@@ -479,7 +479,7 @@ describe('samlp (unit tests)', function () {
       let options = {identityProviderUrl: 'https://example.com'};
       this.samlp.getSamlRequestUrl(options, function(err, result) {
         expect(err).to.not.exist;
-        expect(result).to.be.not.null;
+        expect(result).to.match(/^https:\/\/example.com\?SAMLRequest\=.*&RelayState=.*/);
         done();
       });
     });
