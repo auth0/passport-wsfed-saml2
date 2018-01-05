@@ -476,7 +476,7 @@ describe('samlp (unit tests)', function () {
       this.samlp = new Samlp({});
     });
     it('should be OK if the identityProviderUrl is a URL', function(done) {
-      let options = {identityProviderUrl: 'https://example.com'};
+      var options = {identityProviderUrl: 'https://example.com'};
       this.samlp.getSamlRequestUrl(options, function(err, result) {
         expect(err).to.not.exist;
         expect(result).to.match(/^https:\/\/example.com\?SAMLRequest\=.*&RelayState=.*/);
@@ -484,7 +484,7 @@ describe('samlp (unit tests)', function () {
       });
     });
     it('should error if the identityProviderUrl is null', function(done) {
-      let options = {identityProviderUrl: null};
+      var options = {identityProviderUrl: null};
       this.samlp.getSamlRequestUrl(options, function(err, result) {
         expect(err).to.be.an.Error;
         expect(err.message).to.equal('Missing value for the identity provider login URL');
@@ -493,7 +493,7 @@ describe('samlp (unit tests)', function () {
       });
     });
     it('should error if the identityProviderUrl is missing', function(done) {
-      let options = {};
+      var options = {};
       this.samlp.getSamlRequestUrl(options, function(err, result) {
         expect(err).to.be.an.Error;
         expect(err.message).to.equal('Missing value for the identity provider login URL');
