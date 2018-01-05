@@ -180,7 +180,7 @@ describe('samlp (unit tests)', function () {
     var xmlWithNoSamlResponse = '<myxml>somedata</myxml>';
     var xmlWithSeveralSamlResponseElements = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"/></samlp:Status><samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Responder"/></samlp:Status></samlp:Response></samlp:Response>';
 
-    it('shuold return error for AuthnFailed status with generic message', function(done){
+    it('should return error for AuthnFailed status with generic message', function(done){
       var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusResponderAndAuthnFailed, function (err) {
         expect(err).to.be.ok;
@@ -190,7 +190,7 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it('shuold return error for AuthnFailed status with specific message', function(done){
+    it('should return error for AuthnFailed status with specific message', function(done){
       var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusResponderAndAuthnFailedWithMessage, function (err) {
         expect(err).to.be.ok;
@@ -466,6 +466,38 @@ describe('samlp (unit tests)', function () {
       samlp.validateSamlResponse(samlResponse, function (err, profile) {
         if (err) return done(err);
         expect(profile).to.be.ok;
+        done();
+      });
+    });
+  });
+
+  describe('getSamlRequestUrl', function(){
+    before(function(){
+      this.samlp = new Samlp({});
+    });
+    it('should be OK if the identityProviderUrl is a URL', function(done) {
+      let options = {identityProviderUrl: 'https://example.com'};
+      this.samlp.getSamlRequestUrl(options, function(err, result) {
+        expect(err).to.not.exist;
+        expect(result).to.be.not.null;
+        done();
+      });
+    });
+    it('should error if the identityProviderUrl is null', function(done) {
+      let options = {identityProviderUrl: null};
+      this.samlp.getSamlRequestUrl(options, function(err, result) {
+        expect(err).to.be.an.Error;
+        expect(err.message).to.equal('Missing value for the identity provider login URL');
+        expect(result).to.not.exist;
+        done();
+      });
+    });
+    it('should error if the identityProviderUrl is missing', function(done) {
+      let options = {};
+      this.samlp.getSamlRequestUrl(options, function(err, result) {
+        expect(err).to.be.an.Error;
+        expect(err.message).to.equal('Missing value for the identity provider login URL');
+        expect(result).to.not.exist;
         done();
       });
     });
