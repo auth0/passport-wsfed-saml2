@@ -1,7 +1,6 @@
 var assert = require('assert'),
     fs = require('fs'),
     helpers = require('./helpers'),
-    moment = require('moment'),
     should = require('should'),
     saml20 = require('saml').Saml20,
     SamlPassport = require('../lib/passport-wsfed-saml2/saml').SAML;
