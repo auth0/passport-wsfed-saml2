@@ -24,7 +24,7 @@
     "jsonwebtoken": "~5.0.4",
     "passport-strategy": "^1.0.0",
     "uid2": "0.0.x",
-    "xml-crypto": "auth0/xml-crypto#inclusive-namespace-fix",
+    "xml-crypto": "github:auth0/xml-crypto#inclusive-namespace-fix",
     "xml-encryption": "0.11.0",
     "xml2js": "0.1.x",
     "xmldom": "https://github.com/auth0/xmldom/tarball/master",
