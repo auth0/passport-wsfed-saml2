@@ -103,18 +103,18 @@ describe('saml 1.1 assertion', function () {
 
   });
 
-	it('should fail when the X509Certificate is invalid', function (done) {
-		const signedAssertion = fs.readFileSync(__dirname + '/samples/plain/samlresponse_saml11_invalid_cert.txt').toString();
-		const options = {
-			checkDestination: false,
-			thumbprint: '119B9E027959CDB7C662CFD075D9E2EF384E445F'
-		};
+  it('should fail when the X509Certificate is invalid', function (done) {
+    const signedAssertion = fs.readFileSync(__dirname + '/samples/plain/samlresponse_saml11_invalid_cert.txt').toString();
+    const options = {
+      checkDestination: false,
+      thumbprint: '119B9E027959CDB7C662CFD075D9E2EF384E445F'
+    };
 
-		const saml_passport = new SamlPassport(options);
-		const profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
-			should.exists(err);
-			assert.equal('The signing certificate is invalid (PEM_read_bio_PUBKEY failed)', err.message);
-			done();
-		});
-	});
+    const saml_passport = new SamlPassport(options);
+    const profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
+      should.exists(err);
+      assert.equal('The signing certificate is invalid (PEM_read_bio_PUBKEY failed)', err.message);
+      done();
+    });
+  });
 });
