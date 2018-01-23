@@ -25,7 +25,7 @@ describe('saml 2.0 assertion', function () {
 
   it('should parse attributes', function (done) {
 
-    var signedAssertion = saml20.create(options);
+		var signedAssertion = saml20.create(options);
 
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
     var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
@@ -180,8 +180,22 @@ describe('saml 2.0 assertion', function () {
 
       done();
     });
-
   });
+
+	it('should fail when the X509Certificate is invalid', function (done) {
+		const signedAssertion = fs.readFileSync(__dirname + '/samples/plain/samlresponse_saml20_invalid_cert.txt').toString();
+		const options = {
+			checkDestination: false,
+			thumbprint: '119B9E027959CDB7C662CFD075D9E2EF384E445F'
+		};
+
+		const saml_passport = new SamlPassport(options);
+		const profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
+			should.exists(err);
+			assert.equal('The signing certificate is invalid (PEM_read_bio_PUBKEY failed)', err.message);
+			done();
+		});
+	});
 
   describe('validate saml assertion (signature checks)', function(){
     it('should fail when signature is not found', function (done) {
