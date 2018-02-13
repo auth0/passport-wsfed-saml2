@@ -24,6 +24,7 @@
     "jsonwebtoken": "~5.0.4",
     "passport-strategy": "^1.0.0",
     "uid2": "0.0.x",
+    "valid-url": "^1.0.9",
     "xml-crypto": "auth0/xml-crypto#fix-digest",
     "xml-encryption": "0.11.0",
     "xml2js": "0.1.x",
