@@ -1,12 +1,7 @@
 var expect  = require('chai').expect;
-var request = require('request');
-var qs      = require('querystring');
-var cheerio = require('cheerio');
 var xmldom  = require('xmldom');
 var fs      = require('fs');
 var zlib    = require('zlib');
-var crypto  = require('crypto');
-var helpers   = require('./helpers');
 var server  = require('./fixture/samlp-server');
 var Samlp   = require('../lib/passport-wsfed-saml2/samlp');
 var Saml    = require('../lib/passport-wsfed-saml2/saml').SAML;
@@ -512,6 +507,42 @@ describe('samlp (unit tests)', function () {
     });
   });
 
+  describe('getSamlRequestParams', function(){
+    before(function(){
+      this.samlp = new Samlp({});
+    });
+
+    it('should error if the identityProviderUrl is not a string', function(done) {
+      var options = {identityProviderUrl: 42};
+      this.samlp.getSamlRequestParams(options, function(err, result) {
+        expect(err).to.be.an.Error;
+        expect(err.message).to.equal('Invalid identity provider URL: 42');
+        expect(result).to.not.exist;
+        done();
+      });
+    });
+
+    it('should error if the identityProviderUrl is a string but not a URL', function(done) {
+      var options = {identityProviderUrl: 'not a URL'};
+      this.samlp.getSamlRequestParams(options, function(err, result) {
+        expect(err).to.be.an.Error;
+        expect(err.message).to.equal('Invalid identity provider URL: "not a URL"');
+        expect(result).to.not.exist;
+        done();
+      });
+    });
+
+    it('should be OK if the identityProviderUrl is a URL', function(done) {
+      var relayState = 'foobar';
+      var options = {identityProviderUrl: `https://example.com?RelayState=${relayState}`};
+      this.samlp.getSamlRequestParams(options, function(err, result) {
+        expect(err).to.not.exist;
+        expect(result).to.have.property('RelayState', relayState);
+        done();
+      });
+    });
+  });
+
   describe('getSamlRequestUrl', function(){
     before(function(){
       this.samlp = new Samlp({});
@@ -520,24 +551,15 @@ describe('samlp (unit tests)', function () {
       var options = {identityProviderUrl: 'https://example.com'};
       this.samlp.getSamlRequestUrl(options, function(err, result) {
         expect(err).to.not.exist;
-        expect(result).to.match(/^https:\/\/example.com\?SAMLRequest\=.*&RelayState=.*/);
+        expect(result).to.match(/^https:\/\/example.com\?SAMLRequest=.*&RelayState=.*/);
         done();
       });
     });
-    it('should error if the identityProviderUrl is null', function(done) {
+    it('should error if the identityProviderUrl is not a URL', function(done) {
       var options = {identityProviderUrl: null};
       this.samlp.getSamlRequestUrl(options, function(err, result) {
         expect(err).to.be.an.Error;
-        expect(err.message).to.equal('Missing value for the identity provider login URL');
-        expect(result).to.not.exist;
-        done();
-      });
-    });
-    it('should error if the identityProviderUrl is missing', function(done) {
-      var options = {};
-      this.samlp.getSamlRequestUrl(options, function(err, result) {
-        expect(err).to.be.an.Error;
-        expect(err.message).to.equal('Missing value for the identity provider login URL');
+        expect(err.message).to.equal('Invalid identity provider URL: null');
         expect(result).to.not.exist;
         done();
       });
