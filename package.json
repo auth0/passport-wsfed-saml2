@@ -28,7 +28,7 @@
     "xml-crypto": "auth0/xml-crypto#fix-digest",
     "xml-encryption": "0.11.0",
     "xml2js": "0.1.x",
-    "xmldom": "auth0/xmldom#v0.1.19-auth0_1",
+    "xmldom": "auth0/xmldom#v0.1.19-auth0.2",
     "xpath": "0.0.5",
     "xtend": "~2.0.3"
   },
