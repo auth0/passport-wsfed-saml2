@@ -28,7 +28,7 @@
     "xml-crypto": "auth0/xml-crypto#fix-digest",
     "xml-encryption": "0.11.0",
     "xml2js": "0.1.x",
-    "xmldom": "ziluvatar/xmldom#v0.1.19-auth0.1-umlaut-telemetry",
+    "xmldom": "auth0/xmldom#v0.1.19-auth0.1-umlaut-telemetry",
     "xpath": "0.0.5",
     "xtend": "~2.0.3"
   },
