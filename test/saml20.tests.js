@@ -192,7 +192,7 @@ describe('saml 2.0 assertion', function () {
     const saml_passport = new SamlPassport(options);
     const profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       should.exists(err);
-      assert.equal('The signing certificate is invalid (PEM_read_bio_PUBKEY failed)', err.message);
+      assert.equal('error:0D07209B:asn1 encoding routines:ASN1_get_object:too long', err.message);
       done();
     });
   });
