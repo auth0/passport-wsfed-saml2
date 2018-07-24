@@ -514,6 +514,21 @@ describe('samlp (unit tests)', function () {
       });
     });
 
+    it('should explode with invalid template', function(done) {
+      var samlp = new Samlp({
+        identityProviderUrl: server.identityProviderUrl,
+        requestTemplate: '<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="@@ID@@" IssueInstant="@@IssueInstant@@" ProviderName="@@ProviderName@@" ProtocolBinding="@@ProtocolBinding@@" Version="2@@ HI THERE .0"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">@@Issuer@@</saml:Issuer></samlp:AuthnRequest>@@.0"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">@@Issuer@@</saml:Issuer></samlp:AuthnRequest>',
+        protocol: 'samlp',
+        providerName: 'Some name'
+      });
+
+      samlp.getSamlRequestParams({}, function(err, params) {
+        expect(err).not.to.be.null;
+        done();
+      });
+    });
+
+
     describe('signing', function () {
       describe('HTTP-POST or HTTP-Redirect without deflate encoding', function () {
         it('should error if the requestTemplate is malformed', function (done) {
@@ -721,3 +736,4 @@ describe('samlp (unit tests)', function () {
     });
   });
 });
+
