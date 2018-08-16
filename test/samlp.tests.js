@@ -392,6 +392,64 @@ describe('samlp (unit tests)', function () {
       });
     });
 
+    it('should return profile when saml response issuer is the same than the configured', function(done){
+      var encodedSamlResponse = fs.readFileSync(__dirname + '/samples/encoded/samlresponse_encrypted_and_signed.txt').toString();
+      const samlResponse = new Buffer(encodedSamlResponse, 'base64').toString();
+      var options = {
+        decryptionKey: fs.readFileSync(__dirname + '/test-auth0.key'),
+        thumbprint: '119B9E027959CDB7C662CFD075D9E2EF384E445F',
+        checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
+        issuer: 'http://localhost:8080/simplesaml/saml2/idp/metadata.php',
+        realm: 'urn:auth0:login0:simplephp'
+      };
+      var samlp = new Samlp(options, new Saml(options));
+      samlp.validateSamlResponse(samlResponse, function (err, profile) {
+        if (err) return done(err);
+        expect(profile).to.be.ok;
+        done();
+      });
+    });
+
+    it('should fail when saml response issuer is different than the configured one', function(done){
+      var encodedSamlResponse = fs.readFileSync(__dirname + '/samples/encoded/samlresponse_encrypted_and_signed.txt').toString();
+      const samlResponse = new Buffer(encodedSamlResponse, 'base64').toString();
+      var options = {
+        decryptionKey: fs.readFileSync(__dirname + '/test-auth0.key'),
+        thumbprint: '119B9E027959CDB7C662CFD075D9E2EF384E445F',
+        checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
+        issuer: 'http://localhost:8080/simplesaml/saml2/idp/metadata.php',
+        realm: 'urn:auth0:login0:simplephp'
+      };
+      var samlp = new Samlp(options, new Saml(options));
+      samlp.validateSamlResponse(samlResponse, function (err, profile) {
+        expect(err).to.be.ok;
+        done();
+      });
+    });
+
+    it('should  not fail when saml is not configured', function(done){
+      var encodedSamlResponse = fs.readFileSync(__dirname + '/samples/encoded/samlresponse_encrypted_and_signed.txt').toString();
+      const samlResponse = new Buffer(encodedSamlResponse, 'base64').toString();
+      var options = {
+        decryptionKey: fs.readFileSync(__dirname + '/test-auth0.key'),
+        thumbprint: '119B9E027959CDB7C662CFD075D9E2EF384E445F',
+        checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
+        issuer: 'http://localhost:8080/simplesaml/saml2/idp/metadata.php',
+        realm: 'urn:auth0:login0:simplephp'
+      };
+      var samlp = new Samlp(options, new Saml(options));
+      samlp.validateSamlResponse(samlResponse, function (err, profile) {
+        expect(err).to.be.ok;
+        done();
+      });
+    });
+
     it('should accept the signature when the saml response has an embedded XML assertion', function(done){
       var encodedSamlResponse = fs.readFileSync(__dirname + '/samples/encoded/samlresponse_encoded_xml.txt').toString();
       var cert = fs.readFileSync(__dirname + '/test-auth0-2.cer').toString();
@@ -736,4 +794,3 @@ describe('samlp (unit tests)', function () {
     });
   });
 });
-
