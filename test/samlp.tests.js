@@ -524,6 +524,7 @@ describe('samlp (unit tests)', function () {
 
       samlp.getSamlRequestParams({}, function(err, params) {
         expect(err).not.to.be.null;
+        expect(err.message).to.match(/Malformed template/);
         done();
       });
     });
