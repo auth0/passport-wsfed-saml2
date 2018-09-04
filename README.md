@@ -122,7 +122,7 @@ If you have found a bug or if you have a feature request, please report them at 
 
 ## Security Notice
 
-The [Security Notice](SECURITY-NOTICE.md) lists the version that is vulnerable and the actions that are required to upgrade to the lastest version.
+The [Security Notice](SECURITY-NOTICE.md) lists the version that is vulnerable and the actions that are required to upgrade to the latest version.
 
 ## Author
 
