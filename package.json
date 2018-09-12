@@ -1,5 +1,5 @@
 {
-  "name": "passport-wsfed-saml2",
+  "name": "passport-wsfed-saml2-next",
   "version": "4.0.1",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
