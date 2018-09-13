@@ -3,6 +3,7 @@ var assert = require('assert'),
     helpers = require('./helpers'),
     should = require('should'),
     saml20 = require('saml').Saml20,
+    utils = require('../lib/passport-wsfed-saml2/utils'),
     SamlPassport = require('../lib/passport-wsfed-saml2/saml').SAML;
 
 describe('saml 2.0 assertion', function () {
@@ -121,7 +122,7 @@ describe('saml 2.0 assertion', function () {
 
   });
 
-  it('should validate expiration', function (done) {
+  it('should validate assertion expiration', function (done) {
 
     options.lifetimeInSeconds = -10000;
 
@@ -137,6 +138,49 @@ describe('saml 2.0 assertion', function () {
     });
 
   });
+
+
+  it('should validate certificate expiration with embedded cert', function (done) {
+
+    var signedAssertion = saml20.create(options);
+    var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    // The embedded cert is expired, so we can use this as is.
+    varsaml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false, checkCertExpiration: true});
+    saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
+      should.exists(err);
+      err.message.should.equal('The signing certificate is not currently valid.');
+      should.not.exists(profile);
+
+      done();
+    });
+
+  });
+
+
+  it.only('should validate certificate expiration with non-embdded cert', function (done) {
+
+    var signedAssertion = saml20.create(options);
+
+    var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    // The test cert is expired, so we can use this as is.
+    var saml_passport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false, checkCertExpiration: true});
+    const parsedAssertion = utils.parseSamlAssertion(signedAssertion);
+    assert.equal(parsedAssertion.getElementsByTagName("X509Certificate").length, 1); // Make sure we start with exactly one embedded cert
+    const embeddedCert = parsedAssertion.getElementsByTagName("X509Certificate")[0]
+    embeddedCert.parentNode.removeChild(embeddedCert);
+    assert.equal(parsedAssertion.getElementsByTagName("X509Certificate").length, 0); // Make sure we removed the cert(s)
+
+    saml_passport.validateSamlAssertion(parsedAssertion, function(err, profile) {
+      should.exists(err);
+      err.message.should.equal('The signing certificate is not currently valid.');
+      should.not.exists(profile);
+
+      done();
+    });
+
+  });
+
+
 
   it('should validate recipent', function (done) {
     options.lifetimeInSeconds = 600;
