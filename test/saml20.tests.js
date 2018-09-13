@@ -140,6 +140,25 @@ describe('saml 2.0 assertion', function () {
   });
 
 
+
+  it('should should allow expired cert if option not passed', function (done) {
+
+    options.lifetimeInSeconds = 10000;
+
+    var signedAssertion = saml20.create(options);
+    var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    // The embedded cert is expired, so we can use this as is.
+    const samlPassport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
+    samlPassport.validateSamlAssertion(signedAssertion, function(err, profile) {
+      should.not.exists(err);
+      // err.message.should.equal('The signing certificate is not currently valid.');
+      should.exists(profile);
+
+      done();
+    });
+
+  });
+
   it('should validate certificate expiration with embedded cert', function (done) {
 
     var signedAssertion = saml20.create(options);
@@ -157,7 +176,7 @@ describe('saml 2.0 assertion', function () {
   });
 
 
-  it('should validate certificate expiration with non-embdded cert', function (done) {
+  it('should validate certificate expiration with non-embedded cert', function (done) {
 
     var signedAssertion = saml20.create(options);
 
