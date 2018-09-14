@@ -151,9 +151,7 @@ describe('saml 2.0 assertion', function () {
     const samlPassport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
     samlPassport.validateSamlAssertion(signedAssertion, function(err, profile) {
       should.not.exists(err);
-      // err.message.should.equal('The signing certificate is not currently valid.');
       should.exists(profile);
-
       done();
     });
 
