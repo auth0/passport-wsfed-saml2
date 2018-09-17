@@ -88,7 +88,7 @@ passport.use('wsfed-saml2', new wsfedsaml2({
 	identityProviderUrl: 'https://my-adfs/adfs/ls',
 	// ADFS token signing certificate
 	thumbprint: '5D27....D27E'
-	// or options.cert: fs.readFileSync("adfs_signing_key.cer")
+	// or cert: fs.readFileSync("adfs_signing_key.cer")
 }, function (profile, done) {
  // ...
 }));
@@ -106,7 +106,7 @@ passport.use('wsfed-saml2', new wsfedsaml2({
 	identityProviderUrl: 'https://my-adfs/adfs/ls',
     // ADFS token signing certificate
     thumbprint: '5D27...D27E',
-	// or options.cert: fs.readFileSync("adfs_signing_key.cer")
+	// or cert: fs.readFileSync("adfs_signing_key.cer")
     protocol: "samlp",
 	// This is the private key (use case where ADFS
 	// is configured for RP token encryption)
