@@ -192,7 +192,9 @@ describe('saml 2.0 assertion', function () {
     const saml_passport = new SamlPassport(options);
     const profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       should.exists(err);
-      assert.equal('The signing certificate is invalid (PEM_read_bio_PUBKEY failed)', err.message);
+      let oldNpmMessage  = 'The signing certificate is invalid (PEM_read_bio_PUBKEY failed)';
+      let newNpmMessage = 'The signing certificate is invalid (error:0906700D:PEM routines:PEM_ASN1_read_bio:ASN1 lib, error:0D07803A:asn1 encoding routines:ASN1_ITEM_EX_D2I:nested asn1 error, error:0D068066:asn1 encoding routines:ASN1_CHECK_TLEN:bad object header)';
+      assert.ok(err.message === oldNpmMessage || err.message === newNpmMessage, 'Error message for invalid certificate is incorrect');
       done();
     });
   });
