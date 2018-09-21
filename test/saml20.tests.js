@@ -122,9 +122,9 @@ describe('saml 2.0 assertion', function () {
 
   });
 
-  it('should validate assertion expiration', function (done) {
+  it('should validate expiration with default clockSkew', function (done) {
 
-    options.lifetimeInSeconds = -10000;
+    options.lifetimeInSeconds = -240;
 
     var signedAssertion = saml20.create(options);
     var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
@@ -139,6 +139,21 @@ describe('saml 2.0 assertion', function () {
 
   });
 
+  it('should validate expiration with overriden clockSkew', function (done) {
+
+    options.lifetimeInSeconds = -240;
+
+    var signedAssertion = saml20.create(options);
+    var publicKey = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    const samlPassport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false, clockSkew: 5});
+    var profile = samlPassport.validateSamlAssertion(signedAssertion, function(err, profile) {
+      should.not.exists(err);
+      should.exists(profile);
+
+      done();
+    });
+
+  });
 
 
   it('should should allow expired cert if option not passed', function (done) {
@@ -196,8 +211,6 @@ describe('saml 2.0 assertion', function () {
     });
 
   });
-
-
 
   it('should validate recipent', function (done) {
     options.lifetimeInSeconds = 600;
@@ -285,7 +298,5 @@ describe('saml 2.0 assertion', function () {
       });
     });
   });
-
-
 
 });
