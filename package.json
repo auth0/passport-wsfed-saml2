@@ -19,7 +19,7 @@
   },
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
-    "cryptiles": "^4.1.2",
+    "cryptiles": "^3.1.2",
     "ejs": "2.5.5",
     "jsonwebtoken": "~5.0.4",
     "passport-strategy": "^1.0.0",
