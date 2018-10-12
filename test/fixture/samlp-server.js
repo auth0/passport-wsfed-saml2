@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var http = require('http');
 var samlp = require('samlp');
 var xtend = require('xtend');
@@ -295,14 +296,12 @@ module.exports.start = function(options, callback){
 
   var app = express();
 
-  app.configure(function(){
-    this.use(express.bodyParser());
-    this.use(passport.initialize());
-    this.use(passport.session());
-    this.use(function(req,res,next){
-      req.user = fakeUser;
-      next();
-    });
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(function(req,res,next){
+    req.user = fakeUser;
+    next();
   });
 
   function getPostURL (audience, samlRequestDom, req, callback) {
@@ -407,7 +406,7 @@ module.exports.start = function(options, callback){
   app.post('/callback/samlp-with-invalid-xml',
     function (req, res, next) {
       passport.authenticate('samlp-with-utf8', { protocol: 'samlp' }, function(err, user, info) {
-        res.send(400, { message: err.message });
+        res.status(400).send({ message: err.message });
       })(req, res, next);
     },
     function(req, res) {
