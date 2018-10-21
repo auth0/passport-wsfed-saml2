@@ -30,8 +30,7 @@
     "xml-encryption": "0.11.0",
     "xml2js": "0.1.x",
     "xmldom": "auth0/xmldom#v0.1.19-auth0_1",
-    "xpath": "0.0.5",
-    "xtend": "~2.0.3"
+    "xpath": "0.0.5"
   },
   "devDependencies": {
     "chai": "2.x.x",

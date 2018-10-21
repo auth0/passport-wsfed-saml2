@@ -1,7 +1,6 @@
 var express = require('express');
 var http = require('http');
 var samlp = require('samlp');
-var xtend = require('xtend');
 var fs = require('fs');
 var path = require('path');
 
@@ -311,7 +310,7 @@ module.exports.start = function(options, callback){
 
   //configure samlp middleware
   app.get('/samlp', function(req, res, next) {
-    samlp.auth(xtend({}, {
+    samlp.auth(Object.assign({
         issuer:             'urn:fixture-test',
         getPostURL:         getPostURL,
         cert:               credentials.cert,
