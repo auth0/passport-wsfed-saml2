@@ -454,6 +454,45 @@ describe('samlp (unit tests)', function () {
     });
   });
 
+  it('should reject signature wrapped response', function(done) {
+    var encodedSamlResponse = 'PD94bWwgdmVyc2lvbj0iMS4wIj8+CjxzYW1scDpSZXNwb25zZSB4bWxuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIiB4bWxuczpkcz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnIyIgeG1sbnM6ZW5jPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGVuYyMiIHhtbG5zOnNhbWw9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iIHhtbG5zOng1MDA9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpwcm9maWxlczphdHRyaWJ1dGU6WDUwMCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgRGVzdGluYXRpb249Imh0dHBzOi8vYXZpbGxhY2hsYWIuYXV0aDAuY29tL2xvZ2luL2NhbGxiYWNrP2Nvbm5lY3Rpb249Q0hPUCIgSUQ9InBmeDJiYTM1MDM4LTdmZmYtZjljMC1jOWJjLTE0NjJlMTQ1NWE3NiIgSXNzdWVJbnN0YW50PSIyMDE2LTA4LTEwVDE5OjIwOjI4WiIgVmVyc2lvbj0iMi4wIj48c2FtbDpJc3N1ZXIgRm9ybWF0PSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6bmFtZWlkLWZvcm1hdDplbnRpdHkiPmh0dHA6Ly9jaWRtZmVkLmNob3AuZWR1L29hbS9mZWQ8L3NhbWw6SXNzdWVyPjxkczpTaWduYXR1cmU+CiAgPGRzOlNpZ25lZEluZm8+PGRzOkNhbm9uaWNhbGl6YXRpb25NZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzEwL3htbC1leGMtYzE0biMiLz4KICAgIDxkczpTaWduYXR1cmVNZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjcnNhLXNoYTEiLz4KICA8ZHM6UmVmZXJlbmNlIFVSST0iI3BmeDJiYTM1MDM4LTdmZmYtZjljMC1jOWJjLTE0NjJlMTQ1NWE3NiI+PGRzOlRyYW5zZm9ybXM+PGRzOlRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNlbnZlbG9wZWQtc2lnbmF0dXJlIi8+PGRzOlRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvMTAveG1sLWV4Yy1jMTRuIyIvPjwvZHM6VHJhbnNmb3Jtcz48ZHM6RGlnZXN0TWV0aG9kIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnI3NoYTEiLz48ZHM6RGlnZXN0VmFsdWU+d0ZLLy9YN0dBdzVQQlFIbnRQV2I4T1RoWkVFPTwvZHM6RGlnZXN0VmFsdWU+PC9kczpSZWZlcmVuY2U+PC9kczpTaWduZWRJbmZvPjxkczpTaWduYXR1cmVWYWx1ZT50SWI4WjZPV3ExVDBzd3M2SkZkQWJVUjZGRUJrM0k3TmtYZ2s1d0N0NDJ0TWpQcTM0M2o4YWoxeHdKcXNiWXZMVHZBdHhFZ21vaGd4dmNKN29BRGlxWEJnRFE2SEpOeGUzVTZxM05HTzZRN1hobXRITUZOK2JmK0JsVDdIbGw2TWExMUJmWU5pNnJLblJPcUpUTDZlem01M2pMTm5xazlFbi9HWXdjQUttR0kxQzF4bEo5Y1FEdUh6QTZ3NTdUZXhkQU9YbkJWTWk1MG9Bb0FHOHRhVURXdHBwUXdmdXVDRitEN056NVFvVU5VS0UvRXh0VGpyaUJnMDRSWHY2Z0ZUS3FZYmViNHFETUlxZjZoZ3BWZDF4cm9aaXBHZlFodUhvY2pvVUtRU2ZTUDhCRFlEVFpveFZJaUVCVUhQOFJSSzVYb2Y0NXgwK2ZZajErTzdrZzhWcEE9PTwvZHM6U2lnbmF0dXJlVmFsdWU+CjxkczpLZXlJbmZvPjxkczpYNTA5RGF0YT48ZHM6WDUwOUNlcnRpZmljYXRlPk1JSUVEekNDQXZlZ0F3SUJBZ0lKQUxyOUh3Z3JRN0dlTUEwR0NTcUdTSWIzRFFFQkJRVUFNR0l4R0RBV0JnTlZCQU1URDJGMWRHZ3dMbUYxZEdnd0xtTnZiVEVTTUJBR0ExVUVDaE1KUVhWMGFEQWdURXhETVFzd0NRWURWUVFHRXdKVlV6RVRNQkVHQTFVRUNCTUtWMkZ6YUdsdVozUnZiakVRTUE0R0ExVUVCeE1IVW1Wa2JXOXVaREFlRncweE1qRXlNamt4TlRNd05EZGFGdzB4TXpBeE1qZ3hOVE13TkRkYU1HSXhHREFXQmdOVkJBTVREMkYxZEdnd0xtRjFkR2d3TG1OdmJURVNNQkFHQTFVRUNoTUpRWFYwYURBZ1RFeERNUXN3Q1FZRFZRUUdFd0pWVXpFVE1CRUdBMVVFQ0JNS1YyRnphR2x1WjNSdmJqRVFNQTRHQTFVRUJ4TUhVbVZrYlc5dVpEQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCQU1aaVZtTkhpWExsZHJnYlM1ME9OTk9IN3BKMnpnNk9jU01rWVpHRFpKYk9aL1Rxd2F1QzZKT25JNyt4dGtQSnNRSFpTRkpzNFUwc3JqWkt6RENtYXoyakxBSkRTaFAyamFYbHJraTE2bkRMUEUvL0lHQWczQkpndVNtQkNXcERiU205MlY5aFNzRStNaHg2YkRhSml3OHlRK1E4aVNtMGFUUVp0cDZPNElDTXUwMEVTZGg5TkpxSUVDRUx2UDMxQURWMVhoajdJYnl5VlBERnhNdjNvbDVCeVNFOXd3d09GVXEvd3Y3WHo5TFJpVWpVelBPK0xxM09NM28vdUNEYms3akQ3WHJHVXVPeWRBTEQ4VUxzWHA0RXVETytuRmJlWEIvaUtuZFp5bnVWS29raXJ5d2wybkQySVAwL3luY2RMUVo4QnlJeXFQM0c4MmZxL2w4cDdBc0NBd0VBQWFPQnh6Q0J4REFkQmdOVkhRNEVGZ1FVSEkyclVYZUJqVHYxekFsbGFQR3JIRmNFSzBZd2daUUdBMVVkSXdTQmpEQ0JpWUFVSEkyclVYZUJqVHYxekFsbGFQR3JIRmNFSzBhaFpxUmtNR0l4R0RBV0JnTlZCQU1URDJGMWRHZ3dMbUYxZEdnd0xtTnZiVEVTTUJBR0ExVUVDaE1KUVhWMGFEQWdURXhETVFzd0NRWURWUVFHRXdKVlV6RVRNQkVHQTFVRUNCTUtWMkZ6YUdsdVozUnZiakVRTUE0R0ExVUVCeE1IVW1Wa2JXOXVaSUlKQUxyOUh3Z3JRN0dlTUF3R0ExVWRFd1FGTUFNQkFmOHdEUVlKS29aSWh2Y05BUUVGQlFBRGdnRUJBRnJYSWhDeTRUNGVHcmlrYjBSMndIdi91UzU0OHIzcFp5QlYwQ0RiY1J3QXRibnBKTXZrR0ZxS1ZwNHBteW9JRFNWTksvaitzTEVzaEIyMFhmdGV6SFp5UkpiQ1VidEt2WFE2RnN4b2VaTWxOMElUWUtUYW9CWktoVXh4ajkwb3RBaE5DNThxd0dVUHF0Mkxld0poSHlMdWNLa0dKMW1RM2I1eEtaNTMyVG91Zm91SDlWTGhpZzNIMUtueFdvL3pNRDZLZThjQ2s2cU85aHR1aEkwNnMzR1FHUzFRV1F0QW1tMTdDNlRmS2dEd1FGWndocUhVVVpud0tSSDhnVTZPZ1pzdmhnVjFCN0g1bWpaY3U1N0tNaURCZWtVOU1FWTBEQ1ZUTjNXa21jVElJNjY4ekxzSnJrTlg2UEVmY2sxQU1CYlZFNnBFVUtjV3dxM3VhTHZsQVVvPTwvZHM6WDUwOUNlcnRpZmljYXRlPjwvZHM6WDUwOURhdGE+PC9kczpLZXlJbmZvPjwvZHM6U2lnbmF0dXJlPjxzYW1scDpTdGF0dXM+PHNhbWxwOlN0YXR1c0NvZGUgVmFsdWU9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpzdGF0dXM6U3VjY2VzcyIvPjwvc2FtbHA6U3RhdHVzPjxzYW1sOkFzc2VydGlvbiBJRD0iaWQtWS1Sd0hpNlJQOGpNVVI4a3IxRlZ6SHVOdmJ1ck9JZUs2d0dwTmpkLSIgSXNzdWVJbnN0YW50PSIyMDE2LTA4LTEwVDE5OjIwOjI4WiIgVmVyc2lvbj0iMi4wIj48c2FtbDpJc3N1ZXIgRm9ybWF0PSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6bmFtZWlkLWZvcm1hdDplbnRpdHkiPmh0dHA6Ly9jaWRtZmVkLmNob3AuZWR1L29hbS9mZWQ8L3NhbWw6SXNzdWVyPjxzYW1sOlN1YmplY3Q+PHNhbWw6TmFtZUlEIEZvcm1hdD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6MS4xOm5hbWVpZC1mb3JtYXQ6dW5zcGVjaWZpZWQiPkhhbmtlZUpAZW1haWwuY2hvcC5lZHU8L3NhbWw6TmFtZUlEPjxzYW1sOlN1YmplY3RDb25maXJtYXRpb24gTWV0aG9kPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6Y206YmVhcmVyIj48c2FtbDpTdWJqZWN0Q29uZmlybWF0aW9uRGF0YSBOb3RPbk9yQWZ0ZXI9IjIwMTYtMDgtMTBUMTk6MjU6MjhaIiBSZWNpcGllbnQ9Imh0dHBzOi8vYXZpbGxhY2hsYWIuYXV0aDAuY29tL2xvZ2luL2NhbGxiYWNrP2Nvbm5lY3Rpb249Q0hPUCIvPjwvc2FtbDpTdWJqZWN0Q29uZmlybWF0aW9uPjwvc2FtbDpTdWJqZWN0PjxzYW1sOkNvbmRpdGlvbnMgTm90QmVmb3JlPSIyMDE2LTA4LTEwVDE5OjIwOjI4WiIgTm90T25PckFmdGVyPSIyMDE2LTA4LTEwVDE5OjI1OjI4WiI+PHNhbWw6QXVkaWVuY2VSZXN0cmljdGlvbj48c2FtbDpBdWRpZW5jZT51cm46YXV0aDA6YXZpbGxhY2hsYWI6Q0hPUDwvc2FtbDpBdWRpZW5jZT48L3NhbWw6QXVkaWVuY2VSZXN0cmljdGlvbj48L3NhbWw6Q29uZGl0aW9ucz48c2FtbDpBdXRoblN0YXRlbWVudCBBdXRobkluc3RhbnQ9IjIwMTYtMDgtMTBUMTk6MjA6MjhaIiBTZXNzaW9uSW5kZXg9ImlkLXZNVy0zckstdlJlb2V1T2Q1QXRWOEpiLVFRNENtUTB6RzQ1ZlRZSjEiIFNlc3Npb25Ob3RPbk9yQWZ0ZXI9IjIwMTYtMDgtMTBUMjA6MjA6MjhaIj48c2FtbDpBdXRobkNvbnRleHQ+PHNhbWw6QXV0aG5Db250ZXh0Q2xhc3NSZWY+TERBUFNjaGVtZV9HUklOPC9zYW1sOkF1dGhuQ29udGV4dENsYXNzUmVmPjwvc2FtbDpBdXRobkNvbnRleHQ+PC9zYW1sOkF1dGhuU3RhdGVtZW50Pjwvc2FtbDpBc3NlcnRpb24+PC9zYW1scDpSZXNwb25zZT4=';
+    var cert = fs.readFileSync(__dirname + '/test-auth0.cer').toString();
+    var buffer = new Buffer(encodedSamlResponse, 'base64').toString();
+    var xml = buffer.toString();
+    //Create version of response without signature
+
+    var stripped = xml
+      .replace(/<ds:Signature[\s\S]*ds:Signature>/, "")
+      .replace(/<samlp:Response[\s\S]*>/, "")
+      .replace(/<\/samlp:Response>/, "")
+      .replace(/<saml:Assertion[\s\S]*>/, "")
+      .replace(/<\/saml:Assertion>/, "");
+    //Create version of response with altered IDs and new username
+    var outer = xml
+      .replace(/assertion" ID="_[0-9a-f]{3}/g, 'assertion" ID="_000')
+      .replace("HankeeJ@email.chop.edu", "admin@esaml2.com");
+    //Put stripped version under SubjectConfirmationData of modified version
+    var xmlWrapped = outer.replace(/<saml:SubjectConfirmationData[^>]*\/>/, "<saml:SubjectConfirmationData>" + stripped.replace('<?xml version="1.0" encoding="UTF-8"?>', "") + "</saml:SubjectConfirmationData>");
+
+    var newWrap =  new Buffer(xmlWrapped, 'base64').toString();
+    var options = {
+      cert: cert,
+      checkExpiration: false,
+      checkDestination: false,
+      checkRecipient: false,
+      checkAudience: false,
+      checkSPNameQualifier: false
+    };
+
+    var samlp = new Samlp(options, new Saml(options));
+    samlp.validateSamlResponse(xmlWrapped, function (err, profile) {
+      expect(err).to.be.ok;
+      expect(err.name).to.equals('Error');
+      expect(err.message).to.equal('Signature check errors: invalid signature: for uri #pfx2ba35038-7fff-f9c0-c9bc-1462e1455a76 calculated digest is Ayvfyx1bD/XCEn890UHBtv6jkrA= but the xml to validate supplies digest wFK//X7GAw5PBQHntPWb8OThZEE=');
+      done();
+    });
+  });
+
   describe('getSamlRequestParams', function(){
     before(function(){
       this.samlp = new Samlp({});
@@ -737,4 +776,3 @@ describe('samlp (unit tests)', function () {
     });
   });
 });
-
