@@ -19,8 +19,8 @@
   },
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
-    "cryptiles": "~0.2.2",
-    "ejs": "2.5.5",
+    "cryptiles": "^4.1.1",
+    "ejs": "^2.6.1",
     "jsonwebtoken": "~5.0.4",
     "passport-strategy": "^1.0.0",
     "uid2": "0.0.x",
@@ -31,20 +31,21 @@
     "xml2js": "0.1.x",
     "xmldom": "auth0/xmldom#v0.1.19-auth0_1",
     "xpath": "0.0.5",
-    "xtend": "~2.0.3"
+    "xtend": "^4.0.1"
   },
   "devDependencies": {
-    "chai": "2.x.x",
-    "chai-passport-strategy": "1.x.x",
-    "cheerio": "~0.19.0",
-    "express": "~3.1.0",
-    "mocha": "~1.8.1",
-    "passport": "^0.3.2",
-    "request": "~2.14.0",
-    "saml": "~0.4.4",
-    "samlp": "~0.4.3",
+    "body-parser": "^1.18.3",
+    "chai": "^2.3.0",
+    "chai-passport-strategy": "^1.0.1",
+    "cheerio": "^0.22.0",
+    "express": "^4.16.3",
+    "mocha": "^5.2.0",
+    "passport": "^0.4.0",
+    "request": "^2.87.0",
+    "saml": "^0.12.4",
+    "samlp": "^3.4.0",
     "should": "~1.1.0",
-    "wsfed": "~0.3.5"
+    "wsfed": "^4.0.0"
   },
   "engines": {
     "node": ">= 0.6.0"
