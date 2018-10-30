@@ -11,6 +11,14 @@ var Strategy = require('../../lib/passport-wsfed-saml2').Strategy;
 var identityProviderUrl = 'http://localhost:5051/samlp';
 var relayState = 'somestate';
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 passport.use('samlp', new Strategy({
     path: '/callback',
     realm: 'https://auth0-dev-ed.my.salesforce.com',
