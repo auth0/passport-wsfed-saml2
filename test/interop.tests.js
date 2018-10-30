@@ -162,7 +162,6 @@ describe('interop', function () {
     });
 
     it('should return error', function(){
-      console.log({ body: r.body });
       expect(r.statusCode)
             .to.equal(400);
     });
