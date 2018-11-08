@@ -114,10 +114,14 @@ describe('saml 1.1 assertion', function () {
     const profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
       let oldNpmMessage = 'The signing certificate is invalid (PEM_read_bio_PUBKEY failed)';
       let newNpmMessage = 'The signing certificate is invalid (error:0906700D:PEM routines:PEM_ASN1_read_bio:ASN1 lib, error:0D07803A:asn1 encoding routines:ASN1_ITEM_EX_D2I:nested asn1 error, error:0D068066:asn1 encoding routines:ASN1_CHECK_TLEN:bad object header)';
+      let node10Message = 'The signing certificate is invalid (error:0D07803A:asn1 encoding routines:asn1_item_embed_d2i:nested asn1 error, error:0D068066:asn1 encoding routines:asn1_check_tlen:bad object header)'
 
       assert.ok(err, 'The signing certificate was unexpectedly valid');
       assert.ok(/signing certificate is invalid/.test(err.message), 'Error message is not the default invalid message');
-      assert.ok(err.message === oldNpmMessage || err.message === newNpmMessage, 'Error message for invalid certificate is incorrect');
+      assert.ok(
+        err.message === oldNpmMessage || err.message === newNpmMessage || err.message === node10Message,
+        'Error message for invalid certificate is incorrect'
+      );
 
       done();
     });
