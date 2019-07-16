@@ -1,7 +1,6 @@
 var express = require('express');
 var http = require('http');
 var wsfed = require('wsfed');
-var xtend = require('xtend');
 var fs = require('fs');
 var path = require('path');
 
@@ -74,7 +73,7 @@ module.exports.start = function(options, callback){
   }
 
   app.get('/login',
-    wsfed.auth(xtend({}, {
+    wsfed.auth(Object.assign({
       issuer:             'fixture-test',
       getPostURL:         getPostURL,
       cert:               credentials.cert,
