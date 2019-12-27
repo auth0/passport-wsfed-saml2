@@ -36,7 +36,7 @@
     "chai": "2.x.x",
     "chai-passport-strategy": "1.x.x",
     "cheerio": "~0.19.0",
-    "express": "~3.1.0",
+    "express": "~3.11.0",
     "mocha": "~1.8.1",
     "passport": "^0.3.2",
     "request": "~2.14.0",
