@@ -25,7 +25,7 @@
     "uid2": "0.0.x",
     "valid-url": "^1.0.9",
     "x509": "^0.3.4",
-    "xml-crypto": "auth0/xml-crypto#fix-digest",
+    "xml-crypto": "joseluisdiaz/xml-crypto#c14n-line-endings",
     "xml-encryption": "auth0/node-xml-encryption#v0.12.0",
     "xml2js": "0.1.x",
     "xmldom": "auth0/xmldom#v0.1.19-auth0.2",
