@@ -571,7 +571,7 @@ describe('samlp (unit tests)', function () {
 
     describe('signing', function () {
       describe('HTTP-POST or HTTP-Redirect without deflate encoding', function () {
-        it('should error if the requestTemplate is malformed', function (done) {
+        it.only('should error if the requestTemplate is malformed', function (done) {
           var options = {
             protocolBinding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
             signingKey: {
@@ -583,6 +583,7 @@ describe('samlp (unit tests)', function () {
           };
           this.samlp.getSamlRequestParams(options, function(err, result) {
             expect(err).to.be.an.Error;
+            console.log(err.message);
             expect(err.message).to.equal('end tag name: samlp:AuthnRequest is not match the current start tagName:undefined');
             expect(result).to.not.exist;
             done();
