@@ -393,8 +393,7 @@ describe('samlp (functional tests)', function () {
 
       it('should post to idp', function(){
         expect(r.statusCode).to.equal(200);
-        expect(r.headers['content-type']).to.equal('text/html');
-        expect(r.headers['content-type']).to.equal('text/html');
+        expect(r.headers['content-type']).to.contains('text/html');
         expect($('form').attr('action')).to.equal('http://localhost:5051/samlp');
       });
 
