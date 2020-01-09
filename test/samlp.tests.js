@@ -583,7 +583,7 @@ describe('samlp (unit tests)', function () {
           };
           this.samlp.getSamlRequestParams(options, function(err, result) {
             expect(err).to.be.an.Error;
-            expect(err.message).to.equal('end tag name: samlp:AuthnRequest is not match the current start tagName:undefined');
+            expect(err.message).to.equal('fail to compute signature');
             expect(result).to.not.exist;
             done();
           });

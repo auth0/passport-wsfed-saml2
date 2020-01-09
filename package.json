@@ -1,6 +1,6 @@
 {
   "name": "passport-wsfed-saml2",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
     "test": "mocha --reporter spec --recursive"
@@ -25,10 +25,10 @@
     "uid2": "0.0.x",
     "valid-url": "^1.0.9",
     "x509": "^0.3.4",
-    "xml-crypto": "auth0/xml-crypto#fix-digest",
+    "xml-crypto": "auth0/xml-crypto#v1.4.1-auth0.2",
     "xml-encryption": "auth0/node-xml-encryption#v0.12.0",
     "xml2js": "0.1.x",
-    "xmldom": "auth0/xmldom#v0.1.19-auth0_1",
+    "xmldom": "auth0/xmldom#v0.1.19-auth0.2",
     "xpath": "0.0.5",
     "xtend": "~2.0.3"
   },
@@ -46,7 +46,7 @@
     "wsfed": "~0.3.5"
   },
   "engines": {
-    "node": ">= 0.6.0"
+    "node": ">= 4"
   },
   "licenses": [
     {
