@@ -121,7 +121,7 @@ describe('samlp - using default session state store', function() {
       });
 
       strategy._samlp.validateSamlResponse = function(token, done) {
-        expect(token).to.be.an.object;
+        expect(token).to.be.an('object');
         done(null, { id: '1234' });
       };
       
@@ -153,12 +153,12 @@ describe('samlp - using default session state store', function() {
         });
   
         it('should supply user', function() {
-          expect(user).to.be.an.object;
+          expect(user).to.be.an('object');
           expect(user.id).to.equal('1234');
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Hello');
         });
       
@@ -196,12 +196,12 @@ describe('samlp - using default session state store', function() {
         });
   
         it('should supply user', function() {
-          expect(user).to.be.an.object;
+          expect(user).to.be.an('object');
           expect(user.id).to.equal('1234');
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Hello');
         });
       
@@ -236,7 +236,7 @@ describe('samlp - using default session state store', function() {
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Invalid authorization request state.');
         });
       
@@ -272,7 +272,7 @@ describe('samlp - using default session state store', function() {
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Unable to verify authorization request state.');
         });
       
@@ -305,7 +305,7 @@ describe('samlp - using default session state store', function() {
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Unable to verify authorization request state.');
         });
       
@@ -357,7 +357,7 @@ describe('samlp - using default session state store', function() {
     });
 
     strategy._samlp.validateSamlResponse = function(token, done) {
-      expect(token).to.be.an.object;
+      expect(token).to.be.an('object');
       done(null, { id: '1234' });
     };
     
@@ -423,12 +423,12 @@ describe('samlp - using default session state store', function() {
         });
   
         it('should supply user', function() {
-          expect(user).to.be.an.object;
+          expect(user).to.be.an('object');
           expect(user.id).to.equal('1234');
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Hello');
         });
       

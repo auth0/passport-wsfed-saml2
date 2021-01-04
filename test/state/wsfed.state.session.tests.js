@@ -117,7 +117,7 @@ describe('wsfed - using default session state store', function() {
       });
 
       strategy._wsfed.extractToken = function(req) {
-        expect(req).to.be.an.object;
+        expect(req).to.be.an('object');
         return '<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>';
       };
 
@@ -154,12 +154,12 @@ describe('wsfed - using default session state store', function() {
         });
   
         it('should supply user', function() {
-          expect(user).to.be.an.object;
+          expect(user).to.be.an('object');
           expect(user.id).to.equal('1234');
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Hello');
         });
       
@@ -197,12 +197,12 @@ describe('wsfed - using default session state store', function() {
         });
   
         it('should supply user', function() {
-          expect(user).to.be.an.object;
+          expect(user).to.be.an('object');
           expect(user.id).to.equal('1234');
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Hello');
         });
       
@@ -237,7 +237,7 @@ describe('wsfed - using default session state store', function() {
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Invalid authorization request state.');
         });
       
@@ -273,7 +273,7 @@ describe('wsfed - using default session state store', function() {
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Unable to verify authorization request state.');
         });
       
@@ -306,7 +306,7 @@ describe('wsfed - using default session state store', function() {
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Unable to verify authorization request state.');
         });
       
@@ -357,7 +357,7 @@ describe('wsfed - using default session state store', function() {
     });
 
     strategy._wsfed.extractToken = function(req) {
-      expect(req).to.be.an.object;
+      expect(req).to.be.an('object');
       return '<trust:RequestedSecurityToken>...</trust:RequestedSecurityToken>';
     };
 
@@ -428,12 +428,12 @@ describe('wsfed - using default session state store', function() {
         });
   
         it('should supply user', function() {
-          expect(user).to.be.an.object;
+          expect(user).to.be.an('object');
           expect(user.id).to.equal('1234');
         });
   
         it('should supply info', function() {
-          expect(info).to.be.an.object;
+          expect(info).to.be.an('object');
           expect(info.message).to.equal('Hello');
         });
       

@@ -6,7 +6,7 @@ maintaining the signature valid. This could allow an authenticated attacker to "
 
 Updated packages are available on npm. To ensure delivery of additional bug fixes moving forward, please make sure your `package.json` file is updated to take patch and minor level updates of our libraries. See below:
 
-```
+```json
 {
   "dependencies": {
     "passport-wsfed-saml2": "^3.0.10"
@@ -20,9 +20,8 @@ This fix patches the library that your application runs, but will not impact you
 
 You can read more details regarding the vulnerability [here](https://auth0.com/docs/security/bulletins/cve-2018-8085).
 
-
-
 Security vulnerability details for passport-wsfed-saml2 < 3.0.5
+
 ===============================================================
 
 A vulnerability has been discovered in the passport-wsfed-saml2 library affecting versions < 3.0.5. This vulnerability allows an attacker to impersonate another user and potentially elevate their privileges if the SAML identity provider:
@@ -34,7 +33,7 @@ Developers using the passport-wsfed-saml2 Passport Strategy need to upgrade to t
 
 Updated packages are available on npm. To ensure delivery of additional bug fixes moving forward, please make sure your `package.json` file is updated to take patch and minor level updates of our libraries. See below:
 
-```
+```json
 {
   "dependencies": {
     "passport-wsfed-saml2": "^3.0.5"
