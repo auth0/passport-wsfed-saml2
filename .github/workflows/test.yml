@@ -5,12 +5,16 @@ on:
   pull_request:
 
 jobs:
-  test-node:
+  mocha-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
     steps:
-    - uses: actions/setup-node@v2
+    - name: Use Node Version ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
       with:
-        node-version: 10
+        node-version: ${{ matrix.node-version }}
 
     - name: Checkout repo
       uses: actions/checkout@v2
@@ -31,3 +35,5 @@ jobs:
 
     - name: Run Test
       run: yarn test
+      env:
+        CI: true
