@@ -20,17 +20,17 @@
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
     "ejs": "3.1.5",
-    "jsonwebtoken": "~5.0.4",
+    "jsonwebtoken": "~8.5.1",
     "node-forge": "^0.10.0",
     "passport-strategy": "^1.0.0",
     "uid2": "0.0.x",
     "valid-url": "^1.0.9",
     "xml-crypto": "auth0/xml-crypto#v1.4.1-auth0.2",
     "xml-encryption": "1.2.1",
-    "xml2js": "0.1.x",
+    "xml2js": "0.4.23",
     "xmldom": "auth0/xmldom#v0.1.19-auth0.2",
-    "xpath": "0.0.5",
-    "xtend": "~2.0.3"
+    "xpath": "0.0.32",
+    "xtend": "~4.0.2"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
@@ -39,11 +39,11 @@
     "cheerio": "~1.0.0-rc.5",
     "express": "~4.17.1",
     "mocha": "~8.2.0",
-    "passport": "^0.3.2",
+    "passport": "^0.4.1",
     "request": "~2.88.0",
     "saml": "~0.4.4",
     "samlp": "~0.4.3",
-    "should": "~1.1.0",
+    "should": "~13.2.3",
     "wsfed": "~0.3.5"
   },
   "engines": {

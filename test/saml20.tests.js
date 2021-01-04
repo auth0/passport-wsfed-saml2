@@ -1,6 +1,7 @@
 var assert = require('assert'),
     fs = require('fs'),
     helpers = require('./helpers'),
+    expect = require('chai').expect,
     should = require('should'),
     saml20 = require('saml').Saml20,
     utils = require('../lib/passport-wsfed-saml2/utils'),
@@ -112,11 +113,11 @@ describe('saml 2.0 assertion', function () {
     const samlPassport = new SamlPassport({cert: publicKey, realm: 'urn:myapp', checkRecipient: false});
     var profile = samlPassport.validateSamlAssertion(signedAssertion, function(err, profile) {
       if (err) return done(err);
-
+console.log({profile});
       assert.ok(profile);
       profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/groups'].should.be.an.instanceOf(Array);
-      profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/groups'].should.include('Admins');
-      profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/groups'].should.include('Contributors');
+      expect(profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/groups']).to.include('Admins');
+      expect(profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/groups']).to.include('Contributors');
       done();
     });
 
