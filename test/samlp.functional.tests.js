@@ -211,7 +211,7 @@ describe('samlp (functional tests)', function () {
 
     before(function (done) {
       const samlxml = fs.readFileSync(path.join(__dirname, './samples/plain/samlresponse_explicit_iso.txt')).toString();
-      const samlEncoded =  new Buffer(samlxml, 'binary').toString('base64');
+      const samlEncoded =  new Buffer.from(samlxml, 'binary').toString('base64');
 
       request.post({
         jar: request.jar(),
@@ -244,7 +244,7 @@ describe('samlp (functional tests)', function () {
 
     before(function (done) {
       const samlxml = fs.readFileSync(path.join(__dirname, './samples/plain/samlresponse_iso.txt')).toString();
-      const samlEncoded =  new Buffer(samlxml, 'binary').toString('base64');
+      const samlEncoded =  new Buffer.from(samlxml, 'binary').toString('base64');
 
       request.post({
         jar: request.jar(),
@@ -346,7 +346,7 @@ describe('samlp (functional tests)', function () {
         expect(querystring).to.have.property('SAMLRequest');
         var SAMLRequest = querystring.SAMLRequest;
 
-        zlib.inflateRaw(new Buffer(SAMLRequest, 'base64'), function (err, buffer) {
+        zlib.inflateRaw(new Buffer.from(SAMLRequest, 'base64'), function (err, buffer) {
           if (err) return done(err);
           var request = buffer.toString();
           var doc = new xmldom.DOMParser().parseFromString(request);
@@ -401,7 +401,7 @@ describe('samlp (functional tests)', function () {
         var SAMLRequest = $('form input[name="SAMLRequest"]').val();
         expect(SAMLRequest).to.be.ok;
 
-        var doc = new xmldom.DOMParser().parseFromString(new Buffer(SAMLRequest, 'base64').toString());
+        var doc = new xmldom.DOMParser().parseFromString(new Buffer.from(SAMLRequest, 'base64').toString());
         expect(doc.documentElement.getAttribute('ProtocolBinding'))
           .to.equal('urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST');
 
@@ -451,7 +451,7 @@ describe('samlp (functional tests)', function () {
       expect(querystring).to.have.property('SAMLRequest');
       var SAMLRequest = querystring.SAMLRequest;
 
-      zlib.inflateRaw(new Buffer(SAMLRequest, 'base64'), function (err, buffer) {
+      zlib.inflateRaw(new Buffer.from(SAMLRequest, 'base64'), function (err, buffer) {
         if (err) return done(err);
         var request = buffer.toString();
         var doc = new xmldom.DOMParser().parseFromString(request);
@@ -530,7 +530,7 @@ describe('samlp (functional tests)', function () {
 
       it('should have signed SAMLRequest with valid signature', function(done){
         var signedSAMLRequest = $('form input[name="SAMLRequest"]').val();
-        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
+        var signedRequest = new Buffer.from(signedSAMLRequest, 'base64').toString();
         var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
 
         expect(helpers.isValidSignature(signedRequest, signingCert))
@@ -541,7 +541,7 @@ describe('samlp (functional tests)', function () {
 
       it('should show issuer before signature', function(done){
         var signedSAMLRequest = $('form input[name="SAMLRequest"]').val();
-        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
+        var signedRequest = new Buffer.from(signedSAMLRequest, 'base64').toString();
         var doc = new xmldom.DOMParser().parseFromString(signedRequest);
 
         // First child has to be the issuer
@@ -581,7 +581,7 @@ describe('samlp (functional tests)', function () {
         expect(querystring.RelayState).to.equal('somestate');
 
         var signedSAMLRequest = querystring.SAMLRequest;
-        var signedRequest = new Buffer(signedSAMLRequest, 'base64').toString();
+        var signedRequest = new Buffer.from(signedSAMLRequest, 'base64').toString();
         var signingCert = fs.readFileSync(__dirname + '/test-auth0.pem');
 
         expect(helpers.isValidSignature(signedRequest, signingCert))
