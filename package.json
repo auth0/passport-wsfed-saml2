@@ -21,10 +21,10 @@
   "dependencies": {
     "ejs": "2.5.5",
     "jsonwebtoken": "~5.0.4",
+    "node-forge": "^0.10.0",
     "passport-strategy": "^1.0.0",
     "uid2": "0.0.x",
     "valid-url": "^1.0.9",
-    "x509": "^0.3.4",
     "xml-crypto": "auth0/xml-crypto#v1.4.1-auth0.2",
     "xml-encryption": "auth0/node-xml-encryption#v0.12.0",
     "xml2js": "0.1.x",
@@ -46,7 +46,7 @@
     "wsfed": "~0.3.5"
   },
   "engines": {
-    "node": ">= 4"
+    "node": ">= 10"
   },
   "licenses": [
     {
