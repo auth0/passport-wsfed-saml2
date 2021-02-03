@@ -3,7 +3,8 @@
   "version": "4.3.0",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
-    "test": "mocha --reporter spec --recursive"
+    "test": "./node_modules/.bin/_mocha -R spec --colors",
+    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec --colors"
   },
   "author": {
     "name": "Matias Woloski",
@@ -37,6 +38,7 @@
     "chai-passport-strategy": "1.x.x",
     "cheerio": "~0.19.0",
     "express": "~3.11.0",
+    "istanbul": "^0.4.5",
     "mocha": "~1.8.1",
     "passport": "^0.3.2",
     "request": "~2.88.0",
