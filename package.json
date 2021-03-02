@@ -29,7 +29,7 @@
     "xml-crypto": "auth0/xml-crypto#v1.4.1-auth0.2",
     "xml-encryption": "^1.2.1",
     "xml2js": "0.1.x",
-    "xmldom": "auth0/xmldom#v0.1.19-auth0.2",
+    "@auth0/xmldom": "0.1.22",
     "xpath": "0.0.5",
     "xtend": "~2.0.3"
   },

@@ -1,5 +1,5 @@
 var expect  = require('chai').expect;
-var xmldom  = require('xmldom');
+var xmldom  = require('@auth0/xmldom');
 var fs      = require('fs');
 var zlib    = require('zlib');
 var server  = require('./fixture/samlp-server');
