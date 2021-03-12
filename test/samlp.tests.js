@@ -406,6 +406,27 @@ describe('samlp (unit tests)', function () {
       });
     });
 
+    it.only('should accept validate dronedeploy samlresponse', function(done){
+      var encodedSamlResponse = fs.readFileSync(__dirname + '/samples/encoded/samlresponse_signed_asymmetric_key_error.txt').toString();
+      var cert = fs.readFileSync(__dirname + '/test-dronedeploy-public-cert.cer').toString();
+      const samlResponse = new Buffer(encodedSamlResponse, 'base64').toString();
+      var options = {
+        cert: cert,
+        checkExpiration: false,
+        checkDestination: false,
+        checkRecipient: false,
+        checkAudience: false,
+        checkSPNameQualifier: false
+      };
+      var samlp = new Samlp(options, new Saml(options));
+
+      samlp.validateSamlResponse(samlResponse, function (err, profile) {
+        if (err) return done(err);
+        expect(profile).to.be.ok;
+        done();
+      });
+    });
+
     it('should accept the signature when the saml response has an embedded XML assertion', function(done){
       var encodedSamlResponse = fs.readFileSync(__dirname + '/samples/encoded/samlresponse_encoded_xml.txt').toString();
       var cert = fs.readFileSync(__dirname + '/test-auth0-2.cer').toString();
@@ -426,6 +447,7 @@ describe('samlp (unit tests)', function () {
         done();
       });
     });
+
 
     it('should digest has an extra space', function(done){
       var encodedSamlResponse = fs.readFileSync(__dirname + '/samples/encoded/samlresponse_extraspace.txt').toString();
