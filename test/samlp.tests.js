@@ -515,7 +515,7 @@ describe('samlp (unit tests)', function () {
     it('should error if the identityProviderUrl is not a string', function(done) {
       var options = {identityProviderUrl: 42};
       this.samlp.getSamlRequestParams(options, function(err, result) {
-        expect(err).to.be.an.Error;
+        expect(err).to.be.an('error');
         expect(err.message).to.equal('Invalid identity provider URL: 42');
         expect(result).to.not.exist;
         done();
@@ -525,7 +525,7 @@ describe('samlp (unit tests)', function () {
     it('should error if the identityProviderUrl is a string but not a URL', function(done) {
       var options = {identityProviderUrl: 'not a URL'};
       this.samlp.getSamlRequestParams(options, function(err, result) {
-        expect(err).to.be.an.Error;
+        expect(err).to.be.an('error');
         expect(err.message).to.equal('Invalid identity provider URL: "not a URL"');
         expect(result).to.not.exist;
         done();
@@ -596,7 +596,7 @@ describe('samlp (unit tests)', function () {
             requestTemplate: '<samlp:AuthnRequest attribute="></samlp:AuthnRequest>'
           };
           this.samlp.getSamlRequestParams(options, function(err, result) {
-            expect(err).to.be.an.Error;
+            expect(err).to.be.an('error');
             expect(err.message).to.equal('fail to compute signature');
             expect(result).to.not.exist;
             done();
@@ -647,7 +647,7 @@ describe('samlp (unit tests)', function () {
     it('should error if the identityProviderUrl is not a URL', function(done) {
       var options = {identityProviderUrl: null};
       this.samlp.getSamlRequestUrl(options, function(err, result) {
-        expect(err).to.be.an.Error;
+        expect(err).to.be.an('error');
         expect(err.message).to.equal('Invalid identity provider URL: null');
         expect(result).to.not.exist;
         done();
