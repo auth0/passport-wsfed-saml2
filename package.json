@@ -3,8 +3,9 @@
   "version": "4.5.1",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
-    "test": "./node_modules/.bin/_mocha -R spec --colors",
-    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec --colors"
+    "test": "./node_modules/.bin/mocha --recursive",
+    "test-debug": "./node_modules/.bin/mocha --recursive --inspect-brk=8217",
+    "cover": "nyc npm run test"
   },
   "author": {
     "name": "Matias Woloski",
@@ -20,6 +21,7 @@
   },
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
+    "@auth0/xmldom": "0.1.22",
     "ejs": "2.5.5",
     "jsonwebtoken": "~5.0.4",
     "node-forge": "^0.10.0",
@@ -28,27 +30,24 @@
     "valid-url": "^1.0.9",
     "xml-crypto": "auth0/xml-crypto#v1.4.1-auth0.2",
     "xml-encryption": "^1.2.1",
-    "xml2js": "0.1.x",
-    "@auth0/xmldom": "0.1.22",
     "xpath": "0.0.5",
     "xtend": "~2.0.3"
   },
   "devDependencies": {
-    "chai": "2.x.x",
+    "chai": "~4.3.4",
     "chai-passport-strategy": "1.x.x",
-    "cheerio": "~0.19.0",
+    "cheerio": "~1.0.0-rc.10",
     "express": "~3.11.0",
-    "istanbul": "^0.4.5",
-    "mocha": "~1.8.1",
-    "passport": "^0.3.2",
+    "mocha": "~9.0.2",
+    "nyc": "~15.1.0",
+    "passport": "^0.4.1",
     "request": "~2.88.0",
     "saml": "~0.4.4",
     "samlp": "~0.4.3",
-    "should": "~1.1.0",
     "wsfed": "~0.3.5"
   },
   "engines": {
-    "node": ">= 10"
+    "node": ">= 12"
   },
   "licenses": [
     {
