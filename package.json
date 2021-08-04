@@ -1,10 +1,6 @@
 {
   "name": "passport-wsfed-saml2",
-<<<<<<< HEAD
-  "version": "4.6.0",
-=======
-  "version": "4.5.1",
->>>>>>> parent of 74afd14 (Handle encoded CR entities in assertions (#158))
+  "version": "4.6.1",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive",
