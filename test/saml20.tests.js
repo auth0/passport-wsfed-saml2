@@ -273,7 +273,7 @@ describe('saml 2.0 assertion', function () {
       samlPassport.validateSamlAssertion(assertion, function (err, profile) {
         assert.ok(err);
         assert.ok(!profile);
-        assert.equal(err.message, "Signature is missing (xpath: /*[local-name(.)='Assertion']/*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#'])");
+        assert.equal(err.message, "Signature is missing (xpath: //*[local-name(.)='Assertion']/*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#'])");
         done();
       });
     });
@@ -286,7 +286,7 @@ describe('saml 2.0 assertion', function () {
       samlPassport.validateSamlAssertion(assertion, function (err, profile) {
         assert.ok(err);
         assert.ok(!profile);
-        assert.equal(err.message, "Signature was found more than one time (xpath: /*[local-name(.)='Assertion']/*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#'])");
+        assert.equal(err.message, "Signature was found more than one time (xpath: //*[local-name(.)='Assertion']/*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#'])");
         done();
       });
     });
