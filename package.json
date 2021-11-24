@@ -1,5 +1,5 @@
 {
-  "name": "passport-wsfed-saml2",
+  "name": "@labshare/passport-wsfed-saml2",
   "version": "4.6.1",
   "description": "SAML2 Protocol and WS-Fed library",
   "scripts": {
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/auth0/passport-wsfed-saml2.git"
+    "url": "https://github.com/LabShare/passport-wsfed-saml2.git"
   },
   "bugs": {
-    "url": "http://github.com/auth0/passport-wsfed-saml2/issues"
+    "url": "http://github.com/LabShare/passport-wsfed-saml2/issues"
   },
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
@@ -34,6 +34,7 @@
     "xtend": "~2.0.3"
   },
   "devDependencies": {
+    "@labshare/semantic-release-config": "^1.1.4",
     "chai": "~4.3.4",
     "chai-passport-strategy": "1.x.x",
     "cheerio": "~1.0.0-rc.10",
@@ -44,6 +45,7 @@
     "request": "~2.88.0",
     "saml": "~0.4.4",
     "samlp": "~0.4.3",
+    "semantic-release": "^15.14.0",
     "wsfed": "~0.3.5"
   },
   "engines": {
@@ -55,7 +57,11 @@
       "url": "http://www.opensource.org/licenses/MIT"
     }
   ],
+  "release": {
+    "extends": "@labshare/semantic-release-config"
+  },
   "keywords": [
+    "labshare",
     "saml",
     "wsfed",
     "passport",
