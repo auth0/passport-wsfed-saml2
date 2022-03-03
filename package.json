@@ -29,7 +29,7 @@
     "uid2": "0.0.x",
     "valid-url": "^1.0.9",
     "xml-crypto": "auth0/xml-crypto#v1.4.1-auth0.2",
-    "xml-encryption": "^1.2.1",
+    "xml-encryption": "^2.0.0",
     "xpath": "0.0.5",
     "xtend": "~2.0.3"
   },
