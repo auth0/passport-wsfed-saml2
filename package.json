@@ -22,7 +22,7 @@
   "main": "./lib/passport-wsfed-saml2",
   "dependencies": {
     "@auth0/xmldom": "0.1.22",
-    "ejs": "2.5.5",
+    "ejs": "3.1.7",
     "jsonwebtoken": "~5.0.4",
     "node-forge": "^0.10.0",
     "passport-strategy": "^1.0.0",
