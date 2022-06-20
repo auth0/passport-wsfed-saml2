@@ -1,0 +1,253 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AuthenticationFailedError	lib/passport-wsfed-saml2/errors/AuthenticationFailedError.js	/^AuthenticationFailedError.prototype = Object.create(Error.prototype);$/;"	c
+AuthenticationFailedError	lib/passport-wsfed-saml2/errors/AuthenticationFailedError.js	/^function AuthenticationFailedError (message, detail, status) {$/;"	f
+AuthenticationFailedError	lib/passport-wsfed-saml2/samlp.js	/^var AuthenticationFailedError = require('.\/errors\/AuthenticationFailedError');$/;"	v
+AuthenticationFailedError	lib/passport-wsfed-saml2/wsfederation.js	/^var AuthenticationFailedError = require('.\/errors\/AuthenticationFailedError');$/;"	v
+AuthenticationFailedError.constructor	lib/passport-wsfed-saml2/errors/AuthenticationFailedError.js	/^AuthenticationFailedError.prototype.constructor = AuthenticationFailedError;$/;"	m
+BINDINGS.HTTP_POST	lib/passport-wsfed-saml2/samlp.js	/^  HTTP_POST:      'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',$/;"	p
+BINDINGS.HTTP_REDIRECT	lib/passport-wsfed-saml2/samlp.js	/^  HTTP_REDIRECT:  'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'$/;"	p
+ELEMENT_NODE	lib/passport-wsfed-saml2/saml.js	/^var ELEMENT_NODE = 1;$/;"	v
+ErrorMessages.urn:oasis:names:tc:SAML:2.0:status:AuthnFailed	lib/passport-wsfed-saml2/samlp.js	/^  'urn:oasis:names:tc:SAML:2.0:status:AuthnFailed' : 'The responding provider was unable to successfully authenticate the principal'$/;"	p
+ErrorMessages.urn:oasis:names:tc:SAML:2.0:status:Requester	lib/passport-wsfed-saml2/samlp.js	/^  'urn:oasis:names:tc:SAML:2.0:status:Requester' : 'The request could not be performed due to an error on the part of the requester',$/;"	p
+ErrorMessages.urn:oasis:names:tc:SAML:2.0:status:Responder	lib/passport-wsfed-saml2/samlp.js	/^  'urn:oasis:names:tc:SAML:2.0:status:Responder' : 'The request could not be performed due to an error on the part of the SAML responder or SAML authority',$/;"	p
+ErrorMessages.urn:oasis:names:tc:SAML:2.0:status:VersionMismatch	lib/passport-wsfed-saml2/samlp.js	/^  'urn:oasis:names:tc:SAML:2.0:status:VersionMismatch': 'The SAML responder could not process the request because the version of the request message was incorrect.',$/;"	p
+EventEmitter	lib/passport-wsfed-saml2/saml.js	/^var EventEmitter = require('events');$/;"	v
+EventEmitter	lib/passport-wsfed-saml2/samlp.js	/^var EventEmitter = require('events');$/;"	v
+EventEmitter	lib/passport-wsfed-saml2/strategy.js	/^var EventEmitter = require('events');$/;"	v
+NullStateStore	lib/passport-wsfed-saml2/strategy.js	/^var NullStateStore    = require('.\/state\/null');$/;"	v
+NullStore	lib/passport-wsfed-saml2/state/null.js	/^NullStore.prototype.store = function(req, cb) {$/;"	c
+NullStore	lib/passport-wsfed-saml2/state/null.js	/^function NullStore(options) {$/;"	f
+NullStore.store	lib/passport-wsfed-saml2/state/null.js	/^NullStore.prototype.store = function(req, cb) {$/;"	m
+NullStore.verify	lib/passport-wsfed-saml2/state/null.js	/^NullStore.prototype.verify = function(req, providedState, cb) {$/;"	m
+SAML	lib/passport-wsfed-saml2/saml.js	/^var SAML = function (options) {$/;"	c
+SAML.extractAndValidateCertExpiration	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.extractAndValidateCertExpiration = function (validatedSamlAssertion, optionsCert) {$/;"	m
+SAML.function.getAttributeValues	lib/passport-wsfed-saml2/saml.js	/^  function getAttributeValues(attribute) {$/;"	f
+SAML.function.getAttributes	lib/passport-wsfed-saml2/saml.js	/^  function getAttributes(samlAssertion) {$/;"	f
+SAML.function.getAuthContext20	lib/passport-wsfed-saml2/saml.js	/^  function getAuthContext20(samlAssertion) {$/;"	f
+SAML.function.getNameID11	lib/passport-wsfed-saml2/saml.js	/^  function getNameID11(samlAssertion) {$/;"	f
+SAML.function.getSessionIndex	lib/passport-wsfed-saml2/saml.js	/^  function getSessionIndex(samlAssertion) {$/;"	f
+SAML.parseAssertion	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.parseAssertion = function(samlAssertion, callback) {$/;"	m
+SAML.parseAttributes	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.parseAttributes = function (samlAssertion, version) {$/;"	m
+SAML.validateAudience	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.validateAudience = function (samlAssertion, realm, version) {$/;"	m
+SAML.validateExpiration	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.validateExpiration = function (samlAssertion, version) {$/;"	m
+SAML.validateNameQualifier	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.validateNameQualifier = function (samlAssertion, issuer) {$/;"	m
+SAML.validateSamlAssertion	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.validateSamlAssertion = function (samlAssertion, callback) {$/;"	m
+SAML.validateSignature	lib/passport-wsfed-saml2/saml.js	/^SAML.prototype.validateSignature = function (xml, options, callback) {$/;"	m
+Saml	test/samlp.functional.tests.js	/^var Saml    = require('..\/lib\/passport-wsfed-saml2\/saml').SAML;$/;"	v
+Saml	test/samlp.tests.js	/^var Saml    = require('..\/lib\/passport-wsfed-saml2\/saml').SAML;$/;"	v
+SamlAssertionParserError	lib/passport-wsfed-saml2/errors/SamlAssertionParserError.js	/^SamlAssertionParserError.prototype = Object.create(Error.prototype);$/;"	c
+SamlAssertionParserError	lib/passport-wsfed-saml2/errors/SamlAssertionParserError.js	/^function SamlAssertionParserError (message, detail, status) {$/;"	f
+SamlAssertionParserError	lib/passport-wsfed-saml2/utils.js	/^var SamlAssertionParserError = require('.\/errors\/SamlAssertionParserError');$/;"	v
+SamlAssertionParserError.constructor	lib/passport-wsfed-saml2/errors/SamlAssertionParserError.js	/^SamlAssertionParserError.prototype.constructor = SamlAssertionParserError;$/;"	m
+SamlResponseParserError	lib/passport-wsfed-saml2/errors/SamlResponseParserError.js	/^SamlResponseParserError.prototype = Object.create(Error.prototype);$/;"	c
+SamlResponseParserError	lib/passport-wsfed-saml2/errors/SamlResponseParserError.js	/^function SamlResponseParserError (message, detail, status) {$/;"	f
+SamlResponseParserError	lib/passport-wsfed-saml2/utils.js	/^var SamlResponseParserError = require('.\/errors\/SamlResponseParserError');$/;"	v
+SamlResponseParserError.constructor	lib/passport-wsfed-saml2/errors/SamlResponseParserError.js	/^SamlResponseParserError.prototype.constructor = SamlResponseParserError;$/;"	m
+Samlp	lib/passport-wsfed-saml2/samlp.js	/^Samlp.prototype = {$/;"	c
+Samlp	test/samlp.functional.tests.js	/^var Samlp   = require('..\/lib\/passport-wsfed-saml2\/samlp');$/;"	v
+Samlp	test/samlp.tests.js	/^var Samlp   = require('..\/lib\/passport-wsfed-saml2\/samlp');$/;"	v
+Samlp.decodeResponse	lib/passport-wsfed-saml2/samlp.js	/^  decodeResponse: function(req) {$/;"	m
+Samlp.extractAssertion	lib/passport-wsfed-saml2/samlp.js	/^  extractAssertion: function(samlpResponse, callback) {$/;"	m
+Samlp.extractAssertion.done	lib/passport-wsfed-saml2/samlp.js	/^    function done(err, assertion) {$/;"	f
+Samlp.getSamlRequestForm	lib/passport-wsfed-saml2/samlp.js	/^  getSamlRequestForm: function (opts, callback) {$/;"	m
+Samlp.getSamlRequestParams	lib/passport-wsfed-saml2/samlp.js	/^  getSamlRequestParams: function (opts, callback) {$/;"	m
+Samlp.getSamlRequestParams.model.ID	lib/passport-wsfed-saml2/samlp.js	/^      ID:               options.request_id,$/;"	p
+Samlp.getSamlStatus	lib/passport-wsfed-saml2/samlp.js	/^  getSamlStatus: function (samlResponse) {$/;"	m
+Samlp.validateSamlResponse	lib/passport-wsfed-saml2/samlp.js	/^  validateSamlResponse: function (samlResponse, callback) {$/;"	m
+SessionStateStore	lib/passport-wsfed-saml2/strategy.js	/^var SessionStateStore = require('.\/state\/session');$/;"	v
+SessionStore	lib/passport-wsfed-saml2/state/session.js	/^function SessionStore(options) {$/;"	c
+SessionStore.store	lib/passport-wsfed-saml2/state/session.js	/^SessionStore.prototype.store = function(req, callback) {$/;"	m
+SessionStore.verify	lib/passport-wsfed-saml2/state/session.js	/^SessionStore.prototype.verify = function(req, providedState, callback) {$/;"	m
+SignedXml	lib/passport-wsfed-saml2/samlp.js	/^var SignedXml   = require('xml-crypto').SignedXml;$/;"	v
+Strategy	examples/auth0/app.js	/^var Strategy = require('..\/..\/lib\/passport-wsfed-saml2\/index').Strategy;$/;"	v
+Strategy	lib/passport-wsfed-saml2/strategy.js	/^var Strategy  = require('passport-strategy');$/;"	v
+Strategy	test/fixture/samlp-server.js	/^var Strategy = require('..\/..\/lib\/passport-wsfed-saml2').Strategy;$/;"	v
+Strategy	test/fixture/wsfed-server.js	/^var Strategy = require('..\/..\/lib\/passport-wsfed-saml2').Strategy;$/;"	v
+Strategy	test/jwt.tests.js	/^var Strategy = require('..\/lib\/passport-wsfed-saml2\/strategy');$/;"	v
+Strategy	test/state/samlp.state.custom.tests.js	/^var Strategy  = require('..\/..\/lib\/passport-wsfed-saml2').Strategy;$/;"	v
+Strategy	test/state/samlp.state.session.tests.js	/^var Strategy  = require('..\/..\/lib\/passport-wsfed-saml2').Strategy;$/;"	v
+Strategy	test/state/wsfed.state.custom.tests.js	/^var Strategy  = require('..\/..\/lib\/passport-wsfed-saml2').Strategy;$/;"	v
+Strategy	test/state/wsfed.state.session.tests.js	/^var Strategy  = require('..\/..\/lib\/passport-wsfed-saml2').Strategy;$/;"	v
+WSFederationResultParseError	lib/passport-wsfed-saml2/errors/WSFederationResultParserError.js	/^WSFederationResultParseError.prototype = Object.create(Error.prototype);$/;"	c
+WSFederationResultParseError	lib/passport-wsfed-saml2/errors/WSFederationResultParserError.js	/^function WSFederationResultParseError (message, detail, status) {$/;"	f
+WSFederationResultParseError.constructor	lib/passport-wsfed-saml2/errors/WSFederationResultParserError.js	/^WSFederationResultParseError.prototype.constructor = WSFederationResultParseError;$/;"	m
+WSFederationResultParserError	lib/passport-wsfed-saml2/utils.js	/^var WSFederationResultParserError = require('.\/errors\/WSFederationResultParserError');$/;"	v
+WsFedSaml2Strategy	lib/passport-wsfed-saml2/strategy.js	/^function WsFedSaml2Strategy (options, verify) {$/;"	c
+WsFedSaml2Strategy._authenticate_jwt	lib/passport-wsfed-saml2/strategy.js	/^WsFedSaml2Strategy.prototype._authenticate_jwt = function (req, state) {$/;"	m
+WsFedSaml2Strategy._authenticate_saml	lib/passport-wsfed-saml2/strategy.js	/^WsFedSaml2Strategy.prototype._authenticate_saml = function (req, state) {$/;"	m
+WsFedSaml2Strategy.authenticate	lib/passport-wsfed-saml2/strategy.js	/^WsFedSaml2Strategy.prototype.authenticate = function (req, opts) {$/;"	m
+WsFedSaml2Strategy.authorizationParams	lib/passport-wsfed-saml2/strategy.js	/^WsFedSaml2Strategy.prototype.authorizationParams = function(options) {$/;"	m
+WsFedSaml2Strategy.var.meta.identityProviderUrl	lib/passport-wsfed-saml2/strategy.js	/^    identityProviderUrl: this.options.identityProviderUrl$/;"	p
+WsFederation	lib/passport-wsfed-saml2/wsfederation.js	/^WsFederation.prototype = {$/;"	c
+WsFederation.extractFault	lib/passport-wsfed-saml2/wsfederation.js	/^  extractFault: function(req) {$/;"	m
+WsFederation.extractToken	lib/passport-wsfed-saml2/wsfederation.js	/^  extractToken: function(req) {$/;"	m
+WsFederation.getRequestSecurityTokenUrl	lib/passport-wsfed-saml2/wsfederation.js	/^  getRequestSecurityTokenUrl: function (options) {$/;"	m
+WsFederation.retrieveToken	lib/passport-wsfed-saml2/wsfederation.js	/^  retrieveToken: function(req, callback) {$/;"	m
+algorithms.signature	lib/passport-wsfed-saml2/samlp.js	/^  signature: {$/;"	p
+app	examples/auth0/app.js	/^var app = express();$/;"	v
+app	examples/login/app.js	/^var app = express();$/;"	v
+assert	test/saml11.tests.js	/^var assert = require('assert'),$/;"	v
+cert.pub	test/jwt.tests.js	/^  pub: fs.readFileSync(__dirname + '\/test-auth0.pem'),$/;"	p
+chai	test/state/samlp.state.custom.tests.js	/^var chai      = require('chai');$/;"	v
+chai	test/state/samlp.state.session.tests.js	/^var chai      = require('chai');$/;"	v
+chai	test/state/wsfed.state.custom.tests.js	/^var chai      = require('chai');$/;"	v
+chai	test/state/wsfed.state.session.tests.js	/^var chai      = require('chai');$/;"	v
+cheerio	test/samlp.functional.tests.js	/^var cheerio = require('cheerio');$/;"	v
+cheerio	test/wsfed.tests.js	/^var cheerio = require('cheerio');$/;"	v
+collectAncestorNamespaces	lib/passport-wsfed-saml2/samlp.js	/^function collectAncestorNamespaces(node, nameSpaces = [], maxDeep = 5){$/;"	f
+credentials.cert	test/fixture/samlp-server.js	/^  cert:     fs.readFileSync(path.join(__dirname, '..\/test-auth0.pem')),$/;"	p
+credentials.cert	test/fixture/wsfed-server.js	/^  cert:     fs.readFileSync(path.join(__dirname, '..\/test-auth0.pem')),$/;"	p
+crlf2lf	lib/passport-wsfed-saml2/utils.js	/^function crlf2lf(string) {$/;"	f
+crypto	lib/passport-wsfed-saml2/saml.js	/^var crypto    = require('crypto');$/;"	v
+crypto	lib/passport-wsfed-saml2/samlp.js	/^var crypto      = require('crypto');$/;"	v
+crypto	lib/passport-wsfed-saml2/utils.js	/^var crypto = require('crypto');$/;"	v
+crypto	test/samlp.functional.tests.js	/^var crypto  = require('crypto');$/;"	v
+doSamlpFlow	test/samlp.functional.tests.js	/^function doSamlpFlow(samlRequestUrl, callbackEndpoint, callback) {$/;"	f
+ejs	lib/passport-wsfed-saml2/templates.js	/^var ejs = require('ejs');$/;"	v
+encodingMappings.ISO-8859-1	lib/passport-wsfed-saml2/samlp.js	/^  'ISO-8859-1': 'binary',$/;"	p
+encodingMappings.UTF-8	lib/passport-wsfed-saml2/samlp.js	/^  'UTF-8': 'utf8'$/;"	p
+ensureAuthenticated	examples/auth0/app.js	/^function ensureAuthenticated(req, res, next) {$/;"	f
+ensureAuthenticated	examples/login/app.js	/^function ensureAuthenticated(req, res, next) {$/;"	f
+expect	test/jwt.tests.js	/^var expect = require('chai').expect;$/;"	v
+expect	test/samlp.functional.tests.js	/^var expect  = require('chai').expect;$/;"	v
+expect	test/samlp.tests.js	/^var expect  = require('chai').expect;$/;"	v
+expect	test/state/samlp.state.custom.tests.js	/^var expect    = require('chai').expect;$/;"	v
+expect	test/state/samlp.state.session.tests.js	/^var expect    = require('chai').expect;$/;"	v
+expect	test/state/wsfed.state.custom.tests.js	/^var expect    = require('chai').expect;$/;"	v
+expect	test/state/wsfed.state.session.tests.js	/^var expect    = require('chai').expect;$/;"	v
+expect	test/utils.js	/^var expect = require('chai').expect;$/;"	v
+expect	test/wsfed.tests.js	/^var expect = require('chai').expect;$/;"	v
+exports.generateUniqueID	lib/passport-wsfed-saml2/utils.js	/^exports.generateUniqueID = function() {$/;"	f
+exports.getAssertionID	test/helpers.js	/^exports.getAssertionID = function(assertion) {$/;"	f
+exports.getAttributes	test/helpers.js	/^exports.getAttributes = function(assertion) {$/;"	f
+exports.getAudiences	test/helpers.js	/^exports.getAudiences = function(assertion) {$/;"	f
+exports.getAuthenticationStatement	test/helpers.js	/^exports.getAuthenticationStatement = function(assertion) {$/;"	f
+exports.getConditions	test/helpers.js	/^exports.getConditions = function(assertion) {$/;"	f
+exports.getEncoding	lib/passport-wsfed-saml2/utils.js	/^exports.getEncoding = function(xml){$/;"	f
+exports.getIssueInstant	test/helpers.js	/^exports.getIssueInstant = function(assertion) {$/;"	f
+exports.getIssuer	test/helpers.js	/^exports.getIssuer = function(assertion) {$/;"	f
+exports.getNameIdentifier	test/helpers.js	/^exports.getNameIdentifier = function(assertion) {$/;"	f
+exports.getReqUrl	lib/passport-wsfed-saml2/utils.js	/^exports.getReqUrl = function(req){$/;"	f
+exports.getSamlAssertionVersion	lib/passport-wsfed-saml2/utils.js	/^exports.getSamlAssertionVersion = function(samlAssertion){$/;"	f
+exports.isValidSignature	test/helpers.js	/^exports.isValidSignature = function(assertion, cert) {$/;"	f
+exports.parseSamlAssertion	lib/passport-wsfed-saml2/utils.js	/^exports.parseSamlAssertion = function(xml) {$/;"	f
+exports.parseSamlResponse	lib/passport-wsfed-saml2/utils.js	/^exports.parseSamlResponse = function(xml) {$/;"	f
+exports.parseWsFedResponse	lib/passport-wsfed-saml2/utils.js	/^exports.parseWsFedResponse = function(xml) {$/;"	f
+exports.stringCompare	lib/passport-wsfed-saml2/utils.js	/^exports.stringCompare = function(a,b) {$/;"	f
+express	examples/auth0/app.js	/^var express = require('express');$/;"	v
+express	examples/login/app.js	/^var express = require('express')$/;"	v
+express	test/fixture/samlp-server.js	/^var express = require('express');$/;"	v
+express	test/fixture/wsfed-server.js	/^var express = require('express');$/;"	v
+fakeUser.displayName	test/fixture/samlp-server.js	/^  displayName: 'John Foo',$/;"	p
+fakeUser.displayName	test/fixture/wsfed-server.js	/^  displayName: 'John Foo',$/;"	p
+fakeUser.id	test/fixture/samlp-server.js	/^  id: '12345678',$/;"	p
+fakeUser.id	test/fixture/wsfed-server.js	/^  id: '12345678',$/;"	p
+fakeUser.name	test/fixture/samlp-server.js	/^  name: {$/;"	p
+fakeUser.name	test/fixture/wsfed-server.js	/^  name: {$/;"	p
+findByEmail	examples/login/app.js	/^function findByEmail(email, fn) {$/;"	f
+fs	lib/passport-wsfed-saml2/templates.js	/^var fs = require('fs');$/;"	v
+fs	test/fixture/samlp-server.js	/^var fs = require('fs');$/;"	v
+fs	test/fixture/wsfed-server.js	/^var fs = require('fs');$/;"	v
+fs	test/jwt.tests.js	/^var fs = require('fs');$/;"	v
+fs	test/samlp.functional.tests.js	/^var fs      = require('fs');$/;"	v
+fs	test/samlp.tests.js	/^var fs      = require('fs');$/;"	v
+function.executeSamlp	lib/passport-wsfed-saml2/strategy.js	/^  function executeSamlp(req) {$/;"	f
+function.executeWsfed	lib/passport-wsfed-saml2/strategy.js	/^  function executeWsfed(req) {$/;"	f
+function.getNameID20	lib/passport-wsfed-saml2/saml.js	/^function getNameID20(samlAssertion) {$/;"	f
+function.var.loaded	lib/passport-wsfed-saml2/strategy.js	/^      var loaded = function (err, ok, state) {$/;"	f
+generateInstant	lib/passport-wsfed-saml2/samlp.js	/^function generateInstant() {$/;"	f
+getNameID20.result.value	lib/passport-wsfed-saml2/saml.js	/^    value: element.textContent,$/;"	p
+getProp	lib/passport-wsfed-saml2/samlp.js	/^function getProp(obj, path) {$/;"	f
+getReqUrl	lib/passport-wsfed-saml2/strategy.js	/^var getReqUrl = require('.\/utils').getReqUrl;$/;"	v
+helpers	test/samlp.functional.tests.js	/^var helpers   = require('.\/helpers');$/;"	v
+http	examples/auth0/app.js	/^var http = require('http');$/;"	v
+http	test/fixture/samlp-server.js	/^var http = require('http');$/;"	v
+http	test/fixture/wsfed-server.js	/^var http = require('http');$/;"	v
+identityProviderUrl	test/fixture/samlp-server.js	/^var identityProviderUrl = 'http:\/\/localhost:5051\/samlp';$/;"	v
+ignoreValidationFunction	lib/passport-wsfed-saml2/samlp.js	/^function ignoreValidationFunction(samlResponseID, done){$/;"	f
+jwt	lib/passport-wsfed-saml2/strategy.js	/^var jwt       = require('jsonwebtoken');$/;"	v
+jwt	test/jwt.tests.js	/^var jwt = require('jsonwebtoken');$/;"	v
+lib	test/utils.js	/^var lib   = require('..\/lib\/passport-wsfed-saml2');$/;"	v
+module.exports.start	test/fixture/samlp-server.js	/^module.exports.start = function(options, callback){$/;"	f
+module.exports.start	test/fixture/wsfed-server.js	/^module.exports.start = function(options, callback){$/;"	f
+module.exports.start.getPostURL	test/fixture/samlp-server.js	/^  function getPostURL (audience, samlRequestDom, req, callback) {$/;"	f
+module.exports.start.getPostURL	test/fixture/wsfed-server.js	/^  function getPostURL (wtrealm, wreply, req, callback) {$/;"	f
+passport	examples/auth0/app.js	/^var passport = require('passport');$/;"	v
+passport	test/fixture/samlp-server.js	/^var passport = require('passport');$/;"	v
+passport	test/fixture/wsfed-server.js	/^var passport = require('passport');$/;"	v
+passport	test/state/samlp.state.custom.tests.js	/^var passport  = require('chai-passport-strategy');$/;"	v
+passport	test/state/samlp.state.session.tests.js	/^var passport  = require('chai-passport-strategy');$/;"	v
+passport	test/state/wsfed.state.custom.tests.js	/^var passport  = require('chai-passport-strategy');$/;"	v
+passport	test/state/wsfed.state.session.tests.js	/^var passport  = require('chai-passport-strategy');$/;"	v
+path	lib/passport-wsfed-saml2/templates.js	/^var path = require('path');$/;"	v
+path	test/fixture/samlp-server.js	/^var path = require('path');$/;"	v
+path	test/fixture/wsfed-server.js	/^var path = require('path');$/;"	v
+path	test/samlp.functional.tests.js	/^var path    = require('path');$/;"	v
+pemToCert	test/fixture/samlp-server.js	/^function pemToCert(pem) {$/;"	f
+qs	lib/passport-wsfed-saml2/samlp.js	/^var qs          = require('querystring');$/;"	v
+qs	lib/passport-wsfed-saml2/wsfederation.js	/^var qs = require('querystring');$/;"	v
+qs	test/samlp.functional.tests.js	/^var qs      = require('querystring');$/;"	v
+querystring	lib/passport-wsfed-saml2/samlp.js	/^var querystring = require('querystring');$/;"	v
+relayState	test/fixture/samlp-server.js	/^var relayState = 'somestate';$/;"	v
+removeHeaders	lib/passport-wsfed-saml2/samlp.js	/^var removeHeaders = function  (cert) {$/;"	f
+request	test/samlp.functional.tests.js	/^var request = require('request');$/;"	v
+request	test/wsfed.tests.js	/^var request = require('request');$/;"	v
+router	examples/login/app.js	/^var router = express.Router();$/;"	v
+saml	lib/passport-wsfed-saml2/strategy.js	/^var saml      = require('.\/saml');$/;"	v
+samlp	lib/passport-wsfed-saml2/strategy.js	/^var samlp     = require('.\/samlp');$/;"	v
+samlp	test/fixture/samlp-server.js	/^var samlp = require('samlp');$/;"	v
+server	test/samlp.functional.tests.js	/^var server  = require('.\/fixture\/samlp-server');$/;"	v
+server	test/samlp.tests.js	/^var server  = require('.\/fixture\/samlp-server');$/;"	v
+server	test/wsfed.tests.js	/^var server = require('.\/fixture\/wsfed-server');$/;"	v
+sig.keyInfoProvider.getKey	lib/passport-wsfed-saml2/saml.js	/^    getKey: function (keyInfo) {$/;"	m
+sig.keyInfoProvider.getKey	test/helpers.js	/^    getKey: function (keyInfo) {$/;"	m
+sig.keyInfoProvider.getKeyInfo	lib/passport-wsfed-saml2/saml.js	/^    getKeyInfo: function (key) {$/;"	m
+sig.keyInfoProvider.getKeyInfo	lib/passport-wsfed-saml2/samlp.js	/^          getKeyInfo: function () {$/;"	m
+sig.keyInfoProvider.getKeyInfo	test/helpers.js	/^    getKeyInfo: function (key) {$/;"	m
+sign	lib/passport-wsfed-saml2/samlp.js	/^var sign = function (content, key, algorithm) {$/;"	f
+supplant	lib/passport-wsfed-saml2/samlp.js	/^var supplant = function (tmpl, o) {$/;"	f
+templates	lib/passport-wsfed-saml2/samlp.js	/^var templates   = require('.\/templates');$/;"	v
+templates	lib/passport-wsfed-saml2/templates.js	/^var templates = fs.readdirSync(path.join(__dirname, 'templates'));$/;"	v
+trimXml	lib/passport-wsfed-saml2/samlp.js	/^var trimXml = function (xml) {$/;"	f
+uid	lib/passport-wsfed-saml2/state/session.js	/^var uid = require('uid2');$/;"	v
+uri	test/state/samlp.state.session.tests.js	/^var uri       = require('url');$/;"	v
+uri	test/state/wsfed.state.session.tests.js	/^var uri       = require('url');$/;"	v
+url	lib/passport-wsfed-saml2/samlp.js	/^var url         = require('url');$/;"	v
+url	lib/passport-wsfed-saml2/strategy.js	/^var url       = require('url');$/;"	v
+util	lib/passport-wsfed-saml2/strategy.js	/^var util      = require('util');$/;"	v
+utils	lib/passport-wsfed-saml2/samlp.js	/^var utils                     = require('.\/utils');$/;"	v
+utils	lib/passport-wsfed-saml2/strategy.js	/^var utils             = require('.\/utils');$/;"	v
+utils	lib/passport-wsfed-saml2/strategy.js	/^var utils     = require('.\/utils');$/;"	v
+utils	lib/passport-wsfed-saml2/wsfederation.js	/^var utils = require('.\/utils');$/;"	v
+utils	test/utils.js	/^var utils = require('..\/lib\/passport-wsfed-saml2\/utils');$/;"	v
+validUrl	lib/passport-wsfed-saml2/samlp.js	/^var validUrl     = require('valid-url');$/;"	v
+var.params.RelayState	lib/passport-wsfed-saml2/samlp.js	/^      RelayState: options.RelayState || (parsedUrl.query && parsedUrl.query.RelayState) || ''$/;"	p
+var.params.SAMLRequest	lib/passport-wsfed-saml2/samlp.js	/^      SAMLRequest: null,$/;"	p
+var.redirectToIdp	lib/passport-wsfed-saml2/strategy.js	/^      var redirectToIdp = function () {$/;"	f
+var.sendRequestToIdp	lib/passport-wsfed-saml2/strategy.js	/^      var sendRequestToIdp = function () {$/;"	f
+var.storeState	lib/passport-wsfed-saml2/strategy.js	/^  var storeState = function (stored) {$/;"	f
+var.stored	lib/passport-wsfed-saml2/strategy.js	/^        var stored = function (err, state) {$/;"	f
+var.verifyState	lib/passport-wsfed-saml2/strategy.js	/^  var verifyState = function (state, loaded) {$/;"	f
+wsfed	lib/passport-wsfed-saml2/strategy.js	/^var wsfed     = require('.\/wsfederation');$/;"	v
+wsfed	test/fixture/wsfed-server.js	/^var wsfed = require('wsfed');$/;"	v
+xmlCrypto	lib/passport-wsfed-saml2/saml.js	/^var xmlCrypto = require('xml-crypto');$/;"	v
+xmlCrypto	test/helpers.js	/^var xmlCrypto = require('xml-crypto'),$/;"	v
+xmldom	lib/passport-wsfed-saml2/utils.js	/^var xmldom = require('@auth0\/xmldom');$/;"	v
+xmldom	test/samlp.functional.tests.js	/^var xmldom  = require('@auth0\/xmldom');$/;"	v
+xmldom	test/samlp.tests.js	/^var xmldom  = require('@auth0\/xmldom');$/;"	v
+xmlenc	lib/passport-wsfed-saml2/samlp.js	/^var xmlenc      = require('xml-encryption');$/;"	v
+xpath	lib/passport-wsfed-saml2/saml.js	/^var xpath     = require('xpath');$/;"	v
+xpath	lib/passport-wsfed-saml2/samlp.js	/^var xpath       = require('xpath');$/;"	v
+xpath	lib/passport-wsfed-saml2/wsfederation.js	/^var xpath = require('xpath');$/;"	v
+xtend	lib/passport-wsfed-saml2/samlp.js	/^var xtend       = require('xtend');$/;"	v
+xtend	lib/passport-wsfed-saml2/wsfederation.js	/^var xtend = require('xtend');$/;"	v
+xtend	test/fixture/samlp-server.js	/^var xtend = require('xtend');$/;"	v
+xtend	test/fixture/wsfed-server.js	/^var xtend = require('xtend');$/;"	v
+zlib	lib/passport-wsfed-saml2/samlp.js	/^var zlib        = require('zlib');$/;"	v
+zlib	test/samlp.functional.tests.js	/^var zlib    = require('zlib');$/;"	v
+zlib	test/samlp.tests.js	/^var zlib    = require('zlib');$/;"	v
