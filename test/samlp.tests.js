@@ -653,6 +653,38 @@ describe('samlp (unit tests)', function () {
         done();
       });
     });
+    it('should return URL fragment at the end after parsing', function(done) {
+      var options = {identityProviderUrl: 'https://example.com/#Test'};
+      this.samlp.getSamlRequestUrl(options, function(err, result) {
+        expect(err).to.not.exist;
+        expect(result).to.match(/^https:\/\/example.com\/\?SAMLRequest=.*&RelayState=.*\#Test/);
+        done();
+      });
+    });
+    it('should return multiple URL fragments at the end after parsing', function(done) {
+      var options = {identityProviderUrl: 'https://example.com/#param1=value1&param2=value'};
+      this.samlp.getSamlRequestUrl(options, function(err, result) {
+        expect(err).to.not.exist;
+        expect(result).to.match(/^https:\/\/example.com\/\?SAMLRequest=.*&RelayState=.*\#param1=value1&param2=value/);
+        done();
+      });
+    });
+    it('should return URL query and fragments in correct order after parsing', function(done) {
+      var options = {identityProviderUrl: 'https://example.com/?ABC=123#Test'};
+      this.samlp.getSamlRequestUrl(options, function(err, result) {
+        expect(err).to.not.exist;
+        expect(result).to.match(/^https:\/\/example.com\/\?ABC=123&SAMLRequest=.*&RelayState=.*\#Test/);
+        done();
+      });
+    });
+    it('should return URL query and multiple fragments in correct order after parsing', function(done) {
+      var options = {identityProviderUrl: 'https://example.com/?ABC=123#param1=value1&param2=value'};
+      this.samlp.getSamlRequestUrl(options, function(err, result) {
+        expect(err).to.not.exist;
+        expect(result).to.match(/^https:\/\/example.com\/\?ABC=123&SAMLRequest=.*&RelayState=.*\#param1=value1&param2=value/);
+        done();
+      });
+    });
   });
 
   describe('getSamlStatus', function(){
