@@ -24,7 +24,7 @@
     "@auth0/xmldom": "0.1.22",
     "ejs": "2.5.5",
     "jsonwebtoken": "~5.0.4",
-    "node-forge": "^0.10.0",
+    "node-forge": "^1.0.0",
     "passport-strategy": "^1.0.0",
     "uid2": "0.0.x",
     "valid-url": "^1.0.9",
