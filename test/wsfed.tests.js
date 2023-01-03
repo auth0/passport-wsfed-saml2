@@ -2,6 +2,8 @@ var expect = require('chai').expect;
 var server = require('./fixture/wsfed-server');
 var request = require('request');
 var cheerio = require('cheerio');
+const xpath = require('xpath');
+const DOMParser = require('xmldom').DOMParser;
 
 describe('wsfed', function () {
   before(function (done) {
@@ -11,6 +13,43 @@ describe('wsfed', function () {
   after(function (done) {
     server.close(done);
   });
+
+  describe('Validations', () => {
+    it('returns 400 if we have more than one Assertion element', (done) => {
+      request.get({
+        jar: request.jar(),
+        uri: 'http://localhost:5050/login?wa=wsignin1.0&wtrealm=urn:fixture-test'
+      }, function (err, response, b){
+        if(err) return done(err);
+        expect(response.statusCode)
+          .to.equal(200);
+
+
+        const $ = cheerio.load(b);
+        const wresult = $('input[name="wresult"]').attr('value');
+        const wa = $('input[name="wa"]').attr('value');
+
+        const root = new DOMParser().parseFromString(wresult);
+        const assertion = xpath.select("//*[local-name(.)='Assertion']", root)[0];
+
+        const copiedAssertion = assertion.cloneNode(true);
+        assertion.appendChild(copiedAssertion);
+
+        const modifiedResult = root.toString();
+
+        request.post({
+          jar: request.jar(),
+          uri: 'http://localhost:5050/callback',
+          form: { wresult: modifiedResult, wa: wa }
+        }, function (err, response, _) {
+          if (err) return done(err);
+          expect(response.statusCode).to.equal(400);
+          done();
+        });
+      });
+    })
+
+  })
 
   describe('normal flow', function () {
     var user, r, bod, $;
