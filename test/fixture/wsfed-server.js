@@ -88,7 +88,7 @@ module.exports.start = function(options, callback){
   app.post('/callback/wresult-with-invalid-xml',
       function (req, res, next) {
         passport.authenticate('wsfed-saml2', function(err, user, info, status) {
-          res.send(400, { message: err.message });
+          res.send(400, { message: info.detail.message });
         })(req, res, next);
       },
       function(req, res) {

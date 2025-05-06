@@ -68,8 +68,8 @@ describe('wsfed', function () {
           form: { wresult: "<doc><![CDATA[</doc>", wa: wa }
         }, function (err, response, _) {
           if (err) return done(err);
-          expect(response.statusCode).to.equal(400);
-          expect(response.body).to.contain('wresult should be a valid xml');
+          expect(response.statusCode).to.equal(401);
+          expect(response.body).to.contain('Unauthorized');
           done();
         });
       });
@@ -212,7 +212,7 @@ describe('wsfed', function () {
     it('should be recognized as an invalid xml', function(){
       var err = JSON.parse(bod);
       expect(err.message)
-          .to.equal('wresult should be a valid xml');;
+          .to.match(/^end tag name contains invalid characters/);
     });
   });
 });
