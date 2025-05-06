@@ -1,0 +1,53 @@
+{
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "rules": {
+    "no-var": 2,
+    "no-bitwise": 2,
+    "curly": ["error", "all"],
+    "eqeqeq": 2,
+    "wrap-iife": [
+      2,
+      "any"
+    ],
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "no-use-before-define": 2,
+    "new-cap": 2,
+    "no-caller": 2,
+    "quotes": [
+      2,
+      "single",
+      "avoid-escape"
+    ],
+    "no-undef": 2,
+    "strict": 0,
+    "no-unused-expressions": 2,
+    "no-eval": 2,
+    "dot-notation": 0,
+    "no-unused-vars": 2,
+    "comma-style": [
+      2,
+      "last"
+    ],
+    "no-useless-escape": "off",
+    "security/detect-non-literal-fs-filename": "off",
+    "security/detect-object-injection": "off",
+    "security/detect-unsafe-regex": "off",
+    "camelcase": 1
+  },
+  "extends": [
+    "eslint:recommended"
+  ]
+}
