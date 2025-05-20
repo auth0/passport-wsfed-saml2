@@ -1,7 +1,12 @@
-var express = require('express');
-var passport = require('passport');
-var Strategy = require('../../lib/passport-wsfed-saml2/index').Strategy;
-var http = require('http');
+const express = require('express');
+const passport = require('passport');
+const Strategy = require('../../lib/passport-wsfed-saml2/index').Strategy;
+const http = require('http');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const session = require('express-session');
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -30,22 +35,25 @@ passport.use(new Strategy(
   }
 ));
 
-var app = express();
+const app = express();
 
 // configure Express
-app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.logger());
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({ secret: 'keyboard cat' }));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/../../public'));
-});
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(morgan('combined'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({
+  extended: true,
+}));
+app.use(methodOverride());
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(__dirname + '/../../public'));
 
 
 app.get('/', function(req, res){

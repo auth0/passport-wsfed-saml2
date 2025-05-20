@@ -1,10 +1,14 @@
 {
-  "name": "passport-azure-acs-sample",
+  "name": "passport-wsfed-saml2-sample",
   "version": "0.0.0",
   "dependencies": {
-    "express": ">= 0.0.0",
+    "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
     "ejs": ">= 0.0.0",
-    "passport": ">= 0.0.0",
-    "passport-azure-acs": ">= 0.0.0"
+    "express": ">= 0.0.0",
+    "express-session": "^1.18.1",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "passport": ">= 0.0.0"
   }
 }
