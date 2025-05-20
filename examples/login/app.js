@@ -13,7 +13,7 @@ const users = [
 ];
 
 function findByEmail(email, fn) {
-  for (const i = 0, len = users.length; i < len; i++) {
+  for (let i = 0, len = users.length; i < len; i++) {
     const user = users[i];
     if (user.email === email) {
       return fn(null, user);
