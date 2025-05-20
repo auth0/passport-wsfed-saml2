@@ -1,28 +1,20 @@
-// var express = require('express')
-//   , passport = require('passport')
-//   , util = require('util')
-//   , wsfedsaml2 = require('../../lib/passport-wsfed-saml2/index').Strategy
-//   , fs = require('fs');
-
-var express = require('express')
+const express = require('express')
   , passport = require('passport')
-  , util = require('util')
   , wsfedsaml2 = require('../../lib/passport-wsfed-saml2/index').Strategy
-  , fs = require('fs')
   , morgan = require('morgan')
   , cookieParser = require('cookie-parser')
   , bodyParser = require('body-parser')
   , methodOverride = require('method-override')
   , session = require('express-session');
 
-var users = [
+const users = [
     { id: 1, givenName: 'matias', email: 'matias@auth10.com' }
   , { id: 2, givenName: 'foo', email: 'foo@gmail.com' }
 ];
 
 function findByEmail(email, fn) {
-  for (var i = 0, len = users.length; i < len; i++) {
-    var user = users[i];
+  for (const i = 0, len = users.length; i < len; i++) {
+    const user = users[i];
     if (user.email === email) {
       return fn(null, user);
     }
@@ -79,8 +71,8 @@ passport.use(new wsfedsaml2(
   }
 ));
 
-var app = express();
-var router = express.Router();
+const app = express();
+const router = express.Router();
 
 // configure Express
 app.set('views', __dirname + '/views');
@@ -94,7 +86,7 @@ app.use(methodOverride());
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
- saveUninitialized: true
+  saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
