@@ -1,3 +1,6 @@
+# This repository is deprecated and is no longer receiving support or maintenance
+
+
 Passport-wsfed-saml2
 =============
 
